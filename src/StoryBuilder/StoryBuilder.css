@@ -1,0 +1,21 @@
+.story-builder {
+  --cf-primary-color: #E7472E;
+  --cf-story-item-text-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: auto;
+}
+
+.story-builder__title {
+  text-align: center;
+  color: var(--cf-primary-color);
+  border-bottom: 1px solid var(--cf-primary-color);
+  margin: auto auto 2rem;
+  padding: 15px;
+}
+
+.story-builder .story-item {
+  margin: 0.5rem 0;
+}

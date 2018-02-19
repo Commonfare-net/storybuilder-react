@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 // import { Button, Welcome } from '@storybook/react/demo';
-import StoryBuilder from '../src';
+import StoryBuilder from '../src/StoryBuilder/StoryBuilder';
 import StoryItem from '../src/StoryItem/StoryItem';
 import TextStoryItem from '../src/StoryItem/TextStoryItem';
 import ImageStoryItem from '../src/StoryItem/ImageStoryItem';
@@ -25,5 +25,12 @@ storiesOf('TextStoryItem', module)
 storiesOf('ImageStoryItem', module)
   .add('default', () => <ImageStoryItem content="http://placekitten.com/g/200/300" />)
 
+const demoStory = [
+  { type: 'text', content: 'Rome: the community based gym hires 15 trainers' },
+  { type: 'text', content: 'Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.' },
+  { type: 'image', content: 'http://placekitten.com/g/200/300' }
+];
+
 storiesOf('StoryBuilder', module)
-  .add('default', () => <StoryBuilder />);
+  .add('empty', () => <StoryBuilder story={[]}/>)
+  .add('with some elements', () => <StoryBuilder story={demoStory}/>)

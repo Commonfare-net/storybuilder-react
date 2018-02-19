@@ -1,9 +1,7 @@
-:root {
+.story-item {
   --cf-primary-color: #E7472E;
   --cf-story-item-text-color: #fff;
-}
 
-.story-item {
   display: flex;
   flex-direction: row;
   min-width: 300px;
