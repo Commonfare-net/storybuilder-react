@@ -38,6 +38,7 @@
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-dotdotdot": "^1.2.2",
     "react-fontawesome": "^1.6.1",
     "react-medium-editor": "^1.8.1"
   }

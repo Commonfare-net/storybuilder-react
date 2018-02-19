@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import StoryItem from './StoryItem';
 
-export default class extends Component {
+export default class ImageStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired
+    content: PropTypes.string.isRequired,
+    onSave: PropTypes.func.isRequired
   }
 
   render() {
@@ -13,6 +14,7 @@ export default class extends Component {
       <StoryItem
         icon="image"
         content={this.props.content}
+        onSave={() => ({})}
       />
     )
   }

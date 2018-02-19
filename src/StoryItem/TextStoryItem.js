@@ -7,10 +7,11 @@ import StoryItem from './StoryItem';
 import 'medium-editor/dist/css/medium-editor.css';
 import 'medium-editor/dist/css/themes/default.css';
 
-export default class extends Component {
+export default class TextStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
-    // onBlur: PropTypes.func
+    onChange: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -21,10 +22,14 @@ export default class extends Component {
   }
 
   handleChange = (text, medium) => {
+    const { onChange } = this.props;
+
     this.setState({ content: text });
   }
 
   render() {
+    const { onSave } = this.props;
+
     const editorOptions = {
       placeholder: {
         text: 'Write something...',
@@ -38,7 +43,8 @@ export default class extends Component {
     return (
       <StoryItem
         icon="font"
-        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, '')}>
+        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, '')}
+        onSave={() => onSave(this.state.content)}>
         <Editor
           text={this.state.content}
           options={editorOptions}
