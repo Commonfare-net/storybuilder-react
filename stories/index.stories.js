@@ -17,17 +17,17 @@ import ImageStoryItem from '../src/StoryItem/ImageStoryItem';
 //   .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
 
 storiesOf('StoryItem', module)
-  .add('default', () => <StoryItem icon="rocket" content="A default story item with some text" />)
+  .add('default', () => <StoryItem icon="rocket" content="<p>A default story item with some text</p>" />)
 
 storiesOf('TextStoryItem', module)
-  .add('default', () => <TextStoryItem content="This is my text" />)
+  .add('default', () => <TextStoryItem content="<p>This is my text</p>" />)
 
 storiesOf('ImageStoryItem', module)
   .add('default', () => <ImageStoryItem content="http://placekitten.com/g/200/300" />)
 
 const demoStory = [
-  { type: 'text', content: 'Rome: the community based gym hires 15 trainers' },
-  { type: 'text', content: 'Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.' },
+  { type: 'text', content: '<p>Rome: the community based gym hires 15 trainers</p>' },
+  { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
   { type: 'image', content: 'http://placekitten.com/g/200/300' }
 ];
 
