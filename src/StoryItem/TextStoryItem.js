@@ -10,7 +10,6 @@ import 'medium-editor/dist/css/themes/default.css';
 export default class TextStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired
   }
 
@@ -42,6 +41,7 @@ export default class TextStoryItem extends Component {
 
     return (
       <StoryItem
+        className="text-story-item"
         icon="font"
         content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, '')}
         onSave={() => onSave(this.state.content)}>

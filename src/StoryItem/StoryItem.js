@@ -10,8 +10,9 @@ export default class StoryItem extends Component {
   static propTypes = {
     icon: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
+    onSave: PropTypes.func.isRequired,
     children: PropTypes.element,
-    onSave: PropTypes.func.isRequired
+    className: PropTypes.string
   }
 
   constructor(props) {
@@ -30,12 +31,12 @@ export default class StoryItem extends Component {
   doneEditing = () => this.setState({ editing: false }, this.props.onSave); // TODO: è qua!
 
   render() {
-    const { icon, content, children, onDoneEditing } = this.props;
+    const { icon, content, children, className } = this.props;
     const { editing } = this.state;
 
     return (
       <div
-        className={`story-item ${this.state.editing ? 'story-item--editing' : ''}`}
+        className={`story-item ${this.state.editing ? 'story-item--editing' : ''} ${className}`}
         onClick={() => !editing ? this.startEditing() : null}>
         <div className="story-item__icon">
           <FontAwesome name={icon} size="3x" className="fa-fw"/>

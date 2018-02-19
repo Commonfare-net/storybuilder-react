@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import TextStoryItem from '../StoryItem/TextStoryItem';
 import ImageStoryItem from '../StoryItem/ImageStoryItem';
+import AddButton from '../AddButton/AddButton';
 
 import './StoryBuilder.css';
 
@@ -13,6 +14,10 @@ class StoryBuilder extends Component {
       content: PropTypes.string.isRequired,
     })).isRequired,
     onSave: PropTypes.func
+  }
+
+  static defaultProps = {
+    story: []
   }
 
   constructor(props) {
@@ -45,8 +50,14 @@ class StoryBuilder extends Component {
     }, () => this.props.onSave(this.state));
   }
 
+  addItem = (item) => {
+    this.setState((prevState) => ({
+      story: [...(prevState.story), item]
+    }))
+  }
+
   render() {
-    const { story } = this.props;
+    const { story } = this.state;
 
     return (
       <div className="story-builder">
@@ -58,6 +69,7 @@ class StoryBuilder extends Component {
                   content={item.content}
                   onSave={(newContent) => this.updateItem(newContent, index)} />
         })}
+        <AddButton onAdd={this.addItem}/>
       </div>
     );
   }

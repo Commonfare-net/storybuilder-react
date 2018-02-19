@@ -1,0 +1,46 @@
+.story-builder-add {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.story-builder-add button {
+  cursor: pointer;
+}
+
+.story-builder-add button:focus {
+  outline: none;
+}
+
+.story-builder-add__button {
+  margin: auto;
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  border: none;
+  background-color: lightgray;
+  color: var(--cf-story-item-text-color);
+}
+
+.story-builder-add__type {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  visibility: hidden;
+  margin-top: 2rem;
+}
+
+.story-builder-add--active .story-builder-add__button {
+  background-color: var(--cf-primary-color);
+}
+
+.story-builder-add--active .story-builder-add__type {
+  visibility: visible;
+}
+
+.story-builder-add__type-select {
+  background: none;
+  border: none;
+  margin: 0 10px;
+}

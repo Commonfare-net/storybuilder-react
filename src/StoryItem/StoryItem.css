@@ -9,6 +9,7 @@
   padding: 10px;
   background-color: var(--cf-primary-color);
   color: var(--cf-story-item-text-color);
+  font-size: 16px;
 
   transition: all 250ms ease-in;
 }

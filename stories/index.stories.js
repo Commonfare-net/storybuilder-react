@@ -26,15 +26,15 @@ storiesOf('TextStoryItem', module)
   .add('with long text', () => <TextStoryItem content={longText} onChange={action('changed')} onSave={action('item saved')} />)
 
 storiesOf('ImageStoryItem', module)
-  .add('default', () => <ImageStoryItem content="http://placekitten.com/g/200/300" onSave={action('item saved')} />)
+  .add('default', () => <ImageStoryItem content="http://placekitten.com/g/300/300" onSave={action('item saved')} />)
 
 const demoStory = [
   { type: 'text', content: '<p>Rome: the community based gym hires 15 trainers</p>' },
   { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
-  { type: 'image', content: 'http://placekitten.com/g/200/300' },
+  { type: 'image', content: 'http://placekitten.com/g/300/300' },
   { type: 'text', content: longText }
 ];
 
 storiesOf('StoryBuilder', module)
-  .add('empty', () => <StoryBuilder story={[]}/>)
+  .add('empty', () => <StoryBuilder story={[]} onSave={action('story saved')}/>)
   .add('with some elements', () => <StoryBuilder story={demoStory} onSave={action('story saved')}/>)
