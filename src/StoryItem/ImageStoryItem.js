@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import FontAwesome from 'react-fontawesome';
 
 import StoryItem from './StoryItem';
 
@@ -8,7 +9,7 @@ import './ImageStoryItem.css';
 export default class ImageStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func.isRequired,
   }
 
   render() {
@@ -19,7 +20,12 @@ export default class ImageStoryItem extends Component {
         content={this.props.content}
         onSave={() => ({})}>
         <div className="image-story-item__uploader">
-          <img src={this.props.content} />
+          <div className="image-story-item__image-wrapper">
+            <img src={this.props.content} />
+            <button className="image-story-item__remove-button">
+              <FontAwesome name='times' size='2x' />
+            </button>
+          </div>
         </div>
       </StoryItem>
     )

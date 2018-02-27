@@ -1,3 +1,20 @@
-.image-story-item__uploader img {
+.image-story-item__uploader {
+  margin-bottom: 1rem;
+}
+
+.image-story-item__image-wrapper {
+  min-width: 250px;
+  min-height: 250px;
+  display: inline-block;
+  position: relative;
+}
+
+.image-story-item__image-wrapper img {
   max-height: 400px;
+}
+
+.image-story-item__remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

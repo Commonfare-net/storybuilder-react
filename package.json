@@ -1,5 +1,5 @@
 {
-  "name": "commonfare-storybuilder",
+  "name": "storybuilder-react",
   "version": "0.1.0",
   "description": "Story builder for Commonfare.net platform",
   "main": "build/index.js",
