@@ -1,0 +1,30 @@
+{
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jquery": true
+  },
+  "ecmaFeatures": {
+    "modules": true,
+    "jsx": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": {
+          "resolve": {
+            "modules": ["app/frontend", "node_modules"]
+          }
+        }
+      }
+    }
+  }
+}

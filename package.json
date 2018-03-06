@@ -2,7 +2,11 @@
   "name": "storybuilder-react",
   "version": "0.1.0",
   "description": "Story builder for Commonfare.net platform",
-  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Commonfare-net/storybuilder-react.git"
+  },
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch",
@@ -11,29 +15,16 @@
     "build-storybook": "build-storybook"
   },
   "author": "Aaron Ciaghi",
-  "babel": {
-    "presets": [
-      "env"
-    ],
-    "plugins": [
-      "transform-object-rest-spread",
-      "transform-react-jsx",
-      "transform-class-properties"
-    ]
-  },
   "license": "GPL-3.0",
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.12",
     "@storybook/addon-links": "^3.3.12",
     "@storybook/react": "^3.3.12",
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.1",
-    "eslint-plugin-class-property": "^1.1.0"
+    "babel-preset-react": "^6.1.2"
   },
   "dependencies": {
     "react": "^16.2.0",

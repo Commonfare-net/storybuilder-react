@@ -1,21 +1,17 @@
-var path = require('path');
 module.exports = {
-  entry: './src/index.js',
+  entry: { main: "./src" },
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'index.js',
-    libraryTarget: 'commonjs2' // THIS IS THE MOST IMPORTANT LINE! :mindblow: I wasted more than 2 days until realize this was the line most important in all this guide.
+    path: __dirname + "/dist",
+    filename: "[name].js",
+    libraryTarget: "umd",
+    library: "<lib name>",
   },
   module: {
     rules: [
       {
-        test: /.js$/,
-        include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules|bower_components|build)/,
-        use: {
-          loader: 'babel-loader',
-          options: {},
-        }
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: { loader: "babel-loader" },
       },
       {
         test: /.css$/,
@@ -26,13 +22,13 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-            options: {}  
+            options: {}
           }
         ]
       },
-    ]
+    ],
   },
   externals: {
-    'react': 'commonjs react' // this line is just to use the React dependency of our parent-testing-project instead of using our own React.
-  }
+    react: "react",
+  },
 };
