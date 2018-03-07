@@ -9,16 +9,21 @@ import './StoryItem.css';
 export default class StoryItem extends Component {
   static propTypes = {
     icon: PropTypes.string.isRequired,
+    editing: PropTypes.bool,
     content: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
     children: PropTypes.element,
     className: PropTypes.string
   }
 
+  static defaultProps = {
+    editing: false
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      editing: false,
+      editing: props.editing,
       content: props.content
     }
   }

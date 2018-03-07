@@ -4,7 +4,6 @@
   "env": {
     "browser": true,
     "es6": true,
-    "jquery": true
   },
   "ecmaFeatures": {
     "modules": true,
@@ -21,7 +20,7 @@
       "webpack": {
         "config": {
           "resolve": {
-            "modules": ["app/frontend", "node_modules"]
+            "modules": ["node_modules"]
           }
         }
       }

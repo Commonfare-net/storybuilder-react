@@ -22,7 +22,9 @@ class StoryBuilder extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { story: props.story };
+    this.state = {
+      story: props.story
+    };
   }
 
   storyItem = (type) => {
@@ -43,7 +45,7 @@ class StoryBuilder extends Component {
       return {
         story: [
           ...story.slice(0, index),
-          { ...story[index], content: newContent },
+          { ...story[index], content: newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
           ...story.slice(index + 1)
         ]
       }
@@ -52,7 +54,7 @@ class StoryBuilder extends Component {
 
   addItem = (item) => {
     this.setState((prevState) => ({
-      story: [...(prevState.story), item]
+      story: [...(prevState.story), {...item, editing: true }]
     }))
   }
 
@@ -66,6 +68,7 @@ class StoryBuilder extends Component {
           const StoryItemComponent = this.storyItem(item.type);
           return <StoryItemComponent
                   key={index}
+                  editing={item.editing}
                   content={item.content}
                   onSave={(newContent) => this.updateItem(newContent, index)} />
         })}

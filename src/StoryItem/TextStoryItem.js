@@ -10,7 +10,12 @@ import 'medium-editor/dist/css/themes/default.css';
 export default class TextStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func.isRequired,
+    editing: PropTypes.bool
+  }
+
+  static defaultProps = {
+    editing: false
   }
 
   constructor(props) {
@@ -27,7 +32,7 @@ export default class TextStoryItem extends Component {
   }
 
   render() {
-    const { onSave } = this.props;
+    const { onSave, editing } = this.props;
 
     const editorOptions = {
       placeholder: {
@@ -43,6 +48,7 @@ export default class TextStoryItem extends Component {
       <StoryItem
         className="text-story-item"
         icon="font"
+        editing={editing}
         content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, '')}
         onSave={() => onSave(this.state.content)}>
         <Editor

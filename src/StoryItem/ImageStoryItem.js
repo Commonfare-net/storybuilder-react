@@ -10,6 +10,11 @@ export default class ImageStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
+    editing: PropTypes.bool
+  }
+
+  static defaultProps = {
+    editing: false
   }
 
   render() {
@@ -18,6 +23,7 @@ export default class ImageStoryItem extends Component {
         className="image-story-item"
         icon="image"
         content={this.props.content}
+        editing={this.props.editing}
         onSave={() => ({})}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">

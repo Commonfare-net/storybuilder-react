@@ -33,13 +33,13 @@ export default class AddButton extends Component {
         <div className="story-builder-add__type">
           <button
             className="story-builder-add__type-select"
-            onClick={() => onAdd({ type: 'text', content: '<p></p>' })}>
+            onClick={() => this.setState({ active: false }, () => onAdd({ type: 'text', content: '<p>Write something</p>' }))}>
             <FontAwesome name="font" size="3x" className="fa-fw" /><br />
             Text
           </button>
           <button
             className="story-builder-add__type-select"
-            onClick={() => onAdd({ type: 'image', content: '' })}>
+            onClick={() => this.setState({ active: false }, () => onAdd({ type: 'image', content: '' }))}>
             <FontAwesome name="image" size="3x" className="fa-fw" /><br />
             Image
           </button>
