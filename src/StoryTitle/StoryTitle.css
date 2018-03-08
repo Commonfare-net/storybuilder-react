@@ -7,6 +7,10 @@
   padding: 15px;
 }
 
+.story-builder__title.medium-editor-element:focus {
+  outline: none;
+}
+
 .story-builder__title.medium-editor-element::after {
   width: 100%;
   padding: 15px 0;

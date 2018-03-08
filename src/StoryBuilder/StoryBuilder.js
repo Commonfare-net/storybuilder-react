@@ -10,6 +10,8 @@ import AddButton from '../AddButton/AddButton';
 import throttle from 'lodash/throttle';
 import isEmpty from 'lodash/isEmpty';
 
+import 'medium-editor/dist/css/medium-editor.css';
+import 'medium-editor/dist/css/themes/default.css';
 import './StoryBuilder.css';
 
 class StoryBuilder extends Component {
@@ -40,13 +42,13 @@ class StoryBuilder extends Component {
 
   updateTitle = (newTitle) => {
     this.setState({ title: newTitle }, () => {
-      if (this.state.place !== undefined) this.save()
+      if (!isEmpty(this.state.place)) this.save()
     })
   }
 
   updatePlace = (newPlace) => {
     this.setState({ place: newPlace }, () => {
-      if (this.state.title !== undefined) this.save()
+      if (!isEmpty(this.state.title)) this.save()
     })
   }
 

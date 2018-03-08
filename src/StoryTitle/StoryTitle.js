@@ -29,7 +29,7 @@ export default class StoryTitle extends Component {
     const editorOptions = {
       placeholder: {
         text: 'Title',
-        hideOnClick: false
+        hideOnClick: true
       },
       toolbar: false
     }

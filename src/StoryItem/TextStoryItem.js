@@ -4,8 +4,7 @@ import Editor from 'react-medium-editor';
 
 import StoryItem from './StoryItem';
 
-import 'medium-editor/dist/css/medium-editor.css';
-import 'medium-editor/dist/css/themes/default.css';
+import './TextStoryItem.css';
 
 export default class TextStoryItem extends Component {
   static propTypes = {
@@ -49,7 +48,7 @@ export default class TextStoryItem extends Component {
         className="text-story-item"
         icon="font"
         editing={editing}
-        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, '')}
+        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}
         onSave={() => onSave(this.state.content)}>
         <Editor
           text={this.state.content}

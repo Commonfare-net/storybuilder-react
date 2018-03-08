@@ -7,6 +7,10 @@
   /* padding: 15px; */
 }
 
+.story-builder__place.medium-editor-element:focus {
+  outline: none;
+}
+
 .story-builder__place.medium-editor-element::after {
   width: 100%;
   margin-top: 0;

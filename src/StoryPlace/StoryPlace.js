@@ -29,7 +29,7 @@ export default class StoryPlace extends Component {
     const editorOptions = {
       placeholder: {
         text: 'Place',
-        hideOnClick: false
+        hideOnClick: true
       },
       toolbar: false
     }
