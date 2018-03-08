@@ -1,3 +1,7 @@
+.story-builder__tags-wrapper {
+  margin-bottom: 1rem;
+}
+
 .story-builder__tags-wrapper label {
   border-bottom: 1px solid var(--cf-primary-color, #E7472E);
   padding-right: 25px;
