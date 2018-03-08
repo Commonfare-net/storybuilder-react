@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Title from '../StoryTitle/StoryTitle';
+import Place from '../StoryPlace/StoryPlace';
 import TextStoryItem from '../StoryItem/TextStoryItem';
 import ImageStoryItem from '../StoryItem/ImageStoryItem';
 import AddButton from '../AddButton/AddButton';
+
+import throttle from 'lodash/throttle';
+import isEmpty from 'lodash/isEmpty';
 
 import './StoryBuilder.css';
 
 class StoryBuilder extends Component {
   static propTypes = {
-    story: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string,
+    place: PropTypes.string,
+    items: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.oneOf(['text', 'image']),
       content: PropTypes.string.isRequired,
     })).isRequired,
@@ -17,14 +24,30 @@ class StoryBuilder extends Component {
   }
 
   static defaultProps = {
-    story: []
+    items: []
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      story: props.story
+      title: props.title,
+      place: props.place,
+      items: props.items
     };
+  }
+
+  save = throttle(() => this.props.onSave(this.state), 1000)
+
+  updateTitle = (newTitle) => {
+    this.setState({ title: newTitle }, () => {
+      if (this.state.place !== undefined) this.save()
+    })
+  }
+
+  updatePlace = (newPlace) => {
+    this.setState({ place: newPlace }, () => {
+      if (this.state.title !== undefined) this.save()
+    })
   }
 
   storyItem = (type) => {
@@ -40,31 +63,32 @@ class StoryBuilder extends Component {
 
   updateItem = (newContent, index) => {
     this.setState((prevState) => {
-      const { story } = prevState
+      const { items } = prevState
 
       return {
-        story: [
-          ...story.slice(0, index),
-          { ...story[index], content: newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
-          ...story.slice(index + 1)
+        items: [
+          ...items.slice(0, index),
+          { ...items[index], content: newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
+          ...items.slice(index + 1)
         ]
       }
-    }, () => this.props.onSave(this.state));
+    }, this.save);
   }
 
   addItem = (item) => {
     this.setState((prevState) => ({
-      story: [...(prevState.story), {...item, editing: true }]
+      items: [...(prevState.items), {...item, editing: true }]
     }))
   }
 
   render() {
-    const { story } = this.state;
+    const { title, place, items } = this.state;
 
     return (
       <div className="story-builder">
-        <h1 className="story-builder__title">Write your story</h1>
-        {story.map((item, index) => {
+        <Title title={title} onSave={this.updateTitle} />
+        <Place place={place} onSave={this.updatePlace} />
+        {items.map((item, index) => {
           const StoryItemComponent = this.storyItem(item.type);
           return <StoryItemComponent
                   key={index}
@@ -72,7 +96,9 @@ class StoryBuilder extends Component {
                   content={item.content}
                   onSave={(newContent) => this.updateItem(newContent, index)} />
         })}
-        <AddButton onAdd={this.addItem}/>
+        {!isEmpty(title) && !isEmpty(place) &&
+          <AddButton onAdd={this.addItem}/>
+        }
       </div>
     );
   }

@@ -1,0 +1,13 @@
+.story-builder__title {
+  text-align: center;
+  color: var(--cf-primary-color);
+  border-bottom: 1px solid var(--cf-primary-color);
+  /* margin: 0 0 2rem; */
+  margin: 0;
+  padding: 15px;
+}
+
+.story-builder__title.medium-editor-element::after {
+  width: 100%;
+  padding: 15px 0;
+}

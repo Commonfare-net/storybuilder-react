@@ -1,0 +1,14 @@
+.story-builder__place {
+  text-align: center;
+  /* color: var(--cf-primary-color); */
+  /* border-bottom: 1px solid var(--cf-primary-color); */
+  margin: 1rem 0 2rem;
+  font-weight: 200;
+  /* padding: 15px; */
+}
+
+.story-builder__place.medium-editor-element::after {
+  width: 100%;
+  margin-top: 0;
+  /* padding: 15px 0; */
+}

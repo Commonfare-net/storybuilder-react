@@ -8,14 +8,6 @@
   margin: auto;
 }
 
-.story-builder__title {
-  text-align: center;
-  color: var(--cf-primary-color);
-  border-bottom: 1px solid var(--cf-primary-color);
-  margin: auto auto 2rem;
-  padding: 15px;
-}
-
 .story-builder .story-item {
   margin: 0.5rem 0;
 }
