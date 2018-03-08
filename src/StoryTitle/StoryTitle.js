@@ -27,6 +27,9 @@ export default class StoryTitle extends Component {
     const { title } = this.state;
 
     const editorOptions = {
+      disableReturn: true,
+      disableDoubleReturn: true,
+      disableExtraSpaces: true,
       placeholder: {
         text: 'Title',
         hideOnClick: true

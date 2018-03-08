@@ -27,6 +27,9 @@ export default class StoryPlace extends Component {
     const { place } = this.state;
 
     const editorOptions = {
+      disableReturn: true,
+      disableDoubleReturn: true,
+      disableExtraSpaces: true,
       placeholder: {
         text: 'Place',
         hideOnClick: true

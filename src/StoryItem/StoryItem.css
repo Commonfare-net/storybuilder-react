@@ -7,8 +7,8 @@
   min-width: 300px;
   min-height: 60px;
   padding: 10px;
-  background-color: var(--cf-primary-color);
-  color: var(--cf-story-item-text-color);
+  background-color: var(--cf-primary-color, #E7472E);
+  color: var(--cf-story-item-text-color, #fff);
   font-size: 16px;
 
   transition: all 250ms ease-in;
@@ -19,7 +19,7 @@
   padding-right: 10px;
   width: 60px;
   order: 1;
-  border-right: 1px solid var(--cf-story-item-text-color);
+  border-right: 1px solid var(--cf-story-item-text-color, #fff);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,8 +41,8 @@
   padding: 10px;
   font-size: 16px;
   border: none;
-  background: var(--cf-primary-color);
-  color: var(--cf-story-item-text-color);
+  background: var(--cf-primary-color, #E7472E);
+  color: var(--cf-story-item-text-color, #fff);
 }
 
 .story-item__editor *:focus {

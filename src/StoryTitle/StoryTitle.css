@@ -1,7 +1,7 @@
 .story-builder__title {
   text-align: center;
-  color: var(--cf-primary-color);
-  border-bottom: 1px solid var(--cf-primary-color);
+  color: var(--cf-primary-color, #E7472E);
+  border-bottom: 1px solid var(--cf-primary-color, #E7472E);
   /* margin: 0 0 2rem; */
   margin: 0;
   padding: 15px;

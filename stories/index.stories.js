@@ -6,6 +6,8 @@ import { linkTo } from '@storybook/addon-links';
 
 // import { Button, Welcome } from '@storybook/react/demo';
 import StoryBuilder from '../src/StoryBuilder/StoryBuilder';
+
+import StoryTags from '../src/StoryTags/StoryTags';
 import StoryItem from '../src/StoryItem/StoryItem';
 import TextStoryItem from '../src/StoryItem/TextStoryItem';
 import ImageStoryItem from '../src/StoryItem/ImageStoryItem';
@@ -15,6 +17,11 @@ import ImageStoryItem from '../src/StoryItem/ImageStoryItem';
 // storiesOf('Button', module)
 //   .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
 //   .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
+
+storiesOf('StoryTags', module)
+  .add('empty', () => <StoryTags onSave={action('tags saved')} />)
+  .add('pre-initialized', () => <StoryTags tags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]} onSave={action('tags saved')} />)
+  .add('with autocomplete', () => <StoryTags availableTags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]} onSave={action('tags saved')} />)
 
 storiesOf('StoryItem', module)
   .add('default', () => <StoryItem icon="rocket" content="<p>A default story item with some text</p>" />)

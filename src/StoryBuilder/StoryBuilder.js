@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Title from '../StoryTitle/StoryTitle';
 import Place from '../StoryPlace/StoryPlace';
+import Tags from '../StoryTags/StoryTags';
 import TextStoryItem from '../StoryItem/TextStoryItem';
 import ImageStoryItem from '../StoryItem/ImageStoryItem';
 import AddButton from '../AddButton/AddButton';
@@ -18,6 +19,14 @@ class StoryBuilder extends Component {
   static propTypes = {
     title: PropTypes.string,
     place: PropTypes.string,
+    availableTags: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired
+    })),
+    tags: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired
+    })),
     items: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.oneOf(['text', 'image']),
       content: PropTypes.string.isRequired,
@@ -34,6 +43,7 @@ class StoryBuilder extends Component {
     this.state = {
       title: props.title,
       place: props.place,
+      tags: props.tags,
       items: props.items
     };
   }
@@ -50,6 +60,10 @@ class StoryBuilder extends Component {
     this.setState({ place: newPlace }, () => {
       if (!isEmpty(this.state.title)) this.save()
     })
+  }
+
+  updateTags = (newTags) => {
+    this.setState({ tags: newTags }, this.save)
   }
 
   storyItem = (type) => {
@@ -84,12 +98,16 @@ class StoryBuilder extends Component {
   }
 
   render() {
-    const { title, place, items } = this.state;
+    const { availableTags } = this.props;
+    const { title, place, tags, items } = this.state;
 
     return (
       <div className="story-builder">
         <Title title={title} onSave={this.updateTitle} />
         <Place place={place} onSave={this.updatePlace} />
+        {!isEmpty(title) && !isEmpty(place) &&
+          <Tags availableTags={availableTags} tags={tags} onSave={this.updateTags} />
+        }
         {items.map((item, index) => {
           const StoryItemComponent = this.storyItem(item.type);
           return <StoryItemComponent

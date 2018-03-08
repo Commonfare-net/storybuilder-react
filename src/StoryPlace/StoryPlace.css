@@ -1,7 +1,7 @@
 .story-builder__place {
   text-align: center;
-  /* color: var(--cf-primary-color); */
-  /* border-bottom: 1px solid var(--cf-primary-color); */
+  /* color: var(--cf-primary-color, #E7472E); */
+  /* border-bottom: 1px solid var(--cf-primary-color, #E7472E); */
   margin: 1rem 0 2rem;
   font-weight: 200;
   /* padding: 15px; */

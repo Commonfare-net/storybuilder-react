@@ -20,7 +20,7 @@
   border-radius: 30px;
   border: none;
   background-color: lightgray;
-  color: var(--cf-story-item-text-color);
+  color: var(--cf-story-item-text-color, #fff);
 }
 
 .story-builder-add__type {
@@ -32,7 +32,7 @@
 }
 
 .story-builder-add--active .story-builder-add__button {
-  background-color: var(--cf-primary-color);
+  background-color: var(--cf-primary-color, #E7472E);
 }
 
 .story-builder-add--active .story-builder-add__type {
