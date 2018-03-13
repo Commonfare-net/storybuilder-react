@@ -43,6 +43,16 @@
   border: none;
   background: var(--cf-primary-color, #E7472E);
   color: var(--cf-story-item-text-color, #fff);
+  cursor: pointer;
+}
+
+.story-item__editor button.story-item__remove-button {
+  background: lightgray;
+}
+
+.story-item__editor button.story-item__done-button {
+  margin-left: auto;
+  float: right;
 }
 
 .story-item__editor *:focus {

@@ -13,6 +13,7 @@ export default class StoryItem extends Component {
     content: PropTypes.string.isRequired,
     onOpen: PropTypes.func,
     onSave: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
     children: PropTypes.element,
     className: PropTypes.string
   }
@@ -25,7 +26,7 @@ export default class StoryItem extends Component {
     super(props);
     this.state = {
       editing: props.editing,
-      content: props.content
+      // content: props.content
     }
   }
 
@@ -41,7 +42,8 @@ export default class StoryItem extends Component {
   }
 
   startEditing = () => this.setState({ editing: true }, () => { if (this.props.onOpen) this.props.onOpen() });
-  doneEditing = () => this.setState({ editing: false }, this.props.onSave); // TODO: è qua!
+  doneEditing = () => this.setState({ editing: false }, this.props.onSave);
+  remove = () => { if (confirm("Are you sure? This cannot be undone")) this.props.onRemove() };
 
   render() {
     const { icon, content, children, className } = this.props;
@@ -59,7 +61,12 @@ export default class StoryItem extends Component {
         </div>
         <div className="story-item__editor">
           {children}
+          <button className="story-item__remove-button"
+            onClick={this.remove}>
+            Remove
+          </button>
           <button
+            className="story-item__done-button"
             onClick={this.doneEditing}>
             Done
           </button>

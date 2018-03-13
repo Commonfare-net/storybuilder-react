@@ -27,16 +27,17 @@ class StoryBuilder extends Component {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired
     })),
-    items: PropTypes.arrayOf(PropTypes.shape({
+    content_json: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.oneOf(['text', 'image']),
       content: PropTypes.string.isRequired,
     })).isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
+    imageDeleteHandler: PropTypes.func.isRequired,
     onSave: PropTypes.func
   }
 
   static defaultProps = {
-    items: []
+    content_json: []
   }
 
   constructor(props) {
@@ -45,7 +46,7 @@ class StoryBuilder extends Component {
       title: props.title,
       place: props.place,
       tags: props.tags,
-      items: props.items
+      content_json: props.content_json
     };
   }
 
@@ -71,13 +72,13 @@ class StoryBuilder extends Component {
 
   updateItem = (newContent, index) => {
     this.setState((prevState) => {
-      const { items } = prevState
+      const { content_json } = prevState
 
       return {
-        items: [
-          ...items.slice(0, index),
-          { ...items[index], content: newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
-          ...items.slice(index + 1)
+        content_json: [
+          ...content_json.slice(0, index),
+          { ...content_json[index], content: newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
+          ...content_json.slice(index + 1)
         ]
       }
     }, this.save);
@@ -85,8 +86,24 @@ class StoryBuilder extends Component {
 
   addItem = (item) => {
     this.setState((prevState) => ({
-      items: [...(prevState.items), {...item, editing: true }]
+      content_json: [...(prevState.content_json), {...item, editing: true }]
     }))
+  }
+
+  removeItem = (item, index, callback) => {
+    this.setState((prevState) => {
+      const { content_json } = prevState;
+
+      return {
+        content_json: [
+          ...content_json.slice(0, index),
+          ...content_json.slice(index + 1)
+        ]
+      }
+    }, () => {
+      this.save();
+      if (callback) callback(item);
+    })
   }
 
   renderStoryItem = (item, index) => {
@@ -100,9 +117,13 @@ class StoryBuilder extends Component {
 
     switch (type) {
       case 'text':
-        return <TextStoryItem {...props} />;
+        return <TextStoryItem {...props} onRemove={() => this.removeItem(item, index)} />;
       case 'image':
-        return <ImageStoryItem {...props} imageUploadHandler={this.props.imageUploadHandler} />;
+        return <ImageStoryItem
+          {...props}
+          imageUploadHandler={this.props.imageUploadHandler}
+          onRemove={(item, index) => this.removeItem(item, index, this.props.imageDeleteHandler)}
+        />;
       default:
         return new Error(`Invalid story item type: ${type}`);
     }
@@ -110,7 +131,7 @@ class StoryBuilder extends Component {
 
   render() {
     const { availableTags } = this.props;
-    const { title, place, tags, items } = this.state;
+    const { title, place, tags, content_json } = this.state;
 
     return (
       <div className="story-builder">
@@ -119,7 +140,7 @@ class StoryBuilder extends Component {
         {this.canSave() &&
           <Tags availableTags={availableTags} tags={tags} onSave={this.updateTags} />
         }
-        {items.map(this.renderStoryItem)}
+        {content_json.map(this.renderStoryItem)}
         {this.canSave() &&
           <AddButton onAdd={this.addItem}/>
         }
