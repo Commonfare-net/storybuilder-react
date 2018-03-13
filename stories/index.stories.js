@@ -32,8 +32,27 @@ storiesOf('TextStoryItem', module)
   .add('default', () => <TextStoryItem content="<p>This is my text</p>" onChange={action('changed')} onSave={action('item saved')} />)
   .add('with long text', () => <TextStoryItem content={longText} onChange={action('changed')} onSave={action('item saved')} />)
 
+const fakeUploader = (file, onProgress) => {
+  return new Promise((resolve, reject) => {
+    let progress = 0;
+
+    const interval = setInterval(function () {
+      console.log('uploading', progress)
+
+      if (progress < 100) {
+        progress += 5;
+        onProgress(progress);
+      } else {
+        clearInterval(interval);
+        resolve("http://placekitten.com/g/300/300");
+      }
+    }, 100);
+  })
+}
+
 storiesOf('ImageStoryItem', module)
-  .add('default', () => <ImageStoryItem content="http://placekitten.com/g/300/300" onSave={action('item saved')} />)
+  .add('empty', () => <ImageStoryItem imageUploadHandler={fakeUploader} onSave={action('item saved')} />)
+  .add('default', () => <ImageStoryItem content="http://placekitten.com/g/300/300" imageUploadHandler={fakeUploader} onSave={action('item saved')} />)
 
 const demoStory = [
   { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },

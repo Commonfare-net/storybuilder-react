@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
+import isEmpty from 'lodash/isEmpty';
 
 import StoryItem from './StoryItem';
 
@@ -9,28 +10,85 @@ import './ImageStoryItem.css';
 export default class ImageStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
+    imageUploadHandler: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     editing: PropTypes.bool
   }
 
   static defaultProps = {
+    content: "",
     editing: false
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: props.content,
+      uploading: false,
+      uploadProgress: 0
+    }
+  }
+
+  openFileChooser = () => {
+    this.fileInput.click()
+  }
+
+  fileSelectedHandler = (event) => {
+    const { imageUploadHandler, onSave } = this.props;
+    const selectedFile = event.target.files[0];
+
+    // create a preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState({
+        content: reader.result
+      })
+    }
+    reader.readAsDataURL(selectedFile);
+
+    this.setState({
+      uploading: true
+    }, () => {
+      imageUploadHandler(selectedFile, (progress) => this.setState({ uploadProgress: progress }))
+      .then(imageUrl => {
+        this.setState({
+          content: imageUrl
+        }, () => onSave(this.state.content))
+      })
+      .finally(() => {
+        this.setState({
+          uploading: false,
+          uploadProgress: 0
+        })
+      })
+    });
+  }
+
   render() {
+    const { onSave } = this.props;
+    const { content, uploadProgress } = this.state;
+
     return (
       <StoryItem
         className="image-story-item"
         icon="image"
         content={this.props.content}
         editing={this.props.editing}
-        onSave={() => ({})}>
+        onOpen={() => isEmpty(content) && this.openFileChooser()}
+        onSave={() => onSave(content)}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">
-            <img src={this.props.content} />
-            <button className="image-story-item__remove-button">
-              <FontAwesome name='times' size='2x' />
+            <input ref={fileInput => this.fileInput = fileInput} type="file" onChange={this.fileSelectedHandler} style={{ display: 'none' }}/>
+            <img src={content} />
+            <button className="image-story-item__upload-button" onClick={this.openFileChooser}>
+              <FontAwesome name='upload' size='2x' />
             </button>
+            {!isEmpty(content) &&
+              <button className="image-story-item__remove-button">
+                <FontAwesome name='times' size='2x' />
+              </button>
+            }
+            <div className="image-story-item__upload-progress" style={{ width: `${uploadProgress}%` }}></div>
           </div>
         </div>
       </StoryItem>

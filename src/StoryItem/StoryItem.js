@@ -11,6 +11,7 @@ export default class StoryItem extends Component {
     icon: PropTypes.string.isRequired,
     editing: PropTypes.bool,
     content: PropTypes.string.isRequired,
+    onOpen: PropTypes.func,
     onSave: PropTypes.func.isRequired,
     children: PropTypes.element,
     className: PropTypes.string
@@ -28,11 +29,18 @@ export default class StoryItem extends Component {
     }
   }
 
+  // Trigger onOpen if the item is added with editing set to true
+  componentDidMount() {
+    if (this.state.editing) {
+      this.props.onOpen();
+    }
+  }
+
   toggleEditor = () => {
     this.setState((prevState) => ({ editing: !prevState.editing }))
   }
 
-  startEditing = () => this.setState({ editing: true });
+  startEditing = () => this.setState({ editing: true }, () => { if (this.props.onOpen) this.props.onOpen() });
   doneEditing = () => this.setState({ editing: false }, this.props.onSave); // TODO: è qua!
 
   render() {

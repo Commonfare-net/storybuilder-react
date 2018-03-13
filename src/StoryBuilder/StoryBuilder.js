@@ -31,6 +31,7 @@ class StoryBuilder extends Component {
       type: PropTypes.oneOf(['text', 'image']),
       content: PropTypes.string.isRequired,
     })).isRequired,
+    imageUploadHandler: PropTypes.func.isRequired,
     onSave: PropTypes.func
   }
 
@@ -48,33 +49,24 @@ class StoryBuilder extends Component {
     };
   }
 
-  save = throttle(() => this.props.onSave(this.state), 1000)
+  canSave = () => !isEmpty(this.state.title) && !isEmpty(this.state.place)
+
+  save = throttle(() => {
+    if (this.canSave()) {
+      this.props.onSave(this.state)
+    }
+  }, 1000)
 
   updateTitle = (newTitle) => {
-    this.setState({ title: newTitle }, () => {
-      if (!isEmpty(this.state.place)) this.save()
-    })
+    this.setState({ title: newTitle }, this.save)
   }
 
   updatePlace = (newPlace) => {
-    this.setState({ place: newPlace }, () => {
-      if (!isEmpty(this.state.title)) this.save()
-    })
+    this.setState({ place: newPlace }, this.save)
   }
 
   updateTags = (newTags) => {
     this.setState({ tags: newTags }, this.save)
-  }
-
-  storyItem = (type) => {
-    switch (type) {
-      case 'text':
-        return TextStoryItem;
-      case 'image':
-        return ImageStoryItem;
-      default:
-        return new Error(`Invalid story item type: ${type}`);
-    }
   }
 
   updateItem = (newContent, index) => {
@@ -97,6 +89,25 @@ class StoryBuilder extends Component {
     }))
   }
 
+  renderStoryItem = (item, index) => {
+    const { type, editing, content } = item;
+    const props = {
+      key: index,
+      editing,
+      content,
+      onSave: (newContent) => this.updateItem(newContent, index)
+    };
+
+    switch (type) {
+      case 'text':
+        return <TextStoryItem {...props} />;
+      case 'image':
+        return <ImageStoryItem {...props} imageUploadHandler={this.props.imageUploadHandler} />;
+      default:
+        return new Error(`Invalid story item type: ${type}`);
+    }
+  }
+
   render() {
     const { availableTags } = this.props;
     const { title, place, tags, items } = this.state;
@@ -105,18 +116,11 @@ class StoryBuilder extends Component {
       <div className="story-builder">
         <Title title={title} onSave={this.updateTitle} />
         <Place place={place} onSave={this.updatePlace} />
-        {!isEmpty(title) && !isEmpty(place) &&
+        {this.canSave() &&
           <Tags availableTags={availableTags} tags={tags} onSave={this.updateTags} />
         }
-        {items.map((item, index) => {
-          const StoryItemComponent = this.storyItem(item.type);
-          return <StoryItemComponent
-                  key={index}
-                  editing={item.editing}
-                  content={item.content}
-                  onSave={(newContent) => this.updateItem(newContent, index)} />
-        })}
-        {!isEmpty(title) && !isEmpty(place) &&
+        {items.map(this.renderStoryItem)}
+        {this.canSave() &&
           <AddButton onAdd={this.addItem}/>
         }
       </div>

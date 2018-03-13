@@ -34,7 +34,10 @@ export default class StoryTitle extends Component {
         text: 'Title',
         hideOnClick: true
       },
-      toolbar: false
+      toolbar: false,
+      extensions: {
+        imageDragging: {}
+      }
     }
 
     return (

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'react-medium-editor';
+const MediumEditor = require('medium-editor');
 
 import StoryItem from './StoryItem';
 
@@ -24,6 +25,19 @@ export default class TextStoryItem extends Component {
     }
   }
 
+  autoFocus = () => {
+    const { medium } = this.editor;
+    const { origElements: { childNodes } } = medium;
+
+    // select the last paragraph
+    const lastElement = childNodes[childNodes.length - 1];
+    medium.selectElement(lastElement);
+
+    // clear the selection and put the cursor at the end
+    MediumEditor.selection.clearSelection(document);
+    medium.getExtensionByName('toolbar').hideToolbar();
+  }
+
   handleChange = (text, medium) => {
     const { onChange } = this.props;
 
@@ -39,7 +53,10 @@ export default class TextStoryItem extends Component {
         hideOnClick: false
       },
       toolbar: {
-        buttons: ['bold', 'italic', 'underline']
+        buttons: ['bold', 'italic', 'underline', 'quote']
+      },
+      extensions: {
+        imageDragging: {}
       }
     }
 
@@ -49,8 +66,10 @@ export default class TextStoryItem extends Component {
         icon="font"
         editing={editing}
         content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}
+        onOpen={() => this.autoFocus()}
         onSave={() => onSave(this.state.content)}>
         <Editor
+          ref={editor => this.editor = editor}
           text={this.state.content}
           options={editorOptions}
           onChange={this.handleChange}

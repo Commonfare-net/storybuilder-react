@@ -34,7 +34,10 @@ export default class StoryPlace extends Component {
         text: 'Place',
         hideOnClick: true
       },
-      toolbar: false
+      toolbar: false,
+      extensions: {
+        imageDragging: {}
+      }
     }
 
     return (
