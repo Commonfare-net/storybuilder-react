@@ -12,11 +12,13 @@ export default class TextStoryItem extends Component {
     content: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool
+    editing: PropTypes.bool,
+    disabled: PropTypes.bool
   }
 
   static defaultProps = {
-    editing: false
+    editing: false,
+    disabled: false
   }
 
   constructor(props) {
@@ -46,7 +48,7 @@ export default class TextStoryItem extends Component {
   }
 
   render() {
-    const { onSave, onRemove, editing } = this.props;
+    const { onSave, onRemove, editing, disabled } = this.props;
 
     const editorOptions = {
       placeholder: {
@@ -66,6 +68,7 @@ export default class TextStoryItem extends Component {
         className="text-story-item"
         icon="font"
         editing={editing}
+        disabled={disabled}
         content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}
         onOpen={() => this.autoFocus()}
         onSave={() => onSave(this.state.content)}

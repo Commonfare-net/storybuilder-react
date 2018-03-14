@@ -9,6 +9,7 @@ import './StoryItem.css';
 export default class StoryItem extends Component {
   static propTypes = {
     icon: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
     editing: PropTypes.bool,
     content: PropTypes.string.isRequired,
     onOpen: PropTypes.func,
@@ -19,6 +20,7 @@ export default class StoryItem extends Component {
   }
 
   static defaultProps = {
+    disabled: false,
     editing: false
   }
 
@@ -37,6 +39,13 @@ export default class StoryItem extends Component {
     }
   }
 
+  // Close the item if it is being edited and it becomes disabled for any reason
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.disabled && this.state.editing) {
+      this.setState({ editing: false });
+    }
+  }
+
   toggleEditor = () => {
     this.setState((prevState) => ({ editing: !prevState.editing }))
   }
@@ -46,13 +55,13 @@ export default class StoryItem extends Component {
   remove = () => { if (confirm("Are you sure? This cannot be undone")) this.props.onRemove(this.props.content) };
 
   render() {
-    const { icon, content, children, className } = this.props;
+    const { icon, content, children, className, disabled } = this.props;
     const { editing } = this.state;
 
     return (
       <div
-        className={`story-item ${this.state.editing ? 'story-item--editing' : ''} ${className}`}
-        onClick={() => !editing ? this.startEditing() : null}>
+        className={`story-item ${editing ? 'story-item--editing' : ''} ${className}`}
+        onClick={() => (!disabled && !editing) ? this.startEditing() : null}>
         <div className="story-item__icon">
           <FontAwesome name={icon} size="3x" className="fa-fw"/>
         </div>
@@ -61,15 +70,19 @@ export default class StoryItem extends Component {
         </div>
         <div className="story-item__editor">
           {children}
-          <button className="story-item__remove-button"
-            onClick={this.remove}>
-            Remove
-          </button>
-          <button
-            className="story-item__done-button"
-            onClick={this.doneEditing}>
-            Done
-          </button>
+          {!disabled &&
+            <div className="story-item__buttons">
+              <button className="story-item__remove-button"
+                onClick={this.remove}>
+                Remove
+              </button>
+              <button
+                className="story-item__done-button"
+                onClick={this.doneEditing}>
+                Done
+              </button>
+            </div>
+          }
         </div>
       </div>
     )

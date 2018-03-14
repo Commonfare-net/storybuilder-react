@@ -107,7 +107,8 @@ class StoryBuilder extends Component {
     const { type, editing, content } = item;
     const props = {
       key: index,
-      editing,
+      disabled: !this.canSave(),
+      editing: editing && this.canSave(),
       content,
       onSave: (newContent) => this.updateItem(newContent, index)
     };

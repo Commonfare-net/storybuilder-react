@@ -13,12 +13,14 @@ export default class ImageStoryItem extends Component {
     imageUploadHandler: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool
+    editing: PropTypes.bool,
+    disabled: PropTypes.bool
   }
 
   static defaultProps = {
     content: "",
-    editing: false
+    editing: false,
+    disabled: false
   }
 
   constructor(props) {
@@ -26,7 +28,7 @@ export default class ImageStoryItem extends Component {
     this.state = {
       content: props.content,
       uploading: false,
-      uploadProgress: 0
+      uploadProgress: 100
     }
   }
 
@@ -48,7 +50,8 @@ export default class ImageStoryItem extends Component {
     reader.readAsDataURL(selectedFile);
 
     this.setState({
-      uploading: true
+      uploading: true,
+      uploadProgress: 0
     }, () => {
       imageUploadHandler(selectedFile, (progress) => this.setState({ uploadProgress: progress }))
       .then(imageUrl => {
@@ -66,17 +69,16 @@ export default class ImageStoryItem extends Component {
   }
 
   render() {
-    const { onSave, onRemove } = this.props;
+    const { disabled, editing, onSave, onRemove } = this.props;
     const { content, uploading, uploadProgress } = this.state;
-
-    const imgClassName = uploading ? 'image-story-item__image--uploading' : 'image-story-item__image';
 
     return (
       <StoryItem
         className="image-story-item"
         icon="image"
         content={content}
-        editing={this.props.editing}
+        disabled={disabled}
+        editing={editing}
         onOpen={() => isEmpty(content) && this.openFileChooser()}
         onSave={() => onSave(content)}
         onRemove={onRemove}>
