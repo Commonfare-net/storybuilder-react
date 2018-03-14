@@ -43,7 +43,7 @@ export default class StoryItem extends Component {
 
   startEditing = () => this.setState({ editing: true }, () => { if (this.props.onOpen) this.props.onOpen() });
   doneEditing = () => this.setState({ editing: false }, this.props.onSave);
-  remove = () => { if (confirm("Are you sure? This cannot be undone")) this.props.onRemove() };
+  remove = () => { if (confirm("Are you sure? This cannot be undone")) this.props.onRemove(this.props.content) };
 
   render() {
     const { icon, content, children, className } = this.props;

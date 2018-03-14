@@ -44,15 +44,16 @@ const fakeUploader = (file, onProgress) => {
         onProgress(progress);
       } else {
         clearInterval(interval);
-        resolve("http://placekitten.com/g/300/300");
+        resolve("http://placekitten.com/g/400/400");
       }
     }, 100);
   })
 }
 
 storiesOf('ImageStoryItem', module)
-  .add('empty', () => <ImageStoryItem imageUploadHandler={fakeUploader} onSave={action('item saved')} />)
-  .add('default', () => <ImageStoryItem content="http://placekitten.com/g/300/300" imageUploadHandler={fakeUploader} onSave={action('item saved')} />)
+  .add('empty', () => <ImageStoryItem imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
+  .add('default', () => <ImageStoryItem content="http://placekitten.com/g/300/300" imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
+  .add('with custom remove behavior', () => <ImageStoryItem content="http://placekitten.com/g/300/300" imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={(item) => alert(`You have removed me! I was ${item}`)} />)
 
 const demoStory = [
   { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },

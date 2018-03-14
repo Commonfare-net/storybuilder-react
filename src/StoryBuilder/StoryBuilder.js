@@ -95,10 +95,7 @@ class StoryBuilder extends Component {
       const { content_json } = prevState;
 
       return {
-        content_json: [
-          ...content_json.slice(0, index),
-          ...content_json.slice(index + 1)
-        ]
+        content_json: content_json.filter((item, idx) => idx !== index)
       }
     }, () => {
       this.save();
