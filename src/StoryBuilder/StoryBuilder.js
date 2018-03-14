@@ -119,7 +119,7 @@ class StoryBuilder extends Component {
         return <ImageStoryItem
           {...props}
           imageUploadHandler={this.props.imageUploadHandler}
-          onRemove={(item, index) => this.removeItem(item, index, this.props.imageDeleteHandler)}
+          onRemove={() => this.removeItem(item, index, this.props.imageDeleteHandler)}
         />;
       default:
         return new Error(`Invalid story item type: ${type}`);
