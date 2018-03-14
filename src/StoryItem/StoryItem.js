@@ -34,7 +34,7 @@ export default class StoryItem extends Component {
 
   // Trigger onOpen if the item is added with editing set to true
   componentDidMount() {
-    if (this.state.editing) {
+    if (this.state.editing && this.props.onOpen) {
       this.props.onOpen();
     }
   }

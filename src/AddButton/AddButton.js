@@ -39,9 +39,21 @@ export default class AddButton extends Component {
           </button>
           <button
             className="story-builder-add__type-select"
+            onClick={() => this.setState({ active: false }, () => onAdd({ type: 'largeText', content: '' }))}>
+            <FontAwesome name="text-height" size="3x" className="fa-fw" /><br />
+            Large Text
+          </button>
+          <button
+            className="story-builder-add__type-select"
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'image', content: '' }))}>
             <FontAwesome name="image" size="3x" className="fa-fw" /><br />
             Image
+          </button>
+          <button
+            className="story-builder-add__type-select"
+            onClick={() => this.setState({ active: false }, () => onAdd({ type: 'video', content: '' }))}>
+            <FontAwesome name="film" size="3x" className="fa-fw" /><br />
+            Video
           </button>
         </div>
       </div>

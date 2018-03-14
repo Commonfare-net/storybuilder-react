@@ -5,7 +5,9 @@ import Title from '../StoryTitle/StoryTitle';
 import Place from '../StoryPlace/StoryPlace';
 import Tags from '../StoryTags/StoryTags';
 import TextStoryItem from '../StoryItem/TextStoryItem';
+import LargeTextStoryItem from '../StoryItem/LargeTextStoryItem';
 import ImageStoryItem from '../StoryItem/ImageStoryItem';
+import VideoStoryItem from '../StoryItem/VideoStoryItem';
 import AddButton from '../AddButton/AddButton';
 
 import throttle from 'lodash/throttle';
@@ -116,12 +118,16 @@ class StoryBuilder extends Component {
     switch (type) {
       case 'text':
         return <TextStoryItem {...props} onRemove={() => this.removeItem(item, index)} />;
+      case 'largeText':
+        return <LargeTextStoryItem {...props} onRemove={() => this.removeItem(item, index)} />;
       case 'image':
         return <ImageStoryItem
           {...props}
           imageUploadHandler={this.props.imageUploadHandler}
           onRemove={() => this.removeItem(item, index, this.props.imageDeleteHandler)}
         />;
+      case 'video':
+        return <VideoStoryItem {...props} onRemove={() => this.removeItem(item, index)} />;
       default:
         return new Error(`Invalid story item type: ${type}`);
     }

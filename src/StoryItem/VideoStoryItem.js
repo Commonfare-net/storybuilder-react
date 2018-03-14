@@ -6,9 +6,7 @@ import MediumEditorAutofocus from 'medium-editor-autofocus';
 
 import StoryItem from './StoryItem';
 
-import './TextStoryItem.css';
-
-export default class TextStoryItem extends Component {
+export default class VideoStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
@@ -33,13 +31,10 @@ export default class TextStoryItem extends Component {
   //   const { medium } = this.editor;
   //   const { origElements: { childNodes } } = medium;
   //
-  //   // select the last paragraph
-  //   const lastElement = childNodes[childNodes.length - 1];
-  //   medium.selectElement(lastElement);
+  //   medium.selectAllContents();
   //
   //   // clear the selection and put the cursor at the end
   //   MediumEditor.selection.clearSelection(document);
-  //   medium.getExtensionByName('toolbar').hideToolbar();
   // }
 
   handleChange = (text, medium) => {
@@ -48,16 +43,40 @@ export default class TextStoryItem extends Component {
     this.setState({ content: text });
   }
 
+  // finds the provider to show the proper icon (if you want)
+  // videoUrl = () => {
+  //   const { content } = this.state;
+  //   if (content.match(/src="([^"]+)"/)) {
+  //     return content.match(/src="([^"]+)"/)[1];
+  //   } else {
+  //     return "";
+  //   }
+  // }
+
+  detectVideoProvider = () => {
+    const { content } = this.state;
+
+    if (content.search('youtube')) {
+      return 'youtube'
+    } else if (content.search('vimeo')) {
+      return 'vimeo'
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const { onSave, onRemove, editing, disabled } = this.props;
+    const { content } = this.state;
 
     const editorOptions = {
+      disableReturn: true,
+      disableDoubleReturn: true,
+      disableExtraSpaces: true,
+      toolbar: false,
       placeholder: {
-        text: 'Write something...',
+        text: 'Paste embed code',
         hideOnClick: false
-      },
-      toolbar: {
-        buttons: ['bold', 'italic', 'underline', 'quote']
       },
       extensions: {
         imageDragging: {},
@@ -67,16 +86,16 @@ export default class TextStoryItem extends Component {
 
     return (
       <StoryItem
-        className="text-story-item"
-        icon="font"
+        className="video-story-item"
+        icon='film'
         editing={editing}
         disabled={disabled}
-        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}
-        onSave={() => onSave(this.state.content)}
+        content={this.videoUrl()}
+        onSave={() => onSave(content)}
         onRemove={onRemove}>
         <Editor
           ref={editor => this.editor = editor}
-          text={this.state.content}
+          text={content}
           options={editorOptions}
           onChange={this.handleChange}
         />

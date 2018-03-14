@@ -6,9 +6,9 @@ import MediumEditorAutofocus from 'medium-editor-autofocus';
 
 import StoryItem from './StoryItem';
 
-import './TextStoryItem.css';
+import './LargeTextStoryItem.css';
 
-export default class TextStoryItem extends Component {
+export default class LargeTextStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
@@ -33,13 +33,10 @@ export default class TextStoryItem extends Component {
   //   const { medium } = this.editor;
   //   const { origElements: { childNodes } } = medium;
   //
-  //   // select the last paragraph
-  //   const lastElement = childNodes[childNodes.length - 1];
-  //   medium.selectElement(lastElement);
+  //   medium.selectAllContents();
   //
   //   // clear the selection and put the cursor at the end
   //   MediumEditor.selection.clearSelection(document);
-  //   medium.getExtensionByName('toolbar').hideToolbar();
   // }
 
   handleChange = (text, medium) => {
@@ -50,14 +47,16 @@ export default class TextStoryItem extends Component {
 
   render() {
     const { onSave, onRemove, editing, disabled } = this.props;
+    const { content } = this.state;
 
     const editorOptions = {
+      disableReturn: true,
+      disableDoubleReturn: true,
+      disableExtraSpaces: true,
+      toolbar: false,
       placeholder: {
-        text: 'Write something...',
+        text: 'Highlight something...',
         hideOnClick: false
-      },
-      toolbar: {
-        buttons: ['bold', 'italic', 'underline', 'quote']
       },
       extensions: {
         imageDragging: {},
@@ -67,14 +66,15 @@ export default class TextStoryItem extends Component {
 
     return (
       <StoryItem
-        className="text-story-item"
-        icon="font"
+        className="large-text-story-item"
+        icon="text-height"
         editing={editing}
         disabled={disabled}
-        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}
+        content={this.state.content}
         onSave={() => onSave(this.state.content)}
         onRemove={onRemove}>
         <Editor
+          tag="h2"
           ref={editor => this.editor = editor}
           text={this.state.content}
           options={editorOptions}
