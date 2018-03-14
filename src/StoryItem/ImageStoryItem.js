@@ -59,7 +59,7 @@ export default class ImageStoryItem extends Component {
       .finally(() => {
         this.setState({
           uploading: false,
-          uploadProgress: 0
+          uploadProgress: 100
         })
       })
     });
@@ -68,6 +68,8 @@ export default class ImageStoryItem extends Component {
   render() {
     const { onSave, onRemove } = this.props;
     const { content, uploading, uploadProgress } = this.state;
+
+    const imgClassName = uploading ? 'image-story-item__image--uploading' : 'image-story-item__image';
 
     return (
       <StoryItem
@@ -81,13 +83,15 @@ export default class ImageStoryItem extends Component {
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">
             <input ref={fileInput => this.fileInput = fileInput} type="file" onChange={this.fileSelectedHandler} style={{ display: 'none' }}/>
-            <img src={content} />
+            <img src={content} style={{ opacity: `${uploadProgress / 100}` }}/>
             {!uploading &&
               <button className="image-story-item__upload-button" onClick={this.openFileChooser}>
                 <FontAwesome name='upload' size='2x' />
               </button>
             }
-            <div className="image-story-item__upload-progress" style={{ width: `${uploadProgress}%` }}></div>
+            {uploading &&
+              <div className="image-story-item__upload-progress" style={{ width: `${uploadProgress}%` }}></div>
+            }
           </div>
         </div>
       </StoryItem>

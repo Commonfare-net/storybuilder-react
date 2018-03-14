@@ -11,6 +11,7 @@
 
 .image-story-item__image-wrapper img {
   max-height: 400px;
+  transition: opacity 200ms;
 }
 
 .image-story-item__upload-button {

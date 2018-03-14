@@ -46,7 +46,7 @@ const fakeUploader = (file, onProgress) => {
         clearInterval(interval);
         resolve("http://placekitten.com/g/400/400");
       }
-    }, 100);
+    }, 200);
   })
 }
 
