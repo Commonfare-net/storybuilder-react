@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/9.7.1/bin/node /usr/local/Cellar/yarn/1.5.1/libexec/bin/yarn.js watch
+  /usr/local/Cellar/node/9.7.1/bin/node /usr/local/Cellar/yarn/1.5.1/libexec/bin/yarn.js run webpack -p --verbose
 
 PATH: 
   /usr/local/sbin:/Users/aaron/.yarn/bin:/Users/aaron/.npm-packages/bin:/usr/local/bin:/Applications/HuginTools:/Users/aaron/.rbenv/shims:/Users/aaron/.rbenv/shims:/usr/local/opt/rbenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:/opt/X11/bin:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/lib:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/gitfast:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/yarn:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/gem:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/capistrano:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/rake:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/rbenv:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/common-aliases:/Users/aaron/.antigen/bundles/zsh-users/zsh-syntax-highlighting:/Users/aaron/.antigen/bundles/zsh-users/zsh-autosuggestions:/Users/aaron/.antigen/bundles/zsh-users/zsh-completions:/usr/local/mysql/bin/:/Applications/Postgres.app/Contents/Versions/latest/bin:/usr/local/opt/fzf/bin
@@ -45,11 +45,17 @@ npm manifest:
       "eslint-plugin-react": "^7.7.0"
     },
     "dependencies": {
+      "lodash": "^4.17.5",
+      "medium-editor": "^5.23.3",
+      "medium-editor-autofocus": "^1.1.1",
       "react": "^16.2.0",
+      "react-autosuggest": "^9.3.4",
       "react-dom": "^16.2.0",
       "react-dotdotdot": "^1.2.2",
       "react-fontawesome": "^1.6.1",
-      "react-medium-editor": "^1.8.1"
+      "react-medium-editor": "^1.8.1",
+      "react-tagsinput": "^3.19.0",
+      "sanitize-html": "^1.18.2"
     }
   }
 
@@ -428,7 +434,7 @@ Lockfile:
     dependencies:
       array-uniq "^1.0.1"
   
-  array-uniq@^1.0.1:
+  array-uniq@^1.0.1, array-uniq@^1.0.2:
     version "1.0.3"
     resolved "https://registry.yarnpkg.com/array-uniq/-/array-uniq-1.0.3.tgz#af6ac877a25cc7f74e058894753858dfdb24fdb6"
   
@@ -2400,7 +2406,7 @@ Lockfile:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
   
-  domelementtype@1:
+  domelementtype@1, domelementtype@^1.3.0:
     version "1.3.0"
     resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-1.3.0.tgz#b17aed82e8ab59e52dd9c19b1756e0fc187204c2"
   
@@ -2414,6 +2420,12 @@ Lockfile:
     dependencies:
       domelementtype "1"
   
+  domhandler@^2.3.0:
+    version "2.4.1"
+    resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-2.4.1.tgz#892e47000a99be55bbf3774ffea0561d8879c259"
+    dependencies:
+      domelementtype "1"
+  
   domutils@1.1:
     version "1.1.6"
     resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.1.6.tgz#bddc3de099b9a2efacc51c623f28f416ecc57485"
@@ -2423,6 +2435,13 @@ Lockfile:
   domutils@1.5.1:
     version "1.5.1"
     resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
+    dependencies:
+      dom-serializer "0"
+      domelementtype "1"
+  
+  domutils@^1.5.1:
+    version "1.7.0"
+    resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.7.0.tgz#56ea341e834e06e6748af7a1cb25da67ea9f8c2a"
     dependencies:
       dom-serializer "0"
       domelementtype "1"
@@ -2507,7 +2526,7 @@ Lockfile:
       object-assign "^4.0.1"
       tapable "^0.2.7"
   
-  entities@~1.1.1:
+  entities@^1.1.1, entities@~1.1.1:
     version "1.1.1"
     resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
   
@@ -3371,6 +3390,17 @@ Lockfile:
       pretty-error "^2.0.2"
       toposort "^1.0.0"
   
+  htmlparser2@^3.9.0:
+    version "3.9.2"
+    resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.9.2.tgz#1bdf87acca0f3f9e53fa4fcceb0f4b4cbb00b338"
+    dependencies:
+      domelementtype "^1.3.0"
+      domhandler "^2.3.0"
+      domutils "^1.5.1"
+      entities "^1.1.1"
+      inherits "^2.0.1"
+      readable-stream "^2.0.2"
+  
   htmlparser2@~3.3.0:
     version "3.3.0"
     resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.3.0.tgz#cc70d05a59f6542e43f0e685c982e14c924a9efe"
@@ -3945,9 +3975,17 @@ Lockfile:
     version "4.3.0"
     resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   
+  lodash.clonedeep@^4.5.0:
+    version "4.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  
   lodash.debounce@^4.0.8:
     version "4.0.8"
     resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  
+  lodash.escaperegexp@^4.1.2:
+    version "4.1.2"
+    resolved "https://registry.yarnpkg.com/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz#64762c48618082518ac3df4ccf5d5886dae20347"
   
   lodash.flattendeep@^4.4.0:
     version "4.4.0"
@@ -3965,6 +4003,10 @@ Lockfile:
     version "4.0.6"
     resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
   
+  lodash.isstring@^4.0.1:
+    version "4.0.1"
+    resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
+  
   lodash.keys@^3.1.2:
     version "3.1.2"
     resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-3.1.2.tgz#4dbc0472b156be50a0b286855d1bd0b0c656098a"
@@ -3976,6 +4018,10 @@ Lockfile:
   lodash.memoize@^4.1.2:
     version "4.1.2"
     resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
+  
+  lodash.mergewith@^4.6.0:
+    version "4.6.1"
+    resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
   
   lodash.pick@^4.4.0:
     version "4.4.0"
@@ -3997,7 +4043,7 @@ Lockfile:
     version "3.10.1"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   
-  lodash@^4.14.0, lodash@^4.17.0, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
+  lodash@^4.14.0, lodash@^4.17.0, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0:
     version "4.17.5"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
   
@@ -4072,7 +4118,11 @@ Lockfile:
     version "0.3.0"
     resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   
-  medium-editor@^5.10.0:
+  medium-editor-autofocus@^1.1.1:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/medium-editor-autofocus/-/medium-editor-autofocus-1.1.1.tgz#6a81b46ddd218722a778fc758d62bf8e133f40f8"
+  
+  medium-editor@^5.10.0, medium-editor@^5.23.3:
     version "5.23.3"
     resolved "https://registry.yarnpkg.com/medium-editor/-/medium-editor-5.23.3.tgz#6fb638759ae2fc76c423feb056f346d9c518d3b7"
   
@@ -4388,6 +4438,10 @@ Lockfile:
   oauth-sign@~0.8.1, oauth-sign@~0.8.2:
     version "0.8.2"
     resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
+  
+  object-assign@^3.0.0:
+    version "3.0.0"
+    resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
   
   object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
     version "4.1.1"
@@ -4924,7 +4978,7 @@ Lockfile:
       source-map "^0.5.6"
       supports-color "^3.2.3"
   
-  postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.17:
+  postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.14, postcss@^6.0.17:
     version "6.0.19"
     resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.19.tgz#76a78386f670b9d9494a655bf23ac012effd1555"
     dependencies:
@@ -5112,6 +5166,22 @@ Lockfile:
       minimist "^1.2.0"
       strip-json-comments "~2.0.1"
   
+  react-autosuggest@^9.3.4:
+    version "9.3.4"
+    resolved "https://registry.yarnpkg.com/react-autosuggest/-/react-autosuggest-9.3.4.tgz#e47ff800081b2f7c678165bfb7cc84b07f462336"
+    dependencies:
+      prop-types "^15.5.10"
+      react-autowhatever "^10.1.0"
+      shallow-equal "^1.0.0"
+  
+  react-autowhatever@^10.1.0:
+    version "10.1.0"
+    resolved "https://registry.yarnpkg.com/react-autowhatever/-/react-autowhatever-10.1.0.tgz#41f6d69382437d3447a0a3c8913bb8ca2feaabc1"
+    dependencies:
+      prop-types "^15.5.8"
+      react-themeable "^1.1.0"
+      section-iterator "^2.0.0"
+  
   react-docgen@^2.20.0:
     version "2.20.1"
     resolved "https://registry.yarnpkg.com/react-docgen/-/react-docgen-2.20.1.tgz#29c3a1216066f513958abb1a43678860bbd51c7f"
@@ -5206,6 +5276,16 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-style-proptype/-/react-style-proptype-3.2.0.tgz#be5de15358b890d83aecfaf6634cc033aa2b1483"
     dependencies:
       prop-types "^15.5.4"
+  
+  react-tagsinput@^3.19.0:
+    version "3.19.0"
+    resolved "https://registry.yarnpkg.com/react-tagsinput/-/react-tagsinput-3.19.0.tgz#6e3b45595f2d295d4657bf194491988f948caabf"
+  
+  react-themeable@^1.1.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/react-themeable/-/react-themeable-1.1.0.tgz#7d4466dd9b2b5fa75058727825e9f152ba379a0e"
+    dependencies:
+      object-assign "^3.0.0"
   
   react-transition-group@^1.1.2:
     version "1.2.1"
@@ -5560,6 +5640,21 @@ Lockfile:
     dependencies:
       ret "~0.1.10"
   
+  sanitize-html@^1.18.2:
+    version "1.18.2"
+    resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-1.18.2.tgz#61877ba5a910327e42880a28803c2fbafa8e4642"
+    dependencies:
+      chalk "^2.3.0"
+      htmlparser2 "^3.9.0"
+      lodash.clonedeep "^4.5.0"
+      lodash.escaperegexp "^4.1.2"
+      lodash.isplainobject "^4.0.6"
+      lodash.isstring "^4.0.1"
+      lodash.mergewith "^4.6.0"
+      postcss "^6.0.14"
+      srcset "^1.0.0"
+      xtend "^4.0.0"
+  
   sax@~1.2.1:
     version "1.2.4"
     resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -5576,6 +5671,10 @@ Lockfile:
     dependencies:
       ajv "^6.1.0"
       ajv-keywords "^3.1.0"
+  
+  section-iterator@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/section-iterator/-/section-iterator-2.0.0.tgz#bf444d7afeeb94ad43c39ad2fb26151627ccba2a"
   
   "semver@2 || 3 || 4 || 5", semver@^5.3.0:
     version "5.5.0"
@@ -5672,6 +5771,10 @@ Lockfile:
     dependencies:
       inherits "^2.0.1"
       safe-buffer "^5.0.1"
+  
+  shallow-equal@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-1.0.0.tgz#508d1838b3de590ab8757b011b25e430900945f7"
   
   shallowequal@^0.2.2:
     version "0.2.2"
@@ -5819,6 +5922,13 @@ Lockfile:
   sprintf-js@~1.0.2:
     version "1.0.3"
     resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
+  
+  srcset@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/srcset/-/srcset-1.0.0.tgz#a5669de12b42f3b1d5e83ed03c71046fc48f41ef"
+    dependencies:
+      array-uniq "^1.0.2"
+      number-is-nan "^1.0.0"
   
   sshpk@^1.7.0:
     version "1.13.1"
@@ -6551,14 +6661,16 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: Command "watch" not found.
-      at new MessageError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:186:110)
-      at /usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:87307:17
-      at Generator.next (<anonymous>)
-      at step (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:98:30)
-      at /usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:116:14
-      at new Promise (<anonymous>)
-      at new F (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:23451:28)
-      at /usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:95:12
-      at runCommand (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:87312:22)
-      at Object.<anonymous> (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:87412:14)
+  Error: Command failed.
+  Exit code: 2
+  Command: sh
+  Arguments: -c /Users/aaron/Projects/commonfare-rails/storybuilder-react/node_modules/.bin/webpack -p --verbose
+  Directory: /Users/aaron/Projects/commonfare-rails/storybuilder-react
+  Output:
+  
+      at ProcessTermError.MessageError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:186:110)
+      at new ProcessTermError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:30281:17)
+      at ChildProcess.emit (events.js:127:13)
+      at maybeClose (internal/child_process.js:936:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)
