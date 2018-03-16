@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Editor from 'react-medium-editor';
 const MediumEditor = require('medium-editor');
 import MediumEditorAutofocus from 'medium-editor-autofocus';
+import isEmpty from 'lodash/isEmpty';
+import sanitizeHtml from 'sanitize-html';
 
 import StoryItem from './StoryItem';
 
@@ -27,41 +29,38 @@ export default class VideoStoryItem extends Component {
     }
   }
 
-  // autoFocus = () => {
-  //   const { medium } = this.editor;
-  //   const { origElements: { childNodes } } = medium;
-  //
-  //   medium.selectAllContents();
-  //
-  //   // clear the selection and put the cursor at the end
-  //   MediumEditor.selection.clearSelection(document);
-  // }
+  htmlDecode = (input) => {
+    var e = document.createElement('div');
+    e.innerHTML = input;
+    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+  }
 
   handleChange = (text, medium) => {
-    const { onChange } = this.props;
+    const sanitizedContent = sanitizeHtml(this.htmlDecode(text), {
+      allowedTags: ['iframe', 'p', 'a'],
+      allowedAttributes: {
+        a: ['href'],
+        iframe: ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen']
+      },
+      allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com', 'www.dailymotion.com']
+    });
 
-    this.setState({ content: text });
+    if (sanitizedContent.indexOf("src=") >= 0) {
+      this.setState({ content: sanitizedContent });
+    } else {
+      medium.origElements.innerHTML = "";
+      alert("Unsupported content! Please paste a valid embed code from YouTube, Vimeo or DailyMotion");
+      this.props.onRemove();
+    }
   }
 
   // finds the provider to show the proper icon (if you want)
-  // videoUrl = () => {
-  //   const { content } = this.state;
-  //   if (content.match(/src="([^"]+)"/)) {
-  //     return content.match(/src="([^"]+)"/)[1];
-  //   } else {
-  //     return "";
-  //   }
-  // }
-
-  detectVideoProvider = () => {
+  videoUrl = () => {
     const { content } = this.state;
-
-    if (content.search('youtube')) {
-      return 'youtube'
-    } else if (content.search('vimeo')) {
-      return 'vimeo'
+    if (content.match(/src="([^"]+)"/)) {
+      return content.match(/src="([^"]+)"/)[1];
     } else {
-      return null;
+      return "";
     }
   }
 
@@ -93,12 +92,19 @@ export default class VideoStoryItem extends Component {
         content={this.videoUrl()}
         onSave={() => onSave(content)}
         onRemove={onRemove}>
-        <Editor
-          ref={editor => this.editor = editor}
-          text={content}
-          options={editorOptions}
-          onChange={this.handleChange}
-        />
+        <div>
+          {isEmpty(content) &&
+            <Editor
+              ref={editor => this.editor = editor}
+              text={content}
+              options={editorOptions}
+              onChange={this.handleChange}
+            />
+          }
+          {!isEmpty(content) &&
+            <div dangerouslySetInnerHTML={{ __html: content }} />
+          }
+        </div>
       </StoryItem>
     )
   }

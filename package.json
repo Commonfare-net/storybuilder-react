@@ -38,6 +38,7 @@
     "react-dotdotdot": "^1.2.2",
     "react-fontawesome": "^1.6.1",
     "react-medium-editor": "^1.8.1",
-    "react-tagsinput": "^3.19.0"
+    "react-tagsinput": "^3.19.0",
+    "sanitize-html": "^1.18.2"
   }
 }
