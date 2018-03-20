@@ -10,7 +10,7 @@ import ImageStoryItem from '../StoryItem/ImageStoryItem';
 import VideoStoryItem from '../StoryItem/VideoStoryItem';
 import AddButton from '../AddButton/AddButton';
 
-import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
 
 import 'medium-editor/dist/css/medium-editor.css';
@@ -30,7 +30,7 @@ class StoryBuilder extends Component {
       name: PropTypes.string.isRequired
     })),
     content_json: PropTypes.arrayOf(PropTypes.shape({
-      type: PropTypes.oneOf(['text', 'image']),
+      type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']),
       content: PropTypes.string.isRequired,
     })).isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
@@ -48,15 +48,25 @@ class StoryBuilder extends Component {
       title: props.title,
       place: props.place,
       tags: props.tags,
-      content_json: props.content_json
+      content_json: props.content_json,
+      saving: false
     };
   }
 
   canSave = () => !isEmpty(this.state.title) && !isEmpty(this.state.place)
 
-  save = throttle(() => {
-    if (this.canSave()) {
-      this.props.onSave(this.state)
+  save = debounce(() => {
+    const { onSave } = this.props;
+
+    if (this.canSave() && !this.state.saving) {
+      this.setState({
+        saving: true
+      }, () => {
+        onSave(this.state)
+        .finally(() => {
+          this.setState({ saving: false })
+        })
+      })
     }
   }, 1000)
 
