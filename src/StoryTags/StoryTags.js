@@ -9,7 +9,7 @@ import './StoryTags.css';
 export default class StoryTags extends Component {
   static propTypes = {
     tags: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.number,
       name: PropTypes.string.isRequired
     })),
     availableTags: PropTypes.array.isRequired,

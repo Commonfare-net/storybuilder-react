@@ -12,6 +12,7 @@ import AddButton from '../AddButton/AddButton';
 
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 import 'medium-editor/dist/css/medium-editor.css';
 import 'medium-editor/dist/css/themes/default.css';
@@ -53,33 +54,42 @@ class StoryBuilder extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.saving === false && this.state.saving) {
+      this.props.onSave(this.state)
+      .finally(() => {
+        this.setState({ saving: false })
+      })
+    }
+
+    if (!isEqual(prevState.title, this.state.title) ||
+        !isEqual(prevState.place, this.state.place) ||
+        !isEqual(prevState.tags, this.state.tags) ||
+        !isEqual(prevState.content_json, this.state.content_json)) {
+      this.save()
+    }
+  }
+
   canSave = () => !isEmpty(this.state.title) && !isEmpty(this.state.place)
 
   save = debounce(() => {
-    const { onSave } = this.props;
-
     if (this.canSave() && !this.state.saving) {
       this.setState({
         saving: true
-      }, () => {
-        onSave(this.state)
-        .finally(() => {
-          this.setState({ saving: false })
-        })
       })
     }
   }, 1000)
 
   updateTitle = (newTitle) => {
-    this.setState({ title: newTitle }, this.save)
+    this.setState({ title: newTitle })
   }
 
   updatePlace = (newPlace) => {
-    this.setState({ place: newPlace }, this.save)
+    this.setState({ place: newPlace })
   }
 
   updateTags = (newTags) => {
-    this.setState({ tags: newTags }, this.save)
+    this.setState({ tags: newTags })
   }
 
   updateItem = (newContent, index) => {
@@ -93,7 +103,7 @@ class StoryBuilder extends Component {
           ...content_json.slice(index + 1)
         ]
       }
-    }, this.save);
+    });
   }
 
   addItem = (item) => {
@@ -110,7 +120,6 @@ class StoryBuilder extends Component {
         content_json: content_json.filter((item, idx) => idx !== index)
       }
     }, () => {
-      this.save();
       if (callback) callback(item);
     })
   }
