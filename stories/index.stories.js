@@ -12,16 +12,20 @@ import StoryItem from '../src/StoryItem/StoryItem';
 import TextStoryItem from '../src/StoryItem/TextStoryItem';
 import ImageStoryItem from '../src/StoryItem/ImageStoryItem';
 
-// storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
-//
-// storiesOf('Button', module)
-//   .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-//   .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
-
 storiesOf('StoryTags', module)
   .add('empty', () => <StoryTags onSave={action('tags saved')} />)
-  .add('pre-initialized', () => <StoryTags tags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]} onSave={action('tags saved')} />)
-  .add('with autocomplete', () => <StoryTags availableTags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]} onSave={action('tags saved')} />)
+  .add('pre-initialized', () => (
+    <StoryTags
+      tags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]}
+      onSave={action('tags saved')}
+    />
+  ))
+  .add('with autocomplete', () => (
+    <StoryTags
+      availableTags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]}
+      onSave={action('tags saved')}
+    />
+  ))
 
 storiesOf('StoryItem', module)
   .add('default', () => <StoryItem icon="rocket" content="<p>A default story item with some text</p>" />)
@@ -29,8 +33,19 @@ storiesOf('StoryItem', module)
 const longText = "<p>Mass incarceration; overcome injustice state of play triple bottom line compassion storytelling. Progress, challenges and opportunities dynamic emerging NGO systems thinking. Peaceful impact; black lives matter; revolutionary targeted systems thinking. Efficient or design thinking effective compelling innovation best practices. Resist, resist synergy thought provoking black lives matter problem-solvers social entrepreneurship strategize contextualize. Outcomes parse design thinking black lives matter philanthropy inspirational collective impact. Storytelling innovate low-hanging fruit; strategy replicable. Radical, resist, capacity building energize; engaging dynamic milestones. Deep dive contextualize, systems thinking; the accessibility shared unit of analysis changemaker engaging thought leadership. Capacity building, shared value white paper, movements gender rights shared unit of analysis low-hanging fruit youth problem-solvers. Accessibility agile milestones; challenges and opportunities, milestones social entrepreneurship milestones. B-corp, venture philanthropy mobilize uplift mobilize storytelling low-hanging fruit social enterprise. Communities, correlation parse collaborate, because resist. Transparent design thinking technology thought leadership the resistance. Invest milestones, NGO benefit corporation greenwashing,.</p>";
 
 storiesOf('TextStoryItem', module)
-  .add('default', () => <TextStoryItem content="<p>This is my text</p>" onChange={action('changed')} onSave={action('item saved')} />)
-  .add('with long text', () => <TextStoryItem content={longText} onChange={action('changed')} onSave={action('item saved')} />)
+  .add('default', () => (
+    <TextStoryItem
+      content="<p>This is my text</p>"
+      onChange={action('changed')}
+      onSave={action('item saved')}
+    />
+  ))
+  .add('with long text', () => (
+    <TextStoryItem content={longText}
+      onChange={action('changed')}
+      onSave={action('item saved')}
+    />
+  ))
 
 const fakeUploader = (file, onProgress) => {
   return new Promise((resolve, reject) => {
@@ -51,10 +66,37 @@ const fakeUploader = (file, onProgress) => {
 }
 
 storiesOf('ImageStoryItem', module)
-  .add('empty', () => <ImageStoryItem imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
-  .add('default', () => <ImageStoryItem content={{ url: "http://placekitten.com/g/300/300" }} imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
-  .add('with some caption', () => <ImageStoryItem content={{ url: "http://placekitten.com/g/300/300", caption: "A cute little cat, doing good helping the poor" }} imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
-  .add('with custom remove behavior', () => <ImageStoryItem content={{ url: "http://placekitten.com/g/300/300" }} imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={(item) => alert(`You have removed me! I was ${item}`)} />)
+  .add('empty', () => (
+    <ImageStoryItem
+      imageUploadHandler={fakeUploader}
+      onSave={action('item saved')}
+      onRemove={action('item removed')}
+    />
+  ))
+  .add('default', () => (
+    <ImageStoryItem
+      content={{ url: "http://placekitten.com/g/300/300" }}
+      imageUploadHandler={fakeUploader}
+      onSave={action('item saved')}
+      onRemove={action('item removed')}
+    />
+  ))
+  .add('with some caption', () => (
+    <ImageStoryItem
+      content={{ url: "http://placekitten.com/g/300/300", caption: "A cute little cat, doing good helping the poor" }}
+      imageUploadHandler={fakeUploader}
+      onSave={action('item saved')}
+      onRemove={action('item removed')}
+    />
+  ))
+  .add('with custom remove behavior', () => (
+    <ImageStoryItem
+      content={{ url: "http://placekitten.com/g/300/300" }}
+      imageUploadHandler={fakeUploader}
+      onSave={action('item saved')}
+      onRemove={(item) => alert(`You have removed me! I was ${item}`)}
+    />
+  ))
 
 const demoStory = [
   { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
@@ -63,5 +105,19 @@ const demoStory = [
 ];
 
 storiesOf('StoryBuilder', module)
-  .add('empty', () => <StoryBuilder content_json={[]} imageUploadHandler={fakeUploader} onSave={() => Promise.resolve(action('story saved'))}/>)
-  .add('with some elements', () => <StoryBuilder title="Rome: the community based gym hires 15 trainers" place="Rome" content_json={demoStory} imageUploadHandler={fakeUploader} onSave={() => Promise.resolve(action('story saved'))}/>)
+  .add('empty', () => (
+    <StoryBuilder
+      content_json={[]}
+      imageUploadHandler={fakeUploader}
+      onSave={() => Promise.resolve(action('story saved'))}
+    />
+  ))
+  .add('with some elements', () => (
+    <StoryBuilder
+      title="Rome: the community based gym hires 15 trainers"
+      place="Rome"
+      content_json={demoStory}
+      imageUploadHandler={fakeUploader}
+      onSave={() => Promise.resolve(action('story saved'))}
+    />
+  ))
