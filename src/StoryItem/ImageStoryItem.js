@@ -56,9 +56,12 @@ export default class ImageStoryItem extends Component {
     // create a preview
     const reader = new FileReader();
     reader.onloadend = () => {
-      this.setState({
-        content: reader.result
-      })
+      this.setState((prevState) => ({
+        content: {
+          url: reader.result,
+          caption: prevState.content.caption
+        }
+      }))
     }
     reader.readAsDataURL(selectedFile);
 

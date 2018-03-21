@@ -63,5 +63,5 @@ const demoStory = [
 ];
 
 storiesOf('StoryBuilder', module)
-  .add('empty', () => <StoryBuilder content_json={[]} imageUploadHandler={fakeUploader} onSave={action('story saved')}/>)
-  .add('with some elements', () => <StoryBuilder title="Rome: the community based gym hires 15 trainers" place="Rome" content_json={demoStory} imageUploadHandler={fakeUploader} onSave={action('story saved')}/>)
+  .add('empty', () => <StoryBuilder content_json={[]} imageUploadHandler={fakeUploader} onSave={() => Promise.resolve(action('story saved'))}/>)
+  .add('with some elements', () => <StoryBuilder title="Rome: the community based gym hires 15 trainers" place="Rome" content_json={demoStory} imageUploadHandler={fakeUploader} onSave={() => Promise.resolve(action('story saved'))}/>)

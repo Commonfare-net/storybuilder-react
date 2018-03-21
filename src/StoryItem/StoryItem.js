@@ -15,7 +15,10 @@ export default class StoryItem extends Component {
     onOpen: PropTypes.func,
     onSave: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-    children: PropTypes.element,
+    children: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.arrayOf(PropTypes.element),
+    ]),
     className: PropTypes.string
   }
 

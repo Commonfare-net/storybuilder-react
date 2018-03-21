@@ -32,11 +32,11 @@ class StoryBuilder extends Component {
     })),
     content_json: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']),
-      content: PropTypes.string.isRequired,
+      content: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     })).isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
     imageDeleteHandler: PropTypes.func.isRequired,
-    onSave: PropTypes.func
+    onSave: PropTypes.func.isRequired
   }
 
   static defaultProps = {
