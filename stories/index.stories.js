@@ -52,12 +52,13 @@ const fakeUploader = (file, onProgress) => {
 
 storiesOf('ImageStoryItem', module)
   .add('empty', () => <ImageStoryItem imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
-  .add('default', () => <ImageStoryItem content="http://placekitten.com/g/300/300" imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
-  .add('with custom remove behavior', () => <ImageStoryItem content="http://placekitten.com/g/300/300" imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={(item) => alert(`You have removed me! I was ${item}`)} />)
+  .add('default', () => <ImageStoryItem content={{ url: "http://placekitten.com/g/300/300" }} imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
+  .add('with some caption', () => <ImageStoryItem content={{ url: "http://placekitten.com/g/300/300", caption: "A cute little cat, doing good helping the poor" }} imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={action('item removed')} />)
+  .add('with custom remove behavior', () => <ImageStoryItem content={{ url: "http://placekitten.com/g/300/300" }} imageUploadHandler={fakeUploader} onSave={action('item saved')} onRemove={(item) => alert(`You have removed me! I was ${item}`)} />)
 
 const demoStory = [
   { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
-  { type: 'image', content: 'http://placekitten.com/g/300/300' },
+  { type: 'image', content: { url: 'http://placekitten.com/g/300/300', caption: 'A cat' } },
   { type: 'text', content: longText }
 ];
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'react-medium-editor';
-const MediumEditor = require('medium-editor');
 import MediumEditorAutofocus from 'medium-editor-autofocus';
 
 import StoryItem from './StoryItem';

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
+import Editor from 'react-medium-editor';
+import MediumEditorAutofocus from 'medium-editor-autofocus';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 import StoryItem from './StoryItem';
 
@@ -9,7 +12,10 @@ import './ImageStoryItem.css';
 
 export default class ImageStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
+    content: PropTypes.shape({
+      url: PropTypes.string,
+      caption: PropTypes.string
+    }).isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
@@ -32,12 +38,19 @@ export default class ImageStoryItem extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    // content changed
+    if (!isEqual(prevState.content, this.state.content)) {
+      this.props.onSave(this.state.content);
+    }
+  }
+
   openFileChooser = () => {
     this.fileInput.click()
   }
 
   fileSelectedHandler = (event) => {
-    const { imageUploadHandler, onSave } = this.props;
+    const { imageUploadHandler } = this.props;
     const selectedFile = event.target.files[0];
 
     // create a preview
@@ -54,10 +67,13 @@ export default class ImageStoryItem extends Component {
       uploadProgress: 0
     }, () => {
       imageUploadHandler(selectedFile, (progress) => this.setState({ uploadProgress: progress }))
-      .then(imageUrl => {
-        this.setState({
-          content: imageUrl
-        }, () => onSave(this.state.content))
+      .then(url => {
+        this.setState((prevState) => ({
+          content: {
+            url,
+            caption: prevState.content.caption
+          }
+        }))
       })
       .finally(() => {
         this.setState({
@@ -68,24 +84,48 @@ export default class ImageStoryItem extends Component {
     });
   }
 
+  setCaption = (caption) => {
+    this.setState((prevState) => ({
+      content: {
+        url: prevState.content.url,
+        caption
+      }
+    }))
+  }
+
   render() {
     const { disabled, editing, onSave, onRemove } = this.props;
-    const { content, uploading, uploadProgress } = this.state;
+    const { content: { url, caption }, uploading, uploadProgress } = this.state;
+
+    const editorOptions = {
+      disableReturn: true,
+      disableDoubleReturn: true,
+      disableExtraSpaces: true,
+      toolbar: false,
+      placeholder: {
+        text: 'Write a caption',
+        hideOnClick: false
+      },
+      extensions: {
+        imageDragging: {},
+        autofocus: new MediumEditorAutofocus()
+      }
+    }
 
     return (
       <StoryItem
         className="image-story-item"
         icon="image"
-        content={content}
+        content={caption || url}
         disabled={disabled}
         editing={editing}
-        onOpen={() => isEmpty(content) && this.openFileChooser()}
-        onSave={() => onSave(content)}
+        onOpen={() => isEmpty(url) && this.openFileChooser()}
+        onSave={() => onSave({ url, caption })}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">
             <input ref={fileInput => this.fileInput = fileInput} type="file" onChange={this.fileSelectedHandler} style={{ display: 'none' }}/>
-            <img src={content} style={{ opacity: `${uploadProgress / 100}` }}/>
+            <img src={url} style={{ opacity: `${uploadProgress / 100}` }}/>
             {!uploading &&
               <button className="image-story-item__upload-button" onClick={this.openFileChooser}>
                 <FontAwesome name='upload' size='2x' />
@@ -96,6 +136,11 @@ export default class ImageStoryItem extends Component {
             }
           </div>
         </div>
+        <Editor
+          text={caption}
+          options={editorOptions}
+          onChange={this.setCaption}
+        />
       </StoryItem>
     )
   }
