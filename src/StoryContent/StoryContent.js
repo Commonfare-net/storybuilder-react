@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+// Code for drag and drop behavior adapted from https://codesandbox.io/s/k260nyxq9v
 
 import TextStoryItem from '../StoryItem/TextStoryItem';
 import LargeTextStoryItem from '../StoryItem/LargeTextStoryItem';
 import ImageStoryItem from '../StoryItem/ImageStoryItem';
 import VideoStoryItem from '../StoryItem/VideoStoryItem';
-import AddButton from '../AddButton/AddButton';
+
+import './StoryContent.css';
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 export default class StoryContent extends Component {
   static propTypes = {
@@ -18,15 +30,6 @@ export default class StoryContent extends Component {
 
   static defaultProps = {
     disabled: false
-  }
-
-  addItem = (item) => {
-    const { items, onChange } = this.props;
-
-    onChange([
-      ...items,
-      {...item, editing: true }
-    ])
   }
 
   updateItem = (newContent, index) => {
@@ -45,6 +48,37 @@ export default class StoryContent extends Component {
     Promise.resolve(onChange(items.filter((item, idx) => idx !== index)))
     .then(() => { if (callback) callback(item) });
   }
+
+  reorderItems = (result) => {
+    const { items, onChange } = this.props;
+
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    const reorderedItems = reorder(
+      items,
+      result.source.index,
+      result.destination.index
+    )
+
+    onChange(reorderedItems);
+  }
+
+  draggableStoryItem = (item, index) => (provided, snapshot) => (
+    <div>
+      <div
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        className={`story-item-wrapper ${snapshot.isDragging ? 'story-item-wrapper--is-dragging' : ''}`}
+        style={provided.draggableProps.style}>
+        {this.renderStoryItem(item, index)}
+      </div>
+      {provided.placeholder}
+    </div>
+  )
 
   renderStoryItem = (item, index) => {
     const { type, editing, content } = item;
@@ -88,15 +122,24 @@ export default class StoryContent extends Component {
   }
 
   render() {
-    const { items, disabled } = this.props;
+    const { items } = this.props;
 
     return (
-      <div>
-        {items.map(this.renderStoryItem)}
-        {!disabled &&
-          <AddButton onAdd={this.addItem}/>
-        }
-      </div>
+      <DragDropContext onDragEnd={this.reorderItems}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}>
+              {items.map((item, index) => (
+                <Draggable key={index} draggableId={index} index={index}>
+                  {this.draggableStoryItem(item, index)}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     )
   }
 }

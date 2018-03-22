@@ -1,0 +1,8 @@
+.story-item-wrapper {
+  padding: 0.5rem 0;
+}
+
+.story-item-wrapper--is-dragging .story-item {
+  box-shadow: 6px 3px 18px 3px rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
+}

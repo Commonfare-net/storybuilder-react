@@ -5,6 +5,7 @@ import Title from '../StoryTitle/StoryTitle';
 import Place from '../StoryPlace/StoryPlace';
 import Tags from '../StoryTags/StoryTags';
 import StoryContent from '../StoryContent/StoryContent';
+import AddButton from '../AddButton/AddButton';
 
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
@@ -89,6 +90,17 @@ class StoryBuilder extends Component {
     this.setState({ tags: newTags })
   }
 
+  addItem = (item) => {
+    const { content_json } = this.state;
+
+    this.setState({
+      content_json: [
+        ...content_json,
+        {...item, editing: true }
+      ]
+    });
+  }
+
   updateContent = (newContent) => {
     this.setState({ content_json: newContent })
   }
@@ -111,6 +123,11 @@ class StoryBuilder extends Component {
           imageUploadHandler={imageUploadHandler}
           imageDeleteHandler={imageDeleteHandler}
         />
+        {this.canSave() &&
+          <AddButton
+            onAdd={this.addItem}
+          />
+        }
       </div>
     );
   }
