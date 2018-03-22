@@ -28,8 +28,9 @@ class StoryBuilder extends Component {
       name: PropTypes.string.isRequired
     })),
     content_json: PropTypes.arrayOf(PropTypes.shape({
-      type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']),
-      content: PropTypes.string,
+      id: PropTypes.string.isRequired,
+      type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']).isRequired,
+      content: PropTypes.string.isRequired,
       caption: PropTypes.string
     })).isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
@@ -96,7 +97,11 @@ class StoryBuilder extends Component {
     this.setState({
       content_json: [
         ...content_json,
-        {...item, editing: true }
+        {
+          ...item,
+          editing: true,
+          id: `${item.type}-${content_json.filter(i => i.type === item.type).length + 1}`
+        }
       ]
     });
   }

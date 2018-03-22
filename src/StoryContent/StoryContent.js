@@ -21,7 +21,12 @@ const reorder = (list, startIndex, endIndex) => {
 
 export default class StoryContent extends Component {
   static propTypes = {
-    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']).isRequired,
+      content: PropTypes.string.isRequired,
+      caption: PropTypes.string
+    })).isRequired,
     disabled: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
@@ -51,6 +56,7 @@ export default class StoryContent extends Component {
 
   reorderItems = (result) => {
     const { items, onChange } = this.props;
+    const { source: { index: sourceIndex }, destination: { index: destinationIndex }} = result;
 
     // dropped outside the list
     if (!result.destination) {
@@ -59,8 +65,8 @@ export default class StoryContent extends Component {
 
     const reorderedItems = reorder(
       items,
-      result.source.index,
-      result.destination.index
+      sourceIndex,
+      destinationIndex
     )
 
     onChange(reorderedItems);
@@ -131,7 +137,7 @@ export default class StoryContent extends Component {
             <div
               ref={provided.innerRef}>
               {items.map((item, index) => (
-                <Draggable key={index} draggableId={index} index={index}>
+                <Draggable key={item.id} draggableId={item.id} index={index}>
                   {this.draggableStoryItem(item, index)}
                 </Draggable>
               ))}

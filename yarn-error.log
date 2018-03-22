@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/9.7.1/bin/node /usr/local/Cellar/yarn/1.5.1/libexec/bin/yarn.js run webpack -p --verbose
+  /usr/local/Cellar/node/9.7.1/bin/node /usr/local/Cellar/yarn/1.5.1/libexec/bin/yarn.js remove -D lerna
 
 PATH: 
   /usr/local/sbin:/Users/aaron/.yarn/bin:/Users/aaron/.npm-packages/bin:/usr/local/bin:/Applications/HuginTools:/Users/aaron/.rbenv/shims:/Users/aaron/.rbenv/shims:/usr/local/opt/rbenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:/opt/X11/bin:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/lib:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/gitfast:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/yarn:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/gem:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/capistrano:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/rake:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/rbenv:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/common-aliases:/Users/aaron/.antigen/bundles/zsh-users/zsh-syntax-highlighting:/Users/aaron/.antigen/bundles/zsh-users/zsh-autosuggestions:/Users/aaron/.antigen/bundles/zsh-users/zsh-completions:/usr/local/mysql/bin/:/Applications/Postgres.app/Contents/Versions/latest/bin:/usr/local/opt/fzf/bin
@@ -16,7 +16,7 @@ Platform:
 npm manifest: 
   {
     "name": "storybuilder-react",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "Story builder for Commonfare.net platform",
     "repository": {
       "type": "git",
@@ -26,7 +26,7 @@ npm manifest:
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "start": "webpack --watch",
-      "build": "webpack -p",
+      "build": "webpack",
       "storybook": "start-storybook -p 6006",
       "build-storybook": "build-storybook"
     },
@@ -42,7 +42,8 @@ npm manifest:
       "babel-preset-env": "^1.6.1",
       "babel-preset-react": "^6.1.2",
       "eslint": "^4.18.2",
-      "eslint-plugin-react": "^7.7.0"
+      "eslint-plugin-react": "^7.7.0",
+      "uglifyjs-webpack-plugin": "^1.2.3"
     },
     "dependencies": {
       "lodash": "^4.17.5",
@@ -50,6 +51,7 @@ npm manifest:
       "medium-editor-autofocus": "^1.1.1",
       "react": "^16.2.0",
       "react-autosuggest": "^9.3.4",
+      "react-beautiful-dnd": "^6.0.0",
       "react-dom": "^16.2.0",
       "react-dotdotdot": "^1.2.2",
       "react-fontawesome": "^1.6.1",
@@ -1679,7 +1681,7 @@ Lockfile:
     version "3.0.0"
     resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
   
-  cacache@^10.0.1:
+  cacache@^10.0.1, cacache@^10.0.4:
     version "10.0.4"
     resolved "https://registry.yarnpkg.com/cacache/-/cacache-10.0.4.tgz#6452367999eff9d4188aefd9a14e9d7c6a263460"
     dependencies:
@@ -3329,6 +3331,10 @@ Lockfile:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
   
+  hoist-non-react-statics@^2.5.0:
+    version "2.5.0"
+    resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
+  
   home-or-tmp@^2.0.0:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -3540,6 +3546,12 @@ Lockfile:
   interpret@^1.0.0:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
+  
+  invariant@^2.0.0:
+    version "2.2.4"
+    resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
+    dependencies:
+      loose-envify "^1.0.0"
   
   invariant@^2.2.2:
     version "2.2.3"
@@ -3963,6 +3975,10 @@ Lockfile:
       p-locate "^2.0.0"
       path-exists "^3.0.0"
   
+  lodash-es@^4.17.5:
+    version "4.17.7"
+    resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.7.tgz#db240a3252c3dd8360201ac9feef91ac977ea856"
+  
   lodash-es@^4.2.1:
     version "4.17.5"
     resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.5.tgz#9fc6e737b1c4d151d8f9cae2247305d552ce748f"
@@ -4131,6 +4147,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
     dependencies:
       mimic-fn "^1.0.0"
+  
+  memoize-one@^3.0.1:
+    version "3.1.1"
+    resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-3.1.1.tgz#ef609811e3bc28970eac2884eece64d167830d17"
   
   memory-fs@^0.4.0, memory-fs@~0.4.1:
     version "0.4.1"
@@ -5131,6 +5151,16 @@ Lockfile:
       inline-style-prefixer "^2.0.5"
       prop-types "^15.5.8"
   
+  raf-schd@^2.1.0:
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-2.1.0.tgz#64d645723380ec25cc1714e909b953ef1cf254bf"
+  
+  raf@^3.1.0:
+    version "3.4.0"
+    resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
+    dependencies:
+      performance-now "^2.1.0"
+  
   randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
     version "2.0.6"
     resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.0.6.tgz#d302c522948588848a8d300c932b44c24231da80"
@@ -5181,6 +5211,21 @@ Lockfile:
       prop-types "^15.5.8"
       react-themeable "^1.1.0"
       section-iterator "^2.0.0"
+  
+  react-beautiful-dnd@^6.0.0:
+    version "6.0.0"
+    resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-6.0.0.tgz#6871ef49b4ca2d07dba99489ca79aa6804040628"
+    dependencies:
+      babel-runtime "^6.26.0"
+      invariant "^2.2.2"
+      memoize-one "^3.0.1"
+      prop-types "^15.6.0"
+      raf-schd "^2.1.0"
+      react-motion "^0.5.2"
+      react-redux "^5.0.6"
+      redux "^3.7.2"
+      redux-thunk "^2.2.0"
+      reselect "^3.0.1"
   
   react-docgen@^2.20.0:
     version "2.20.1"
@@ -5262,6 +5307,25 @@ Lockfile:
       exenv "^1.2.0"
       prop-types "^15.5.10"
       warning "^3.0.0"
+  
+  react-motion@^0.5.2:
+    version "0.5.2"
+    resolved "https://registry.yarnpkg.com/react-motion/-/react-motion-0.5.2.tgz#0dd3a69e411316567927917c6626551ba0607316"
+    dependencies:
+      performance-now "^0.2.0"
+      prop-types "^15.5.8"
+      raf "^3.1.0"
+  
+  react-redux@^5.0.6:
+    version "5.0.7"
+    resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"
+    dependencies:
+      hoist-non-react-statics "^2.5.0"
+      invariant "^2.0.0"
+      lodash "^4.17.5"
+      lodash-es "^4.17.5"
+      loose-envify "^1.1.0"
+      prop-types "^15.6.0"
   
   react-split-pane@^0.1.74:
     version "0.1.77"
@@ -5400,6 +5464,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.2.tgz#5a200bf92e0e37751752fe45b0ab330fd4b6be99"
     dependencies:
       balanced-match "^0.4.2"
+  
+  redux-thunk@^2.2.0:
+    version "2.2.0"
+    resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
   
   redux@^3.7.2:
     version "3.7.2"
@@ -5563,6 +5631,10 @@ Lockfile:
     dependencies:
       caller-path "^0.1.0"
       resolve-from "^1.0.0"
+  
+  reselect@^3.0.1:
+    version "3.0.1"
+    resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
   
   resolve-from@^1.0.0:
     version "1.0.1"
@@ -6309,6 +6381,19 @@ Lockfile:
       webpack-sources "^1.1.0"
       worker-farm "^1.5.2"
   
+  uglifyjs-webpack-plugin@^1.2.3:
+    version "1.2.3"
+    resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.2.3.tgz#bf23197b37a8fc953fecfbcbab66e506f9a0ae72"
+    dependencies:
+      cacache "^10.0.4"
+      find-cache-dir "^1.0.0"
+      schema-utils "^0.4.5"
+      serialize-javascript "^1.4.0"
+      source-map "^0.6.1"
+      uglify-es "^3.3.4"
+      webpack-sources "^1.1.0"
+      worker-farm "^1.5.2"
+  
   uid-number@^0.0.6:
     version "0.0.6"
     resolved "https://registry.yarnpkg.com/uid-number/-/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
@@ -6661,16 +6746,14 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: Command failed.
-  Exit code: 2
-  Command: sh
-  Arguments: -c /Users/aaron/Projects/commonfare-rails/storybuilder-react/node_modules/.bin/webpack -p --verbose
-  Directory: /Users/aaron/Projects/commonfare-rails/storybuilder-react
-  Output:
-  
-      at ProcessTermError.MessageError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:186:110)
-      at new ProcessTermError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:226:113)
-      at ChildProcess.<anonymous> (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:30281:17)
-      at ChildProcess.emit (events.js:127:13)
-      at maybeClose (internal/child_process.js:936:16)
-      at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)
+  Error: Not enough arguments, expected at least 1.
+      at new MessageError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:186:110)
+      at Object.<anonymous> (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:60368:13)
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:98:30)
+      at /usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:23451:28)
+      at Object.<anonymous> (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:95:12)
+      at Object.run (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:60486:17)
+      at run (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:89113:20)

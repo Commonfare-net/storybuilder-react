@@ -100,11 +100,11 @@ storiesOf('ImageStoryItem', module)
   ))
 
 const demoStory = [
-  { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
-  { type: 'image', content: 'http://placekitten.com/g/300/300', caption: 'A cat' },
-  { type: 'text', content: longText },
-  { type: 'largeText', content: 'This text will be very large' },
-  { type: 'video', content: '<iframe width="560" height="315" src="https://www.youtube.com/embed/ymxEmbALjIo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' }
+  { id: 'text-1', type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
+  { id: 'image-1', type: 'image', content: 'http://placekitten.com/g/300/300', caption: 'A cat' },
+  { id: 'text-2', type: 'text', content: longText },
+  { id: 'largeText-3', type: 'largeText', content: 'This text will be very large' },
+  { id: 'video-1', type: 'video', content: '<iframe width="560" height="315" src="https://www.youtube.com/embed/ymxEmbALjIo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' }
 ];
 
 storiesOf('StoryBuilder', module)
