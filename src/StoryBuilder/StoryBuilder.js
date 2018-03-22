@@ -32,7 +32,8 @@ class StoryBuilder extends Component {
     })),
     content_json: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']),
-      content: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      content: PropTypes.string,
+      caption: PropTypes.string
     })).isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
     imageDeleteHandler: PropTypes.func.isRequired,
@@ -99,7 +100,7 @@ class StoryBuilder extends Component {
       return {
         content_json: [
           ...content_json.slice(0, index),
-          { ...content_json[index], content: newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
+          { ...content_json[index], ...newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
           ...content_json.slice(index + 1)
         ]
       }
@@ -130,23 +131,36 @@ class StoryBuilder extends Component {
       key: index,
       disabled: !this.canSave(),
       editing: editing && this.canSave(),
-      content,
-      onSave: (newContent) => this.updateItem(newContent, index)
+      content
     };
 
     switch (type) {
       case 'text':
-        return <TextStoryItem {...props} onRemove={() => this.removeItem(item, index)} />;
+        return <TextStoryItem
+          {...props}
+          onSave={(content) => this.updateItem({ content: content }, index)}
+          onRemove={() => this.removeItem(item, index)}
+        />;
       case 'largeText':
-        return <LargeTextStoryItem {...props} onRemove={() => this.removeItem(item, index)} />;
+        return <LargeTextStoryItem
+          {...props}
+          onSave={(content) => this.updateItem({ content: content }, index)}
+          onRemove={() => this.removeItem(item, index)}
+        />;
       case 'image':
         return <ImageStoryItem
           {...props}
+          caption={item.caption}
           imageUploadHandler={this.props.imageUploadHandler}
+          onSave={({ content, caption }) => this.updateItem({ content, caption }, index)}
           onRemove={() => this.removeItem(item, index, this.props.imageDeleteHandler)}
         />;
       case 'video':
-        return <VideoStoryItem {...props} onRemove={() => this.removeItem(item, index)} />;
+        return <VideoStoryItem
+          {...props}
+          onSave={(content) => this.updateItem({ content: content }, index)}
+          onRemove={() => this.removeItem(item, index)}
+        />;
       default:
         return new Error(`Invalid story item type: ${type}`);
     }

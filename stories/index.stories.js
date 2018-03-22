@@ -75,7 +75,7 @@ storiesOf('ImageStoryItem', module)
   ))
   .add('default', () => (
     <ImageStoryItem
-      content={{ url: "http://placekitten.com/g/300/300" }}
+      content="http://placekitten.com/g/300/300"
       imageUploadHandler={fakeUploader}
       onSave={action('item saved')}
       onRemove={action('item removed')}
@@ -83,7 +83,8 @@ storiesOf('ImageStoryItem', module)
   ))
   .add('with some caption', () => (
     <ImageStoryItem
-      content={{ url: "http://placekitten.com/g/300/300", caption: "A cute little cat, doing good helping the poor" }}
+      content="http://placekitten.com/g/300/300"
+      caption="A cute little cat, doing good helping the poor"
       imageUploadHandler={fakeUploader}
       onSave={action('item saved')}
       onRemove={action('item removed')}
@@ -91,7 +92,7 @@ storiesOf('ImageStoryItem', module)
   ))
   .add('with custom remove behavior', () => (
     <ImageStoryItem
-      content={{ url: "http://placekitten.com/g/300/300" }}
+      content="http://placekitten.com/g/300/300"
       imageUploadHandler={fakeUploader}
       onSave={action('item saved')}
       onRemove={(item) => alert(`You have removed me! I was ${item}`)}
@@ -100,8 +101,10 @@ storiesOf('ImageStoryItem', module)
 
 const demoStory = [
   { type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
-  { type: 'image', content: { url: 'http://placekitten.com/g/300/300', caption: 'A cat' } },
-  { type: 'text', content: longText }
+  { type: 'image', content: 'http://placekitten.com/g/300/300', caption: 'A cat' },
+  { type: 'text', content: longText },
+  { type: 'largeText', content: 'This text will be very large' },
+  { type: 'video', content: '<iframe width="560" height="315" src="https://www.youtube.com/embed/ymxEmbALjIo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' }
 ];
 
 storiesOf('StoryBuilder', module)
@@ -109,7 +112,10 @@ storiesOf('StoryBuilder', module)
     <StoryBuilder
       content_json={[]}
       imageUploadHandler={fakeUploader}
-      onSave={() => Promise.resolve(action('story saved'))}
+      onSave={(state) => {
+        action('story saved')(state);
+        return Promise.resolve();
+      }}
     />
   ))
   .add('with some elements', () => (
@@ -118,6 +124,9 @@ storiesOf('StoryBuilder', module)
       place="Rome"
       content_json={demoStory}
       imageUploadHandler={fakeUploader}
-      onSave={() => Promise.resolve(action('story saved'))}
+      onSave={(state) => {
+        action('story saved')(state);
+        return Promise.resolve();
+      }}
     />
   ))

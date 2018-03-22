@@ -4,7 +4,6 @@ import FontAwesome from 'react-fontawesome';
 import Editor from 'react-medium-editor';
 import MediumEditorAutofocus from 'medium-editor-autofocus';
 import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
 
 import StoryItem from './StoryItem';
 
@@ -12,10 +11,8 @@ import './ImageStoryItem.css';
 
 export default class ImageStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.shape({
-      url: PropTypes.string,
-      caption: PropTypes.string
-    }).isRequired,
+    content: PropTypes.string,
+    caption: PropTypes.string,
     imageUploadHandler: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
@@ -33,17 +30,22 @@ export default class ImageStoryItem extends Component {
     super(props);
     this.state = {
       content: props.content,
+      caption: props.caption,
       uploading: false,
       uploadProgress: 100
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { content, caption } = this.state;
     // content changed
-    if (!isEqual(prevState.content, this.state.content)) {
-      this.props.onSave(this.state.content);
+    if (!this.state.uploading && (this.contentChanged(prevState) || this.captionChanged(prevState))) {
+      this.props.onSave({ content, caption });
     }
   }
+
+  contentChanged = (prevState) => prevState.content !== this.state.content
+  captionChanged = (prevState) => prevState.caption !== this.state.caption
 
   openFileChooser = () => {
     this.fileInput.click()
@@ -55,14 +57,7 @@ export default class ImageStoryItem extends Component {
 
     // create a preview
     const reader = new FileReader();
-    reader.onloadend = () => {
-      this.setState((prevState) => ({
-        content: {
-          url: reader.result,
-          caption: prevState.content.caption
-        }
-      }))
-    }
+    reader.onloadend = () => this.setState({ preview: reader.result })
     reader.readAsDataURL(selectedFile);
 
     this.setState({
@@ -71,15 +66,17 @@ export default class ImageStoryItem extends Component {
     }, () => {
       imageUploadHandler(selectedFile, (progress) => this.setState({ uploadProgress: progress }))
       .then(url => {
-        this.setState((prevState) => ({
-          content: {
-            url,
-            caption: prevState.content.caption
-          }
-        }))
-      })
-      .finally(() => {
         this.setState({
+          preview: undefined,
+          content: url,
+          uploading: false,
+          uploadProgress: 100
+        })
+      })
+      .catch(() => {
+        this.setState({
+          preview: undefined,
+          content: undefined,
           uploading: false,
           uploadProgress: 100
         })
@@ -87,20 +84,12 @@ export default class ImageStoryItem extends Component {
     });
   }
 
-  setCaption = (caption) => {
-    this.setState((prevState) => ({
-      content: {
-        url: prevState.content.url,
-        caption
-      }
-    }))
-  }
-
   render() {
     const { disabled, editing, onSave, onRemove } = this.props;
-    const { content: { url, caption }, uploading, uploadProgress } = this.state;
+    const { content: url, caption, uploading, uploadProgress, preview } = this.state;
 
     const editorOptions = {
+      disableEditing: disabled || uploading,
       disableReturn: true,
       disableDoubleReturn: true,
       disableExtraSpaces: true,
@@ -123,12 +112,12 @@ export default class ImageStoryItem extends Component {
         disabled={disabled}
         editing={editing}
         onOpen={() => isEmpty(url) && this.openFileChooser()}
-        onSave={() => onSave({ url, caption })}
+        onSave={() => !uploading && onSave({ url, caption })}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">
             <input ref={fileInput => this.fileInput = fileInput} type="file" onChange={this.fileSelectedHandler} style={{ display: 'none' }}/>
-            <img src={url} style={{ opacity: `${uploadProgress / 100}` }}/>
+            <img src={uploading ? preview : url} style={{ opacity: `${uploadProgress / 100}` }}/>
             {!uploading &&
               <button className="image-story-item__upload-button" onClick={this.openFileChooser}>
                 <FontAwesome name='upload' size='2x' />
@@ -142,7 +131,7 @@ export default class ImageStoryItem extends Component {
         <Editor
           text={caption}
           options={editorOptions}
-          onChange={this.setCaption}
+          onChange={(caption) => this.setState({ caption })}
         />
       </StoryItem>
     )
