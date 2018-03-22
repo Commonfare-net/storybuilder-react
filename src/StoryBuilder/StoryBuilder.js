@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 import Title from '../StoryTitle/StoryTitle';
 import Place from '../StoryPlace/StoryPlace';
 import Tags from '../StoryTags/StoryTags';
-import TextStoryItem from '../StoryItem/TextStoryItem';
-import LargeTextStoryItem from '../StoryItem/LargeTextStoryItem';
-import ImageStoryItem from '../StoryItem/ImageStoryItem';
-import VideoStoryItem from '../StoryItem/VideoStoryItem';
-import AddButton from '../AddButton/AddButton';
+import StoryContent from '../StoryContent/StoryContent';
 
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
@@ -93,94 +89,28 @@ class StoryBuilder extends Component {
     this.setState({ tags: newTags })
   }
 
-  updateItem = (newContent, index) => {
-    this.setState((prevState) => {
-      const { content_json } = prevState
-
-      return {
-        content_json: [
-          ...content_json.slice(0, index),
-          { ...content_json[index], ...newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
-          ...content_json.slice(index + 1)
-        ]
-      }
-    });
-  }
-
-  addItem = (item) => {
-    this.setState((prevState) => ({
-      content_json: [...(prevState.content_json), {...item, editing: true }]
-    }))
-  }
-
-  removeItem = (item, index, callback) => {
-    this.setState((prevState) => {
-      const { content_json } = prevState;
-
-      return {
-        content_json: content_json.filter((item, idx) => idx !== index)
-      }
-    }, () => {
-      if (callback) callback(item);
-    })
-  }
-
-  renderStoryItem = (item, index) => {
-    const { type, editing, content } = item;
-    const props = {
-      key: index,
-      disabled: !this.canSave(),
-      editing: editing && this.canSave(),
-      content
-    };
-
-    switch (type) {
-      case 'text':
-        return <TextStoryItem
-          {...props}
-          onSave={(content) => this.updateItem({ content: content }, index)}
-          onRemove={() => this.removeItem(item, index)}
-        />;
-      case 'largeText':
-        return <LargeTextStoryItem
-          {...props}
-          onSave={(content) => this.updateItem({ content: content }, index)}
-          onRemove={() => this.removeItem(item, index)}
-        />;
-      case 'image':
-        return <ImageStoryItem
-          {...props}
-          caption={item.caption}
-          imageUploadHandler={this.props.imageUploadHandler}
-          onSave={({ content, caption }) => this.updateItem({ content, caption }, index)}
-          onRemove={() => this.removeItem(item, index, this.props.imageDeleteHandler)}
-        />;
-      case 'video':
-        return <VideoStoryItem
-          {...props}
-          onSave={(content) => this.updateItem({ content: content }, index)}
-          onRemove={() => this.removeItem(item, index)}
-        />;
-      default:
-        return new Error(`Invalid story item type: ${type}`);
-    }
+  updateContent = (newContent) => {
+    this.setState({ content_json: newContent })
   }
 
   render() {
-    const { availableTags } = this.props;
+    const { availableTags, imageUploadHandler, imageDeleteHandler } = this.props;
     const { title, place, tags, content_json } = this.state;
 
     return (
       <div className="story-builder">
-        <Title title={title} onSave={this.updateTitle} />
-        <Place place={place} onSave={this.updatePlace} />
+        <Title title={title} onChange={this.updateTitle} />
+        <Place place={place} onChange={this.updatePlace} />
         {this.canSave() &&
-          <Tags availableTags={availableTags} tags={tags} onSave={this.updateTags} />
+          <Tags availableTags={availableTags} tags={tags} onChange={this.updateTags} />
         }
-        {content_json.map(this.renderStoryItem)}
-        {this.canSave() &&
-          <AddButton onAdd={this.addItem}/>
-        }
+        <StoryContent
+          items={content_json}
+          disabled={!this.canSave()}
+          onChange={this.updateContent}
+          imageUploadHandler={imageUploadHandler}
+          imageDeleteHandler={imageDeleteHandler}
+        />
       </div>
     );
   }

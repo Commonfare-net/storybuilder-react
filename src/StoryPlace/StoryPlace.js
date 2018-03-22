@@ -7,24 +7,11 @@ import './StoryPlace.css';
 export default class StoryPlace extends Component {
   static propTypes = {
     place: PropTypes.string,
-    onSave: PropTypes.func.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = { place: props.place };
-  }
-
-  handleChange = (text, medium) => {
-    const { onSave } = this.props;
-
-    this.setState({ place: text }, () => {
-      onSave(text);
-    });
+    onChange: PropTypes.func.isRequired
   }
 
   render() {
-    const { place } = this.state;
+    const { place, onChange } = this.props;
 
     const editorOptions = {
       disableReturn: true,
@@ -45,7 +32,7 @@ export default class StoryPlace extends Component {
         tag="h2"
         text={place}
         options={editorOptions}
-        onChange={this.handleChange}
+        onChange={onChange}
         className="story-builder__place" />
     )
   }

@@ -13,7 +13,7 @@ export default class StoryTags extends Component {
       name: PropTypes.string.isRequired
     })),
     availableTags: PropTypes.array.isRequired,
-    onSave: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -61,7 +61,7 @@ export default class StoryTags extends Component {
   }
 
   handleChange = (tags) => {
-    this.setState({ tags }, () => this.props.onSave(this.state.tags));
+    this.setState({ tags }, () => this.props.onChange(this.state.tags));
   }
 
   render() {

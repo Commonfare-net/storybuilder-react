@@ -7,24 +7,11 @@ import './StoryTitle.css';
 export default class StoryTitle extends Component {
   static propTypes = {
     title: PropTypes.string,
-    onSave: PropTypes.func.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = { title: props.title };
-  }
-
-  handleChange = (text, medium) => {
-    const { onSave } = this.props;
-
-    this.setState({ title: text }, () => {
-      onSave(text);
-    });
+    onChange: PropTypes.func.isRequired
   }
 
   render() {
-    const { title } = this.state;
+    const { title, onChange } = this.props;
 
     const editorOptions = {
       disableReturn: true,
@@ -45,7 +32,7 @@ export default class StoryTitle extends Component {
         tag="h1"
         text={title}
         options={editorOptions}
-        onChange={this.handleChange}
+        onChange={onChange}
         className="story-builder__title" />
     )
   }
