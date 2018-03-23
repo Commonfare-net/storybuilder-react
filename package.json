@@ -1,6 +1,6 @@
 {
   "name": "storybuilder-react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Story builder for Commonfare.net platform",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch",
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack -p",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -30,6 +30,7 @@
     "uglifyjs-webpack-plugin": "^1.2.3"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "lodash": "^4.17.5",
     "medium-editor": "^5.23.3",
     "medium-editor-autofocus": "^1.1.1",
