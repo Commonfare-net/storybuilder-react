@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
 import FontAwesome from 'react-fontawesome';
 
@@ -35,25 +36,37 @@ export default class AddButton extends Component {
             className="story-builder-add__type-select"
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'text', content: '' }))}>
             <FontAwesome name="font" size="3x" className="fa-fw" /><br />
-            Text
+            <FormattedMessage
+              id="add.text_storyItem"
+              defaultMessage="Text"
+            />
           </button>
           <button
             className="story-builder-add__type-select"
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'largeText', content: '' }))}>
             <FontAwesome name="text-height" size="3x" className="fa-fw" /><br />
-            Large Text
+            <FormattedMessage
+              id="add.largeText_storyItem"
+              defaultMessage="Large Text"
+            />
           </button>
           <button
             className="story-builder-add__type-select"
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'image', content: '' }))}>
             <FontAwesome name="image" size="3x" className="fa-fw" /><br />
-            Image
+            <FormattedMessage
+              id="add.image_storyItem"
+              defaultMessage="Image"
+            />
           </button>
           <button
             className="story-builder-add__type-select"
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'video', content: '' }))}>
             <FontAwesome name="film" size="3x" className="fa-fw" /><br />
-            Video
+            <FormattedMessage
+              id="add.video_storyItem"
+              defaultMessage="Video"
+            />
           </button>
         </div>
       </div>

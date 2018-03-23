@@ -130,3 +130,31 @@ storiesOf('StoryBuilder', module)
       }}
     />
   ))
+
+storiesOf('I18n', module)
+  .add('english (default)', () => (
+    <StoryBuilder
+      locale="en"
+      title="Rome: the community based gym hires 15 trainers"
+      place="Rome"
+      content_json={demoStory}
+      imageUploadHandler={fakeUploader}
+      onSave={(state) => {
+        action('story saved')(state);
+        return Promise.resolve();
+      }}
+    />
+  ))
+  .add('italian', () => (
+    <StoryBuilder
+      locale="it"
+      title="Rome: the community based gym hires 15 trainers"
+      place="Rome"
+      content_json={demoStory}
+      imageUploadHandler={fakeUploader}
+      onSave={(state) => {
+        action('story saved')(state);
+        return Promise.resolve();
+      }}
+    />
+  ))

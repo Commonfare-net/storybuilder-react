@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { IntlProvider } from 'react-intl';
 
 import Title from '../StoryTitle/StoryTitle';
 import Place from '../StoryPlace/StoryPlace';
@@ -15,8 +16,13 @@ import 'medium-editor/dist/css/medium-editor.css';
 import 'medium-editor/dist/css/themes/default.css';
 import './StoryBuilder.css';
 
+const translations = {
+  it: require('../translations/it.json')
+}
+
 class StoryBuilder extends Component {
   static propTypes = {
+    locale: PropTypes.string,
     title: PropTypes.string,
     place: PropTypes.string,
     availableTags: PropTypes.arrayOf(PropTypes.shape({
@@ -39,6 +45,7 @@ class StoryBuilder extends Component {
   }
 
   static defaultProps = {
+    locale: 'en',
     content_json: []
   }
 
@@ -111,29 +118,31 @@ class StoryBuilder extends Component {
   }
 
   render() {
-    const { availableTags, imageUploadHandler, imageDeleteHandler } = this.props;
+    const { locale, availableTags, imageUploadHandler, imageDeleteHandler } = this.props;
     const { title, place, tags, content_json } = this.state;
 
     return (
-      <div className="story-builder">
-        <Title title={title} onChange={this.updateTitle} />
-        <Place place={place} onChange={this.updatePlace} />
-        {this.canSave() &&
-          <Tags availableTags={availableTags} tags={tags} onChange={this.updateTags} />
-        }
-        <StoryContent
-          items={content_json}
-          disabled={!this.canSave()}
-          onChange={this.updateContent}
-          imageUploadHandler={imageUploadHandler}
-          imageDeleteHandler={imageDeleteHandler}
-        />
-        {this.canSave() &&
-          <AddButton
-            onAdd={this.addItem}
+      <IntlProvider locale={locale} messages={translations[locale]}>
+        <div className="story-builder">
+          <Title title={title} onChange={this.updateTitle} />
+          <Place place={place} onChange={this.updatePlace} />
+          {this.canSave() &&
+            <Tags availableTags={availableTags} tags={tags} onChange={this.updateTags} />
+          }
+          <StoryContent
+            items={content_json}
+            disabled={!this.canSave()}
+            onChange={this.updateContent}
+            imageUploadHandler={imageUploadHandler}
+            imageDeleteHandler={imageDeleteHandler}
           />
-        }
-      </div>
+          {this.canSave() &&
+            <AddButton
+              onAdd={this.addItem}
+            />
+          }
+        </div>
+      </IntlProvider>
     );
   }
 }

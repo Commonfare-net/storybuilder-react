@@ -12,7 +12,8 @@
     "start": "webpack --watch",
     "build": "webpack",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "manage:translations": "node ./translationRunner.js"
   },
   "author": "Aaron Ciaghi",
   "license": "GPL-3.0",
@@ -27,9 +28,11 @@
     "babel-preset-react": "^6.1.2",
     "eslint": "^4.18.2",
     "eslint-plugin-react": "^7.7.0",
+    "react-intl-translations-manager": "^5.0.1",
     "uglifyjs-webpack-plugin": "^1.2.3"
   },
   "dependencies": {
+    "babel-plugin-react-intl": "^2.4.0",
     "lodash": "^4.17.5",
     "medium-editor": "^5.23.3",
     "medium-editor-autofocus": "^1.1.1",
@@ -39,6 +42,7 @@
     "react-dom": "^16.2.0",
     "react-dotdotdot": "^1.2.2",
     "react-fontawesome": "^1.6.1",
+    "react-intl": "^2.4.0",
     "react-medium-editor": "^1.8.1",
     "react-tagsinput": "^3.19.0",
     "sanitize-html": "^1.18.2"

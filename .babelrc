@@ -2,6 +2,9 @@
   "presets": ["env", "react"],
   "plugins": [
     "transform-class-properties",
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    ["react-intl", {
+      "messagesDir": "./src/translations/extractedMessages"
+    }]
   ]
 }

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "add.text_storyItem",
+    "defaultMessage": "Text"
+  },
+  {
+    "id": "add.largeText_storyItem",
+    "defaultMessage": "Large Text"
+  },
+  {
+    "id": "add.image_storyItem",
+    "defaultMessage": "Image"
+  },
+  {
+    "id": "add.video_storyItem",
+    "defaultMessage": "Video"
+  }
+]
