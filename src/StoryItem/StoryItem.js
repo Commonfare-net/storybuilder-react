@@ -71,22 +71,22 @@ export default class StoryItem extends Component {
         <div className="story-item__content">
           <Dotdotdot clamp={3}>{content}</Dotdotdot>
         </div>
-        <div className="story-item__editor">
-          {children}
-          {!disabled &&
-            <div className="story-item__buttons">
-              <button className="story-item__remove-button"
-                onClick={this.remove}>
-                Remove
-              </button>
-              <button
-                className="story-item__done-button"
-                onClick={this.doneEditing}>
-                Done
-              </button>
-            </div>
-          }
-        </div>
+        {!disabled &&
+          <div className="story-item__editor">
+            {children}
+              <div className="story-item__buttons">
+                <button className="story-item__remove-button"
+                  onClick={this.remove}>
+                  Remove
+                </button>
+                <button
+                  className="story-item__done-button"
+                  onClick={this.doneEditing}>
+                  Done
+                </button>
+              </div>
+          </div>
+        }
       </div>
     )
   }

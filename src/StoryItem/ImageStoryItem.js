@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 import Editor from 'react-medium-editor';
-import MediumEditorAutofocus from 'medium-editor-autofocus';
+import MediumEditorAutofocus from '../MediumEditorAutofocus/Plugin';
 import isEmpty from 'lodash/isEmpty';
 
 import StoryItem from './StoryItem';
@@ -86,7 +86,7 @@ export default class ImageStoryItem extends Component {
 
   render() {
     const { disabled, editing, onSave, onRemove } = this.props;
-    const { content: url, caption, uploading, uploadProgress, preview } = this.state;
+    const { content, caption, uploading, uploadProgress, preview } = this.state;
 
     const editorOptions = {
       disableEditing: disabled || uploading,
@@ -108,16 +108,16 @@ export default class ImageStoryItem extends Component {
       <StoryItem
         className="image-story-item"
         icon="image"
-        content={caption || url}
+        content={caption || content}
         disabled={disabled}
         editing={editing}
-        onOpen={() => isEmpty(url) && this.openFileChooser()}
-        onSave={() => !uploading && onSave({ url, caption })}
+        onOpen={() => isEmpty(content) && this.openFileChooser()}
+        onSave={() => !uploading && onSave({ content, caption })}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">
             <input ref={fileInput => this.fileInput = fileInput} type="file" onChange={this.fileSelectedHandler} style={{ display: 'none' }}/>
-            <img src={uploading ? preview : url} style={{ opacity: `${uploadProgress / 100}` }}/>
+            <img src={uploading ? preview : content} style={{ opacity: `${uploadProgress / 100}` }}/>
             {!uploading &&
               <button className="image-story-item__upload-button" onClick={this.openFileChooser}>
                 <FontAwesome name='upload' size='2x' />

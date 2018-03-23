@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'react-medium-editor';
-import MediumEditorAutofocus from 'medium-editor-autofocus';
+import MediumEditorAutofocus from '../MediumEditorAutofocus/Plugin';
 
 import StoryItem from './StoryItem';
 
