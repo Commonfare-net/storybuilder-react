@@ -69,7 +69,7 @@ export default class StoryItem extends Component {
           <FontAwesome name={icon} size="3x" className="fa-fw"/>
         </div>
         <div className="story-item__content">
-          <Dotdotdot clamp={3}>{content}</Dotdotdot>
+          <Dotdotdot clamp={3}>{content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}</Dotdotdot>
         </div>
         {!disabled &&
           <div className="story-item__editor">

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
-import Editor from 'react-medium-editor';
-import MediumEditorAutofocus from '../MediumEditorAutofocus/Plugin';
+import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
+import sanitizeHtml from 'sanitize-html';
 
+import toolbarOptions from './toolbarOptions';
 import StoryItem from './StoryItem';
 
 import './ImageStoryItem.css';
@@ -37,10 +38,8 @@ export default class ImageStoryItem extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { content, caption } = this.state;
-    // content changed
-    if (!this.state.uploading && (this.contentChanged(prevState) || this.captionChanged(prevState))) {
-      this.props.onSave({ content, caption });
+    if (this.contentChanged(prevState) || this.captionChanged(prevState)) {
+      this.saveItem()
     }
   }
 
@@ -84,23 +83,30 @@ export default class ImageStoryItem extends Component {
     });
   }
 
+  handleChange = (caption) => this.setState({ caption })
+
+  saveItem = () => {
+    const { uploading, content, caption } = this.state;
+    const { onSave } = this.props;
+
+    if (!uploading) {
+      onSave({
+        content,
+        caption: sanitizeHtml(caption, { allowedTags: [] })
+      })
+    }
+  }
+
   render() {
-    const { disabled, editing, onSave, onRemove } = this.props;
+    const { disabled, editing, onRemove } = this.props;
     const { content, caption, uploading, uploadProgress, preview } = this.state;
 
     const editorOptions = {
-      disableEditing: disabled || uploading,
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      toolbar: false,
-      placeholder: {
-        text: 'Write a caption',
-        hideOnClick: false
-      },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
+      ...toolbarOptions,
+      theme: null,
+      placeholder: 'Write a caption',
+      modules: {
+        toolbar: false
       }
     }
 
@@ -112,7 +118,7 @@ export default class ImageStoryItem extends Component {
         disabled={disabled}
         editing={editing}
         onOpen={() => isEmpty(content) && this.openFileChooser()}
-        onSave={() => !uploading && onSave({ content, caption })}
+        onSave={this.saveItem}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">
@@ -128,11 +134,16 @@ export default class ImageStoryItem extends Component {
             }
           </div>
         </div>
-        <Editor
+        <ReactQuill
+          {...editorOptions}
+          value={caption}
+          onChange={this.handleChange}
+        />
+        {/* <Editor
           text={caption}
           options={editorOptions}
           onChange={(caption) => this.setState({ caption })}
-        />
+        /> */}
       </StoryItem>
     )
   }

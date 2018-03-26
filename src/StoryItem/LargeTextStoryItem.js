@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
-import MediumEditorAutofocus from '../MediumEditorAutofocus/Plugin';
+import ReactQuill from 'react-quill';
+import sanitizeHtml from 'sanitize-html';
 
+import toolbarOptions from './toolbarOptions';
 import StoryItem from './StoryItem';
 
 import './LargeTextStoryItem.css';
@@ -28,19 +29,7 @@ export default class LargeTextStoryItem extends Component {
     }
   }
 
-  // autoFocus = () => {
-  //   const { medium } = this.editor;
-  //   const { origElements: { childNodes } } = medium;
-  //
-  //   medium.selectAllContents();
-  //
-  //   // clear the selection and put the cursor at the end
-  //   MediumEditor.selection.clearSelection(document);
-  // }
-
-  handleChange = (text, medium) => {
-    const { onChange } = this.props;
-
+  handleChange = (text) => {
     this.setState({ content: text });
   }
 
@@ -49,18 +38,14 @@ export default class LargeTextStoryItem extends Component {
     const { content } = this.state;
 
     const editorOptions = {
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      toolbar: false,
-      placeholder: {
-        text: 'Highlight something...',
-        hideOnClick: false
+      ...toolbarOptions,
+      modules: {
+        toolbar: false
       },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
-      }
+      // style: {
+      //   fontSize: '2rem',
+      //   fontWeight: 500
+      // }
     }
 
     return (
@@ -70,15 +55,14 @@ export default class LargeTextStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={this.state.content}
-        onSave={() => onSave(this.state.content)}
+        onOpen={() => this.reactQuillRef.getEditor().focus()}
+        onSave={() => onSave(sanitizeHtml(this.state.content, { allowedTags: [] }))}
         onRemove={onRemove}>
-        <Editor
-          tag="h2"
-          ref={editor => this.editor = editor}
-          text={this.state.content}
-          options={editorOptions}
+        <ReactQuill
+          ref={(el) => this.reactQuillRef = el}
+          value={content}
           onChange={this.handleChange}
-        />
+          {...editorOptions} />
       </StoryItem>
     )
   }

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
-const MediumEditor = require('medium-editor');
-import MediumEditorAutofocus from '../MediumEditorAutofocus/Plugin';
+import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
 
+import toolbarOptions from './toolbarOptions';
 import StoryItem from './StoryItem';
 
 export default class VideoStoryItem extends Component {
@@ -35,8 +34,10 @@ export default class VideoStoryItem extends Component {
     return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
   }
 
-  handleChange = (text, medium) => {
-    const sanitizedContent = sanitizeHtml(this.htmlDecode(text), {
+  handleChange = (text) => {
+    const encodedContent = text.replace(/<\/?p>/,'');
+    const decodedContent = this.htmlDecode(encodedContent);
+    const sanitizedContent = sanitizeHtml(decodedContent, {
       allowedTags: ['iframe', 'p', 'a'],
       allowedAttributes: {
         a: ['href'],
@@ -48,7 +49,8 @@ export default class VideoStoryItem extends Component {
     if (sanitizedContent.indexOf("src=") >= 0) {
       this.setState({ content: sanitizedContent });
     } else {
-      medium.origElements.innerHTML = "";
+      // this.setState({ content: undefined });
+      // medium.origElements.innerHTML = "";
       alert("Unsupported content! Please paste a valid embed code from YouTube, Vimeo or DailyMotion");
       this.props.onRemove();
     }
@@ -69,17 +71,10 @@ export default class VideoStoryItem extends Component {
     const { content } = this.state;
 
     const editorOptions = {
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      toolbar: false,
-      placeholder: {
-        text: 'Paste embed code',
-        hideOnClick: false
-      },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
+      ...toolbarOptions,
+      theme: null,
+      modules: {
+        toolbar: false
       }
     }
 
@@ -94,11 +89,10 @@ export default class VideoStoryItem extends Component {
         onRemove={onRemove}>
         <div>
           {isEmpty(content) &&
-            <Editor
-              ref={editor => this.editor = editor}
-              text={content}
-              options={editorOptions}
+            <ReactQuill
+              value={content}
               onChange={this.handleChange}
+              {...editorOptions}
             />
           }
           {!isEmpty(content) &&

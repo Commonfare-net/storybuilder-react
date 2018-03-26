@@ -37,6 +37,15 @@
   width: 100%;
 }
 
+.story-item__editor .ql-container {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.story-item__editor .ql-editor {
+  padding-left: 0;
+}
+
 .story-item__editor button {
   padding: 10px;
   font-size: 16px;

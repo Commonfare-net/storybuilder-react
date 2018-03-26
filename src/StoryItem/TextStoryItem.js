@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
-const MediumEditor = require('medium-editor');
-import MediumEditorAutofocus from '../MediumEditorAutofocus/Plugin';
+import ReactQuill from 'react-quill';
+import toolbarOptions from './toolbarOptions';
 
 import StoryItem from './StoryItem';
 
@@ -29,41 +28,12 @@ export default class TextStoryItem extends Component {
     }
   }
 
-  // autoFocus = () => {
-  //   const { medium } = this.editor;
-  //   const { origElements: { childNodes } } = medium;
-  //
-  //   // select the last paragraph
-  //   const lastElement = childNodes[childNodes.length - 1];
-  //   medium.selectElement(lastElement);
-  //
-  //   // clear the selection and put the cursor at the end
-  //   MediumEditor.selection.clearSelection(document);
-  //   medium.getExtensionByName('toolbar').hideToolbar();
-  // }
-
-  handleChange = (text, medium) => {
-    const { onChange } = this.props;
-
+  handleChange = (text) => {
     this.setState({ content: text });
   }
 
   render() {
     const { onSave, onRemove, editing, disabled } = this.props;
-
-    const editorOptions = {
-      placeholder: {
-        text: 'Write something...',
-        hideOnClick: false
-      },
-      toolbar: {
-        buttons: ['bold', 'italic', 'underline', 'quote']
-      },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
-      }
-    }
 
     return (
       <StoryItem
@@ -71,14 +41,15 @@ export default class TextStoryItem extends Component {
         icon="font"
         editing={editing}
         disabled={disabled}
-        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}
+        content={this.state.content}
+        onOpen={() => this.reactQuillRef.getEditor().focus()}
         onSave={() => onSave(this.state.content)}
         onRemove={onRemove}>
-        <Editor
-          ref={editor => this.editor = editor}
-          text={this.state.content}
-          options={editorOptions}
+        <ReactQuill
+          ref={(el) => this.reactQuillRef = el}
+          value={this.state.content}
           onChange={this.handleChange}
+          {...toolbarOptions}
         />
       </StoryItem>
     )

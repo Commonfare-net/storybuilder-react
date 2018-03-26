@@ -1,3 +1,3 @@
-.text-story-item .medium-editor-element:empty {
-  padding: 16px 0;
+.text-story-item .ql-editor>p {
+  margin-bottom: 1rem;
 }
