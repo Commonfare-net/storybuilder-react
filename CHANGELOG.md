@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.1.2
+
+* Fixed a bug when adding video story items
+
 ## 1.1.1
 
 * Switched from Medium Editor to Quill for a better mobile experience
