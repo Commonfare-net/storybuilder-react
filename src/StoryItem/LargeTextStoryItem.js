@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import sanitizeHtml from 'sanitize-html';
 
-import toolbarOptions from './toolbarOptions';
 import StoryItem from './StoryItem';
 
 import './LargeTextStoryItem.css';
@@ -38,14 +37,8 @@ export default class LargeTextStoryItem extends Component {
     const { content } = this.state;
 
     const editorOptions = {
-      ...toolbarOptions,
-      modules: {
-        toolbar: false
-      },
-      // style: {
-      //   fontSize: '2rem',
-      //   fontWeight: 500
-      // }
+      theme: 'null',
+      placeholder: 'Write something that stands out...'
     }
 
     return (

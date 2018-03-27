@@ -5,7 +5,6 @@ import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
 
-import toolbarOptions from './toolbarOptions';
 import StoryItem from './StoryItem';
 
 import './ImageStoryItem.css';
@@ -102,9 +101,8 @@ export default class ImageStoryItem extends Component {
     const { content, caption, uploading, uploadProgress, preview } = this.state;
 
     const editorOptions = {
-      ...toolbarOptions,
       theme: null,
-      placeholder: 'Write a caption',
+      placeholder: 'Write a caption...',
       modules: {
         toolbar: false
       }

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactQuill from 'react-quill';
-import toolbarOptions from './toolbarOptions';
+import ReactQuill, { Quill } from 'react-quill';
+import AutoLinks from 'quill-auto-links';
 
 import StoryItem from './StoryItem';
-
 import './TextStoryItem.css';
+
+Quill.register('modules/autoLinks', AutoLinks);
 
 export default class TextStoryItem extends Component {
   static propTypes = {
@@ -35,6 +36,15 @@ export default class TextStoryItem extends Component {
   render() {
     const { onSave, onRemove, editing, disabled } = this.props;
 
+    const editorOptions = {
+      theme: "bubble",
+      placeholder: "Write something...",
+      modules: {
+        autoLinks: true,
+        toolbar: ['bold', 'italic', 'underline', 'link', 'blockquote']
+      }
+    }
+
     return (
       <StoryItem
         className="text-story-item"
@@ -49,7 +59,7 @@ export default class TextStoryItem extends Component {
           ref={(el) => this.reactQuillRef = el}
           value={this.state.content}
           onChange={this.handleChange}
-          {...toolbarOptions}
+          {...editorOptions}
         />
       </StoryItem>
     )

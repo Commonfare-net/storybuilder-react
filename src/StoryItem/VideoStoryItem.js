@@ -4,7 +4,6 @@ import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
 
-import toolbarOptions from './toolbarOptions';
 import StoryItem from './StoryItem';
 
 export default class VideoStoryItem extends Component {
@@ -71,11 +70,8 @@ export default class VideoStoryItem extends Component {
     const { content } = this.state;
 
     const editorOptions = {
-      ...toolbarOptions,
       theme: null,
-      modules: {
-        toolbar: false
-      }
+      placeholder: 'Paste the URL of a video from YouTube, Vimeo or DailyMotion'
     }
 
     return (
