@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.1.0
+## 1.1.1
 
 * Switched from Medium Editor to Quill for a better mobile experience
 * Allow pasting of links into text story items
