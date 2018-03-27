@@ -11,6 +11,7 @@ import StoryTags from '../src/StoryTags/StoryTags';
 import StoryItem from '../src/StoryItem/StoryItem';
 import TextStoryItem from '../src/StoryItem/TextStoryItem';
 import ImageStoryItem from '../src/StoryItem/ImageStoryItem';
+import VideoStoryItem from '../src/StoryItem/VideoStoryItem';
 
 storiesOf('StoryTags', module)
   .add('empty', () => <StoryTags onSave={action('tags saved')} />)
@@ -98,6 +99,9 @@ storiesOf('ImageStoryItem', module)
       onRemove={(item) => alert(`You have removed me! I was ${item}`)}
     />
   ))
+
+storiesOf('VideoStoryItem')
+  .add('empty', () => <VideoStoryItem onSave={() => action('item saved')}/>)
 
 const demoStory = [
   { id: 'text-1', type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },

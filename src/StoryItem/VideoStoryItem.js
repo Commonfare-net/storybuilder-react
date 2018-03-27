@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
+import embed from 'embed-video';
 
 import StoryItem from './StoryItem';
 
 export default class VideoStoryItem extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     editing: PropTypes.bool,
@@ -17,13 +19,16 @@ export default class VideoStoryItem extends Component {
 
   static defaultProps = {
     editing: false,
-    disabled: false
+    disabled: false,
+    content: '',
+    url: ''
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      content: props.content
+      content: props.content,
+      url: props.url
     }
   }
 
@@ -34,24 +39,28 @@ export default class VideoStoryItem extends Component {
   }
 
   handleChange = (text) => {
-    const encodedContent = text.replace(/<\/?p>/,'');
-    const decodedContent = this.htmlDecode(encodedContent);
-    const sanitizedContent = sanitizeHtml(decodedContent, {
-      allowedTags: ['iframe', 'p', 'a'],
-      allowedAttributes: {
-        a: ['href'],
-        iframe: ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen']
-      },
-      allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com', 'www.dailymotion.com']
-    });
+    const url = sanitizeHtml(text, { allowedTags: [] });
 
-    if (sanitizedContent.indexOf("src=") >= 0) {
-      this.setState({ content: sanitizedContent });
-    } else {
-      // this.setState({ content: undefined });
-      // medium.origElements.innerHTML = "";
-      alert("Unsupported content! Please paste a valid embed code from YouTube, Vimeo or DailyMotion");
-      this.props.onRemove();
+    try {
+      const embedCode = embed(url, { attr: { width: 560, height: 315 } });
+
+      if (embedCode) {
+        this.setState({
+          unsupported: false,
+          content: embedCode,
+          url
+        });
+      } else {
+        this.setState({
+          unsupported: true,
+          content: ''
+        })
+      }
+    } catch (e) {
+      this.setState({
+        unsupported: true,
+        content: ''
+      })
     }
   }
 
@@ -67,7 +76,7 @@ export default class VideoStoryItem extends Component {
 
   render() {
     const { onSave, onRemove, editing, disabled } = this.props;
-    const { content } = this.state;
+    const { url, content, unsupported } = this.state;
 
     const editorOptions = {
       theme: null,
@@ -80,13 +89,17 @@ export default class VideoStoryItem extends Component {
         icon='film'
         editing={editing}
         disabled={disabled}
-        content={this.videoUrl()}
-        onSave={() => onSave(content)}
+        content={url}
+        onSave={() => onSave({ url, content })}
         onRemove={onRemove}>
         <div>
+          {unsupported &&
+            <p>
+              <strong>Unsupported source. Please paste a URL from YouTube, Vimeo or DailyMotion</strong>
+            </p>
+          }
           {isEmpty(content) &&
             <ReactQuill
-              value={content}
               onChange={this.handleChange}
               {...editorOptions}
             />
