@@ -1,10 +1,14 @@
 # CHANGELOG
 
-## 1.1.2
+## 1.1.3
+
+* Fixed another bug. Now video story items display the video URL properly
+
+## ~~1.1.2~~
 
 * Fixed a bug when adding video story items
 
-## 1.1.1
+## ~~1.1.1~~
 
 * Switched from Medium Editor to Quill for a better mobile experience
 * Allow pasting of links into text story items

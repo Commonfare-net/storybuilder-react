@@ -119,6 +119,7 @@ export default class StoryContent extends Component {
       case 'video':
         return <VideoStoryItem
           {...props}
+          url={item.url}
           onSave={({ content, url }) => this.updateItem({ content, url }, index)}
           onRemove={() => this.removeItem(item, index)}
         />;
