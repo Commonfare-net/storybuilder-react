@@ -37,7 +37,7 @@ export default class LargeTextStoryItem extends Component {
     const { content } = this.state;
 
     const editorOptions = {
-      theme: 'null',
+      theme: null,
       placeholder: 'Write something that stands out...'
     }
 
