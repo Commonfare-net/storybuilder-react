@@ -1,6 +1,16 @@
 {
-  "add.image_storyItem": "Image",
-  "add.largeText_storyItem": "Large Text",
-  "add.text_storyItem": "Text",
-  "add.video_storyItem": "Video"
+  "add.image_story_item": "Image",
+  "add.largeText_story_item": "Large Text",
+  "add.text_story_item": "Text",
+  "add.video_story_item": "Video",
+  "image_story_item.placeholder": "Write a caption...",
+  "largeText_story_item.placeholder": "Write something that stands out...",
+  "story.add_tag": "Add a tag",
+  "story.place": "Place",
+  "story.title": "Title",
+  "story_item.confirm_remove": "Are you sure? This cannot be undone",
+  "story_item.done": "Done",
+  "story_item.remove": "Remove",
+  "text_story_item.placeholder": "Write something...",
+  "video_story_item.placeholder": "Paste the URL of a video from YouTube, Vimeo or DailyMotion"
 }

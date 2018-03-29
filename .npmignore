@@ -3,3 +3,5 @@ node_modules
 stories
 yarn-error.log
 npm-debug.log
+src/translations/extractedMessages
+src/translations/whitelist_*.json

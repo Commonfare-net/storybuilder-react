@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, func } from 'prop-types';
 import ReactQuill from 'react-quill';
 import sanitizeHtml from 'sanitize-html';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import './StoryTitle.css';
 
-export default class StoryTitle extends Component {
+defineMessages({
+  title: {
+    id: 'story.title',
+    defaultMessage: 'Title'
+  }
+})
+
+class StoryTitle extends Component {
   static propTypes = {
-    title: PropTypes.string,
-    onChange: PropTypes.func.isRequired
+    title: string,
+    onChange: func.isRequired,
+    intl: intlShape.isRequired
   }
 
   render() {
-    const { title, onChange } = this.props;
+    const { title, onChange, intl } = this.props;
 
     return (
       <ReactQuill
         theme={null}
         defaultValue={title}
-        placeholder="Title"
+        placeholder={intl.formatMessage({ id: 'story.title' })}
         onChange={(text) => onChange(sanitizeHtml(text, { allowedTags: [] }))}
         className="story-builder__title" />
     )
   }
 }
+
+export default injectIntl(StoryTitle);

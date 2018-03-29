@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { string, bool, func, element, oneOfType, arrayOf } from 'prop-types';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import CollapsedStoryItem from './CollapsedStoryItem';
 import StoryItemEditor from './StoryItemEditor';
 
-export default class StoryItem extends Component {
+defineMessages({
+  confirm: {
+    id: 'story_item.confirm_remove',
+    defaultMessage: 'Are you sure? This cannot be undone'
+  }
+})
+
+class StoryItem extends Component {
   static propTypes = {
     icon: string.isRequired,
     disabled: bool,
@@ -17,7 +25,8 @@ export default class StoryItem extends Component {
       element,
       arrayOf(element),
     ]),
-    className: string
+    className: string,
+    intl: intlShape
   }
 
   static defaultProps = {
@@ -71,9 +80,9 @@ export default class StoryItem extends Component {
   }
 
   remove = () => {
-    const { content, onRemove } = this.props;
+    const { content, onRemove, intl: { formatMessage } } = this.props;
 
-    if (confirm("Are you sure? This cannot be undone")) {
+    if (confirm(formatMessage({ id: 'story_item.confirm_remove' }))) {
       onRemove(content)
     }
   }
@@ -103,3 +112,5 @@ export default class StoryItem extends Component {
     }
   }
 }
+
+export default injectIntl(StoryItem);

@@ -4,12 +4,20 @@ import FontAwesome from 'react-fontawesome';
 import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import StoryItem from './StoryItem';
 
 import './ImageStoryItem.css';
 
-export default class ImageStoryItem extends Component {
+defineMessages({
+  placeholder: {
+    id: 'image_story_item.placeholder',
+    defaultMessage: 'Write a caption...'
+  }
+})
+
+class ImageStoryItem extends Component {
   static propTypes = {
     content: string,
     caption: string,
@@ -17,7 +25,8 @@ export default class ImageStoryItem extends Component {
     onSave: func.isRequired,
     onRemove: func.isRequired,
     editing: bool,
-    disabled: bool
+    disabled: bool,
+    intl: intlShape.isRequired
   }
 
   static defaultProps = {
@@ -100,12 +109,14 @@ export default class ImageStoryItem extends Component {
   }
 
   render() {
-    const { disabled, editing, onRemove } = this.props;
+    const { disabled, editing, onRemove, intl } = this.props;
     const { content, caption, uploading, uploadProgress, preview } = this.state;
 
     const editorOptions = {
       theme: null,
-      placeholder: 'Write a caption...',
+      placeholder: intl.formatMessage({
+        id: 'image_story_item.placeholder'
+      }),
       modules: {
         toolbar: false
       }
@@ -140,12 +151,9 @@ export default class ImageStoryItem extends Component {
           value={caption}
           onChange={this.handleChange}
         />
-        {/* <Editor
-          text={caption}
-          options={editorOptions}
-          onChange={(caption) => this.setState({ caption })}
-        /> */}
       </StoryItem>
     )
   }
 }
+
+export default injectIntl(ImageStoryItem);

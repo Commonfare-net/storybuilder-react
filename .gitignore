@@ -2,3 +2,5 @@ node_modules/
 dist
 yarn-error.log
 npm-debug.log
+src/translations/extractedMessages
+src/translations/whitelist_*.json

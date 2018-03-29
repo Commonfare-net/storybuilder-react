@@ -1,6 +1,16 @@
 {
-  "add.image_storyItem": "Immagine",
-  "add.largeText_storyItem": "Testo Grande",
-  "add.text_storyItem": "Testo",
-  "add.video_storyItem": "Video"
+  "add.image_story_item": "Immagine",
+  "add.largeText_story_item": "Testo in evidenza",
+  "add.text_story_item": "Testo",
+  "add.video_story_item": "Video",
+  "image_story_item.placeholder": "Scrivi una didascalia...",
+  "largeText_story_item.placeholder": "Scrivi qualcosa che vuoi far risaltare...",
+  "story.add_tag": "Aggiungi un tag",
+  "story.place": "Luogo",
+  "story.title": "Titolo",
+  "story_item.confirm_remove": "Sei sicuro? Questa operazione è irreversibile",
+  "story_item.done": "Fatto",
+  "story_item.remove": "Rimuovi",
+  "text_story_item.placeholder": "Scrivi qualcosa...",
+  "video_story_item.placeholder": "Incolla l'URL di un video da YouTube, Vimeo o DailyMotion"
 }

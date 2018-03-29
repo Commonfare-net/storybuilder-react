@@ -2,18 +2,27 @@ import React, { Component } from 'react';
 import { string, func, bool } from 'prop-types';
 import ReactQuill from 'react-quill';
 import sanitizeHtml from 'sanitize-html';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import StoryItem from './StoryItem';
 
 import './LargeTextStoryItem.css';
 
-export default class LargeTextStoryItem extends Component {
+defineMessages({
+  placeholder: {
+    id: 'largeText_story_item.placeholder',
+    defaultMessage: 'Write something that stands out...'
+  }
+})
+
+class LargeTextStoryItem extends Component {
   static propTypes = {
     content: string.isRequired,
     onSave: func.isRequired,
     onRemove: func.isRequired,
     editing: bool,
-    disabled: bool
+    disabled: bool,
+    intl: intlShape.isRequired
   }
 
   static defaultProps = {
@@ -42,12 +51,14 @@ export default class LargeTextStoryItem extends Component {
   }
 
   render() {
-    const { onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled, intl } = this.props;
     const { content } = this.state;
 
     const editorOptions = {
       theme: null,
-      placeholder: 'Write something that stands out...'
+      placeholder: intl.formatMessage({
+        id: 'largeText_story_item.placeholder'
+      })
     }
 
     return (
@@ -69,3 +80,5 @@ export default class LargeTextStoryItem extends Component {
     )
   }
 }
+
+export default injectIntl(LargeTextStoryItem);

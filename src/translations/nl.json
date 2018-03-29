@@ -1,6 +1,16 @@
 {
-  "add.image_storyItem": "Image",
-  "add.largeText_storyItem": "Large Text",
-  "add.text_storyItem": "Text",
-  "add.video_storyItem": "Video"
+  "add.image_story_item": "Beeld",
+  "add.largeText_story_item": "Grote tekst",
+  "add.text_story_item": "Tekst",
+  "add.video_story_item": "Video",
+  "image_story_item.placeholder": "Schrijf een bijschrift...",
+  "largeText_story_item.placeholder": "Schrijf iets dat opvalt...",
+  "story.add_tag": "Voeg een tag",
+  "story.place": "Plaats",
+  "story.title": "Titel",
+  "story_item.confirm_remove": "Weet je het zeker? Dit kan niet ongedaan gemaakt worden",
+  "story_item.done": "Gedaan",
+  "story_item.remove": "Verwijderen",
+  "text_story_item.placeholder": "Schrijf iets...",
+  "video_story_item.placeholder": "Plak de URL van een video van YouTube, Vimeo of DailyMotion"
 }

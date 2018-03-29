@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { element, func, string, oneOfType, arrayOf } from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
 import './StoryItemEditor.css';
 
@@ -24,12 +25,12 @@ export default class StoryItemEditor extends PureComponent {
           <div className="story-item__buttons">
             <button className="story-item__remove-button"
               onClick={onRemove}>
-              Remove
+              <FormattedMessage id='story_item.remove' defaultMessage='Remove' />
             </button>
             <button
               className="story-item__done-button"
               onClick={onSave}>
-              Done
+              <FormattedMessage id='story_item.done' defaultMessage='Done' />
             </button>
           </div>
         </div>

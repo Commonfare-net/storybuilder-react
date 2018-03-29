@@ -1,6 +1,16 @@
 {
-  "add.image_storyItem": "Image",
-  "add.largeText_storyItem": "Large Text",
-  "add.text_storyItem": "Text",
-  "add.video_storyItem": "Video"
+  "add.image_story_item": "Slika",
+  "add.largeText_story_item": "Veliki tekst",
+  "add.text_story_item": "Tekst",
+  "add.video_story_item": "Video",
+  "image_story_item.placeholder": "Napišite naslov...",
+  "largeText_story_item.placeholder": "Napišite nešto što se ističe...",
+  "story.add_tag": "Dodajte oznaku",
+  "story.place": "Mjesto",
+  "story.title": "Titula",
+  "story_item.confirm_remove": "Jesi li siguran? To se ne može poništiti",
+  "story_item.done": "Učinio",
+  "story_item.remove": "Ukloniti",
+  "text_story_item.placeholder": "Napisati nešto...",
+  "video_story_item.placeholder": "Zalijepite URL videozapisa s usluge YouTube, Vimeo ili DailyMotion"
 }

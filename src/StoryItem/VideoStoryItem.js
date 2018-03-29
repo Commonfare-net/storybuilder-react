@@ -4,17 +4,26 @@ import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
 import embed from 'embed-video';
+import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-intl';
 
 import StoryItem from './StoryItem';
 
-export default class VideoStoryItem extends Component {
+defineMessages({
+  placeholder: {
+    id: 'video_story_item.placeholder',
+    defaultMessage: 'Paste the URL of a video from YouTube, Vimeo or DailyMotion'
+  }
+})
+
+class VideoStoryItem extends Component {
   static propTypes = {
     content: string.isRequired,
     url: string.isRequired,
     onSave: func.isRequired,
     onRemove: func.isRequired,
     editing: bool,
-    disabled: bool
+    disabled: bool,
+    intl: intlShape.isRequired
   }
 
   static defaultProps = {
@@ -80,12 +89,14 @@ export default class VideoStoryItem extends Component {
   }
 
   render() {
-    const { onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled, intl } = this.props;
     const { url, content, unsupported } = this.state;
 
     const editorOptions = {
       theme: null,
-      placeholder: 'Paste the URL of a video from YouTube, Vimeo or DailyMotion'
+      placeholder: intl.formatMessage({
+        id: 'video_story_item.placeholder'
+      })
     }
 
     return (
@@ -101,7 +112,9 @@ export default class VideoStoryItem extends Component {
         <div>
           {unsupported &&
             <p>
-              <strong>Unsupported source. Please paste a URL from YouTube, Vimeo or DailyMotion</strong>
+              <FormattedMessage id='video_story_item.unsupported_source' tagName='strong'>
+                Unsupported source. Please paste a URL from YouTube, Vimeo or DailyMotion
+              </FormattedMessage>
             </p>
           }
           {isEmpty(content) &&
@@ -119,3 +132,5 @@ export default class VideoStoryItem extends Component {
     )
   }
 }
+
+export default injectIntl(VideoStoryItem);

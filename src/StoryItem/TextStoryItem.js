@@ -2,19 +2,28 @@ import React, { Component } from 'react';
 import { string, func, bool } from 'prop-types';
 import ReactQuill, { Quill } from 'react-quill';
 import AutoLinks from 'quill-auto-links';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import StoryItem from './StoryItem';
 import './TextStoryItem.css';
 
+defineMessages({
+  placeholder: {
+    id: 'text_story_item.placeholder',
+    defaultMessage: 'Write something...'
+  }
+})
+
 Quill.register('modules/autoLinks', AutoLinks);
 
-export default class TextStoryItem extends Component {
+class TextStoryItem extends Component {
   static propTypes = {
     content: string.isRequired,
     onSave: func.isRequired,
     onRemove: func.isRequired,
     editing: bool,
-    disabled: bool
+    disabled: bool,
+    intl: intlShape.isRequired
   }
 
   static defaultProps = {
@@ -37,11 +46,13 @@ export default class TextStoryItem extends Component {
   save = () => this.props.onSave(this.state.content)
 
   render() {
-    const { onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled, intl } = this.props;
 
     const editorOptions = {
       theme: "bubble",
-      placeholder: "Write something...",
+      placeholder: intl.formatMessage({
+        id: 'text_story_item.placeholder'
+      }),
       modules: {
         autoLinks: true,
         toolbar: ['bold', 'italic', 'underline', 'link', 'blockquote']
@@ -68,3 +79,5 @@ export default class TextStoryItem extends Component {
     )
   }
 }
+
+export default injectIntl(TextStoryItem);

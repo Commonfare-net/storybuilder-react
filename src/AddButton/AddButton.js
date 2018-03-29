@@ -37,7 +37,7 @@ export default class AddButton extends Component {
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'text', content: '' }))}>
             <FontAwesome name="font" size="3x" className="fa-fw" /><br />
             <FormattedMessage
-              id="add.text_storyItem"
+              id="add.text_story_item"
               defaultMessage="Text"
             />
           </button>
@@ -46,7 +46,7 @@ export default class AddButton extends Component {
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'largeText', content: '' }))}>
             <FontAwesome name="text-height" size="3x" className="fa-fw" /><br />
             <FormattedMessage
-              id="add.largeText_storyItem"
+              id="add.largeText_story_item"
               defaultMessage="Large Text"
             />
           </button>
@@ -55,7 +55,7 @@ export default class AddButton extends Component {
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'image', content: '' }))}>
             <FontAwesome name="image" size="3x" className="fa-fw" /><br />
             <FormattedMessage
-              id="add.image_storyItem"
+              id="add.image_story_item"
               defaultMessage="Image"
             />
           </button>
@@ -64,7 +64,7 @@ export default class AddButton extends Component {
             onClick={() => this.setState({ active: false }, () => onAdd({ type: 'video', content: '' }))}>
             <FontAwesome name="film" size="3x" className="fa-fw" /><br />
             <FormattedMessage
-              id="add.video_storyItem"
+              id="add.video_story_item"
               defaultMessage="Video"
             />
           </button>

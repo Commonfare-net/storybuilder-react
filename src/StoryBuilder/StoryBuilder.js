@@ -14,9 +14,7 @@ import isEqual from 'lodash/isEqual';
 
 import './StoryBuilder.css';
 
-const translations = {
-  it: require('../translations/it.json')
-}
+import translations from '../translations';
 
 class StoryBuilder extends Component {
   static propTypes = {

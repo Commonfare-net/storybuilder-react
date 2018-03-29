@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { arrayOf, number, string, array, func, shape } from 'prop-types';
 import TagsInput from 'react-tagsinput';
 import Autosuggest from 'react-autosuggest';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import 'react-tagsinput/react-tagsinput.css';
 import './StoryTags.css';
 
-export default class StoryTags extends Component {
+defineMessages({
+  add_tag: {
+    id: 'story.add_tag',
+    defaultMessage: "Add a tag"
+  }
+})
+
+class StoryTags extends Component {
   static propTypes = {
-    tags: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string.isRequired
+    tags: arrayOf(shape({
+      id: number,
+      name: string.isRequired
     })),
-    availableTags: PropTypes.array.isRequired,
-    onChange: PropTypes.func.isRequired
+    availableTags: array.isRequired,
+    onChange: func.isRequired,
+    intl: intlShape.isRequired
   }
 
   static defaultProps = {
@@ -65,18 +74,26 @@ export default class StoryTags extends Component {
   }
 
   render() {
+    const { intl } = this.props;
+    const { tags } = this.state;
+
     return (
       <div className="story-builder__tags-wrapper">
         <label>Tags</label>
         <TagsInput
-          value={this.state.tags}
+          value={tags}
           renderInput={this.autosuggestRenderInput}
           onlyUnique={true}
           className="story-builder__tags"
-          inputProps={{ className: "story-builder__tag-input", placeholder: "Add a tag" }}
+          inputProps={{
+            className: "story-builder__tag-input",
+            placeholder: intl.formatMessage({ id: 'story.add_tag' })
+          }}
           tagDisplayProp="name"
           onChange={this.handleChange} />
       </div>
     )
   }
 }
+
+export default injectIntl(StoryTags);
