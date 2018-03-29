@@ -1,0 +1,50 @@
+.story-item__editor {
+  background-color: white;
+  color: black;
+  width: 100%;
+  padding: 15px 10px;
+}
+
+.story-item__editor .ql-container {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.story-item__editor .ql-editor {
+  padding-left: 0;
+}
+
+.story-item__editor button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  background: var(--cf-primary-color, #E7472E);
+  color: var(--cf-story-item-text-color, #fff);
+  cursor: pointer;
+}
+
+.story-item__editor button.story-item__remove-button {
+  background: lightgray;
+}
+
+.story-item__editor button.story-item__done-button {
+  margin-left: auto;
+  float: right;
+}
+
+.story-item__editor *:focus {
+  outline: none;
+}
+
+.story-item--editing {
+  background-color: white;
+}
+
+/* .story-item--editing .story-item__editor {
+  display: block;
+} */
+
+/* .story-item--editing .story-item__icon,
+.story-item--editing .story-item__content {
+  display: none;
+} */

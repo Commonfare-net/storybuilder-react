@@ -1,31 +1,34 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
-const MediumEditor = require('medium-editor');
-import MediumEditorAutofocus from 'medium-editor-autofocus';
+import { string, func, bool } from 'prop-types';
+import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
+import embed from 'embed-video';
 
 import StoryItem from './StoryItem';
 
 export default class VideoStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string.isRequired,
+    url: string.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
     editing: false,
-    disabled: false
+    disabled: false,
+    content: '',
+    url: ''
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      content: props.content
+      content: props.content,
+      url: props.url
     }
   }
 
@@ -35,52 +38,54 @@ export default class VideoStoryItem extends Component {
     return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
   }
 
-  handleChange = (text, medium) => {
-    const sanitizedContent = sanitizeHtml(this.htmlDecode(text), {
-      allowedTags: ['iframe', 'p', 'a'],
-      allowedAttributes: {
-        a: ['href'],
-        iframe: ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen']
-      },
-      allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com', 'www.dailymotion.com']
-    });
+  handleChange = (text) => {
+    const url = sanitizeHtml(text, { allowedTags: [] });
 
-    if (sanitizedContent.indexOf("src=") >= 0) {
-      this.setState({ content: sanitizedContent });
-    } else {
-      medium.origElements.innerHTML = "";
-      alert("Unsupported content! Please paste a valid embed code from YouTube, Vimeo or DailyMotion");
-      this.props.onRemove();
+    try {
+      const embedCode = embed(url, { attr: { width: 560, height: 315 } });
+
+      if (embedCode) {
+        this.setState({
+          unsupported: false,
+          content: embedCode,
+          url
+        });
+      } else {
+        this.setState({
+          unsupported: true,
+          content: ''
+        })
+      }
+    } catch (e) {
+      this.setState({
+        unsupported: true,
+        content: ''
+      })
     }
   }
 
-  // finds the provider to show the proper icon (if you want)
-  videoUrl = () => {
+  autoFocusEditor = () => {
     const { content } = this.state;
-    if (content.match(/src="([^"]+)"/)) {
-      return content.match(/src="([^"]+)"/)[1];
-    } else {
-      return "";
+
+    if (isEmpty(content)) {
+      this.reactQuillRef.getEditor().focus()
     }
+  }
+
+  save = () => {
+    const { onSave } = this.props;
+    const { url, content } = this.state;
+
+    onSave({ url, content })
   }
 
   render() {
-    const { onSave, onRemove, editing, disabled } = this.props;
-    const { content } = this.state;
+    const { onRemove, editing, disabled } = this.props;
+    const { url, content, unsupported } = this.state;
 
     const editorOptions = {
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      toolbar: false,
-      placeholder: {
-        text: 'Paste embed code',
-        hideOnClick: false
-      },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
-      }
+      theme: null,
+      placeholder: 'Paste the URL of a video from YouTube, Vimeo or DailyMotion'
     }
 
     return (
@@ -89,16 +94,21 @@ export default class VideoStoryItem extends Component {
         icon='film'
         editing={editing}
         disabled={disabled}
-        content={this.videoUrl()}
-        onSave={() => onSave(content)}
+        content={url}
+        onOpen={this.autoFocusEditor}
+        onSave={this.save}
         onRemove={onRemove}>
         <div>
+          {unsupported &&
+            <p>
+              <strong>Unsupported source. Please paste a URL from YouTube, Vimeo or DailyMotion</strong>
+            </p>
+          }
           {isEmpty(content) &&
-            <Editor
-              ref={editor => this.editor = editor}
-              text={content}
-              options={editorOptions}
+            <ReactQuill
+              ref={(el) => this.reactQuillRef = el}
               onChange={this.handleChange}
+              {...editorOptions}
             />
           }
           {!isEmpty(content) &&

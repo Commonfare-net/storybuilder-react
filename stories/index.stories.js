@@ -11,6 +11,7 @@ import StoryTags from '../src/StoryTags/StoryTags';
 import StoryItem from '../src/StoryItem/StoryItem';
 import TextStoryItem from '../src/StoryItem/TextStoryItem';
 import ImageStoryItem from '../src/StoryItem/ImageStoryItem';
+import VideoStoryItem from '../src/StoryItem/VideoStoryItem';
 
 storiesOf('StoryTags', module)
   .add('empty', () => <StoryTags onSave={action('tags saved')} />)
@@ -99,12 +100,16 @@ storiesOf('ImageStoryItem', module)
     />
   ))
 
+storiesOf('VideoStoryItem')
+  .add('empty', () => <VideoStoryItem onSave={() => action('item saved')}/>)
+  .add('with a url', () => <VideoStoryItem url="https://www.youtube.com/watch?v=BKTc1OqG-6c" onSave={() => action('item saved')}/>)
+
 const demoStory = [
   { id: 'text-1', type: 'text', content: '<p>Gender rights mass incarceration overcome injustice triple bottom line the move the needle. Benefit corporation.</p>' },
   { id: 'image-1', type: 'image', content: 'http://placekitten.com/g/300/300', caption: 'A cat' },
   { id: 'text-2', type: 'text', content: longText },
   { id: 'largeText-3', type: 'largeText', content: 'This text will be very large' },
-  { id: 'video-1', type: 'video', content: '<iframe width="560" height="315" src="https://www.youtube.com/embed/ymxEmbALjIo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' }
+  { id: 'video-1', type: 'video', content: '<iframe width="560" height="315" src="https://www.youtube.com/embed/ymxEmbALjIo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>', url: 'https://www.youtube.com/watch?v=ymxEmbALjIo' }
 ];
 
 storiesOf('StoryBuilder', module)

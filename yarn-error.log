@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/9.7.1/bin/node /usr/local/Cellar/yarn/1.5.1/libexec/bin/yarn.js build
+  /usr/local/Cellar/node/9.7.1/bin/node /usr/local/Cellar/yarn/1.5.1/libexec/bin/yarn.js deprecate <1.1.3
 
 PATH: 
   /usr/local/sbin:/Users/aaron/.yarn/bin:/Users/aaron/.npm-packages/bin:/usr/local/bin:/Applications/HuginTools:/Users/aaron/.rbenv/shims:/Users/aaron/.rbenv/shims:/usr/local/opt/rbenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:/opt/X11/bin:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/lib:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/gitfast:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/yarn:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/gem:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/capistrano:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/rake:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/rbenv:/Users/aaron/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/common-aliases:/Users/aaron/.antigen/bundles/zsh-users/zsh-syntax-highlighting:/Users/aaron/.antigen/bundles/zsh-users/zsh-autosuggestions:/Users/aaron/.antigen/bundles/zsh-users/zsh-completions:/usr/local/mysql/bin/:/Applications/Postgres.app/Contents/Versions/latest/bin:/usr/local/opt/fzf/bin
@@ -16,7 +16,7 @@ Platform:
 npm manifest: 
   {
     "name": "storybuilder-react",
-    "version": "1.0.1",
+    "version": "1.1.2",
     "description": "Story builder for Commonfare.net platform",
     "repository": {
       "type": "git",
@@ -26,10 +26,9 @@ npm manifest:
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "start": "webpack --watch",
-      "build": "webpack",
+      "build": "NODE_ENV=production webpack",
       "storybook": "start-storybook -p 6006",
-      "build-storybook": "build-storybook",
-      "manage:translations": "node ./translationRunner.js"
+      "build-storybook": "build-storybook"
     },
     "author": "Aaron Ciaghi",
     "license": "GPL-3.0",
@@ -44,22 +43,20 @@ npm manifest:
       "babel-preset-react": "^6.1.2",
       "eslint": "^4.18.2",
       "eslint-plugin-react": "^7.7.0",
-      "react-intl-translations-manager": "^5.0.1",
       "uglifyjs-webpack-plugin": "^1.2.3"
     },
     "dependencies": {
-      "babel-plugin-react-intl": "^2.4.0",
+      "babel-polyfill": "^6.26.0",
+      "embed-video": "^2.0.3",
       "lodash": "^4.17.5",
-      "medium-editor": "^5.23.3",
-      "medium-editor-autofocus": "^1.1.1",
+      "quill-auto-links": "^0.1.2",
       "react": "^16.2.0",
       "react-autosuggest": "^9.3.4",
       "react-beautiful-dnd": "^6.0.0",
       "react-dom": "^16.2.0",
       "react-dotdotdot": "^1.2.2",
       "react-fontawesome": "^1.6.1",
-      "react-intl": "^2.4.0",
-      "react-medium-editor": "^1.8.1",
+      "react-quill": "^1.2.6",
       "react-tagsinput": "^3.19.0",
       "sanitize-html": "^1.18.2"
     }
@@ -256,6 +253,16 @@ Lockfile:
       react-split-pane "^0.1.74"
       react-treebeard "^2.1.0"
       redux "^3.7.2"
+  
+  "@types/quill@*":
+    version "1.3.6"
+    resolved "https://registry.yarnpkg.com/@types/quill/-/quill-1.3.6.tgz#147ea3b069aad63e49beb235b778a46ff131619e"
+    dependencies:
+      parchment "^1.1.2"
+  
+  "@types/react@*":
+    version "16.0.41"
+    resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.41.tgz#72146737f4d439dc95a53315de4bfb43ac8542ca"
   
   abbrev@1:
     version "1.1.1"
@@ -862,14 +869,6 @@ Lockfile:
       lodash "^4.17.0"
       react-docgen "^2.20.0"
   
-  babel-plugin-react-intl@^2.4.0:
-    version "2.4.0"
-    resolved "https://registry.yarnpkg.com/babel-plugin-react-intl/-/babel-plugin-react-intl-2.4.0.tgz#292fca8030603a9e0476973290836aa0c7da17e2"
-    dependencies:
-      babel-runtime "^6.2.0"
-      intl-messageformat-parser "^1.2.0"
-      mkdirp "^0.5.1"
-  
   babel-plugin-syntax-async-functions@^6.8.0:
     version "6.13.0"
     resolved "https://registry.yarnpkg.com/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
@@ -1281,6 +1280,14 @@ Lockfile:
     version "6.9.0"
     resolved "https://registry.yarnpkg.com/babel-plugin-transform-undefined-to-void/-/babel-plugin-transform-undefined-to-void-6.9.0.tgz#eb5db0554caffe9ded0206468ec0c6c3b332b9d2"
   
+  babel-polyfill@^6.26.0:
+    version "6.26.0"
+    resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
+    dependencies:
+      babel-runtime "^6.26.0"
+      core-js "^2.5.0"
+      regenerator-runtime "^0.10.5"
+  
   babel-preset-env@1.6.1, babel-preset-env@^1.6.1:
     version "1.6.1"
     resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.6.1.tgz#a18b564cc9b9afdf4aae57ae3c1b0d99188e6f48"
@@ -1426,7 +1433,7 @@ Lockfile:
       mkdirp "^0.5.1"
       source-map-support "^0.4.15"
   
-  babel-runtime@6.x.x, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0, babel-runtime@^6.5.0, babel-runtime@^6.9.2:
+  babel-runtime@6.x.x, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0, babel-runtime@^6.5.0, babel-runtime@^6.9.2:
     version "6.26.0"
     resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
     dependencies:
@@ -1511,10 +1518,6 @@ Lockfile:
   binary-extensions@^1.0.0:
     version "1.11.0"
     resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
-  
-  blacklist@^1.1.2:
-    version "1.1.4"
-    resolved "https://registry.yarnpkg.com/blacklist/-/blacklist-1.1.4.tgz#b2dd09d6177625b2caa69835a37b28995fa9a2f2"
   
   block-stream@*:
     version "0.0.9"
@@ -1896,6 +1899,10 @@ Lockfile:
     version "1.0.3"
     resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.3.tgz#298d7e2231660f40c003c2ed3140decf3f53085f"
   
+  clone@^2.1.1:
+    version "2.1.2"
+    resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
+  
   co@^4.6.0:
     version "4.6.0"
     resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -2104,7 +2111,7 @@ Lockfile:
       safe-buffer "^5.0.1"
       sha.js "^2.4.8"
   
-  create-react-class@^15.6.2:
+  create-react-class@^15.6.0, create-react-class@^15.6.2:
     version "15.6.3"
     resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
     dependencies:
@@ -2511,6 +2518,14 @@ Lockfile:
       minimalistic-assert "^1.0.0"
       minimalistic-crypto-utils "^1.0.0"
   
+  embed-video@^2.0.3:
+    version "2.0.3"
+    resolved "https://registry.yarnpkg.com/embed-video/-/embed-video-2.0.3.tgz#5533aac7cb883b839e21a074c360ff8ddc2b78a4"
+    dependencies:
+      fetch-ponyfill "^4.0.0"
+      lodash.escape "^4.0.1"
+      promise-polyfill "^6.0.2"
+  
   emojis-list@^2.0.0:
     version "2.1.0"
     resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
@@ -2770,6 +2785,10 @@ Lockfile:
       d "1"
       es5-ext "~0.10.14"
   
+  eventemitter3@^2.0.3:
+    version "2.0.3"
+    resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
+  
   events@^1.0.0, events@^1.1.1:
     version "1.1.1"
     resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
@@ -2857,7 +2876,7 @@ Lockfile:
       assign-symbols "^1.0.0"
       is-extendable "^1.0.1"
   
-  extend@~3.0.0, extend@~3.0.1:
+  extend@^3.0.1, extend@~3.0.0, extend@~3.0.1:
     version "3.0.1"
     resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
   
@@ -2894,6 +2913,10 @@ Lockfile:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-1.1.0.tgz#c053477817c86b51daa853c81e059b733d023614"
   
+  fast-diff@1.1.2:
+    version "1.1.2"
+    resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.1.2.tgz#4b62c42b8e03de3f848460b639079920695d0154"
+  
   fast-json-stable-stringify@^2.0.0:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
@@ -2921,6 +2944,12 @@ Lockfile:
       promise "^7.1.1"
       setimmediate "^1.0.5"
       ua-parser-js "^0.7.9"
+  
+  fetch-ponyfill@^4.0.0:
+    version "4.1.0"
+    resolved "https://registry.yarnpkg.com/fetch-ponyfill/-/fetch-ponyfill-4.1.0.tgz#ae3ce5f732c645eab87e4ae8793414709b239893"
+    dependencies:
+      node-fetch "~1.7.1"
   
   figures@^2.0.0:
     version "2.0.0"
@@ -3559,27 +3588,7 @@ Lockfile:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
   
-  intl-format-cache@^2.0.5:
-    version "2.1.0"
-    resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-2.1.0.tgz#04a369fecbfad6da6005bae1f14333332dcf9316"
-  
-  intl-messageformat-parser@1.4.0, intl-messageformat-parser@^1.2.0:
-    version "1.4.0"
-    resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.4.0.tgz#b43d45a97468cadbe44331d74bb1e8dea44fc075"
-  
-  intl-messageformat@^2.0.0, intl-messageformat@^2.1.0:
-    version "2.2.0"
-    resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-2.2.0.tgz#345bcd46de630b7683330c2e52177ff5eab484fc"
-    dependencies:
-      intl-messageformat-parser "1.4.0"
-  
-  intl-relativeformat@^2.0.0:
-    version "2.1.0"
-    resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-2.1.0.tgz#010f1105802251f40ac47d0e3e1a201348a255df"
-    dependencies:
-      intl-messageformat "^2.0.0"
-  
-  invariant@^2.0.0, invariant@^2.1.1:
+  invariant@^2.0.0:
     version "2.2.4"
     resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
     dependencies:
@@ -4031,6 +4040,10 @@ Lockfile:
     version "4.0.8"
     resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   
+  lodash.escape@^4.0.1:
+    version "4.0.1"
+    resolved "https://registry.yarnpkg.com/lodash.escape/-/lodash.escape-4.0.1.tgz#c9044690c21e04294beaa517712fded1fa88de98"
+  
   lodash.escaperegexp@^4.1.2:
     version "4.1.2"
     resolved "https://registry.yarnpkg.com/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz#64762c48618082518ac3df4ccf5d5886dae20347"
@@ -4165,14 +4178,6 @@ Lockfile:
   media-typer@0.3.0:
     version "0.3.0"
     resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
-  
-  medium-editor-autofocus@^1.1.1:
-    version "1.1.1"
-    resolved "https://registry.yarnpkg.com/medium-editor-autofocus/-/medium-editor-autofocus-1.1.1.tgz#6a81b46ddd218722a778fc758d62bf8e133f40f8"
-  
-  medium-editor@^5.10.0, medium-editor@^5.23.3:
-    version "5.23.3"
-    resolved "https://registry.yarnpkg.com/medium-editor/-/medium-editor-5.23.3.tgz#6fb638759ae2fc76c423feb056f346d9c518d3b7"
   
   mem@^1.1.0:
     version "1.1.0"
@@ -4372,7 +4377,7 @@ Lockfile:
     dependencies:
       minimatch "^3.0.2"
   
-  node-fetch@^1.0.1:
+  node-fetch@^1.0.1, node-fetch@~1.7.1:
     version "1.7.3"
     resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
     dependencies:
@@ -4641,6 +4646,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/param-case/-/param-case-2.1.1.tgz#df94fd8cf6531ecf75e6bef9a0858fbc72be2247"
     dependencies:
       no-case "^2.2.0"
+  
+  parchment@^1.1.2, parchment@^1.1.4:
+    version "1.1.4"
+    resolved "https://registry.yarnpkg.com/parchment/-/parchment-1.1.4.tgz#aeded7ab938fe921d4c34bc339ce1168bc2ffde5"
   
   parse-asn1@^5.0.0:
     version "5.1.0"
@@ -5077,6 +5086,10 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   
+  promise-polyfill@^6.0.2:
+    version "6.1.0"
+    resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
+  
   promise.prototype.finally@^3.1.0:
     version "3.1.0"
     resolved "https://registry.yarnpkg.com/promise.prototype.finally/-/promise.prototype.finally-3.1.0.tgz#66f161b1643636e50e7cf201dc1b84a857f3864e"
@@ -5173,6 +5186,29 @@ Lockfile:
   querystring@0.2.0, querystring@^0.2.0:
     version "0.2.0"
     resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
+  
+  quill-auto-links@^0.1.2:
+    version "0.1.2"
+    resolved "https://registry.yarnpkg.com/quill-auto-links/-/quill-auto-links-0.1.2.tgz#e5a8b608d4b0db1415530f283f646de67d35ed5c"
+  
+  quill-delta@^3.6.2:
+    version "3.6.2"
+    resolved "https://registry.yarnpkg.com/quill-delta/-/quill-delta-3.6.2.tgz#76eed0163b8b09a076fba6ade29307c42b40b8d8"
+    dependencies:
+      deep-equal "^1.0.1"
+      extend "^3.0.1"
+      fast-diff "1.1.2"
+  
+  quill@^1.2.6:
+    version "1.3.6"
+    resolved "https://registry.yarnpkg.com/quill/-/quill-1.3.6.tgz#99f4de1fee85925a0d7d4163b6d8328f23317a4d"
+    dependencies:
+      clone "^2.1.1"
+      deep-equal "^1.0.1"
+      eventemitter3 "^2.0.3"
+      extend "^3.0.1"
+      parchment "^1.1.4"
+      quill-delta "^3.6.2"
   
   radium@^0.19.0:
     version "0.19.6"
@@ -5271,6 +5307,10 @@ Lockfile:
       node-dir "^0.1.10"
       recast "^0.12.6"
   
+  react-dom-factories@^1.0.0:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/react-dom-factories/-/react-dom-factories-1.0.2.tgz#eb7705c4db36fb501b3aa38ff759616aa0ff96e0"
+  
   react-dom@^16.2.0:
     version "16.2.0"
     resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
@@ -5324,32 +5364,6 @@ Lockfile:
       babel-runtime "^6.26.0"
       is-dom "^1.0.9"
   
-  react-intl-translations-manager@^5.0.1:
-    version "5.0.1"
-    resolved "https://registry.yarnpkg.com/react-intl-translations-manager/-/react-intl-translations-manager-5.0.1.tgz#f0ef1a9368abcac3b10b2e8b6027887dced5474e"
-    dependencies:
-      chalk "^2.1.0"
-      glob "^7.1.2"
-      json-stable-stringify "^1.0.1"
-      mkdirp "^0.5.1"
-  
-  react-intl@^2.4.0:
-    version "2.4.0"
-    resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.4.0.tgz#66c14dc9df9a73b2fbbfbd6021726e80a613eb15"
-    dependencies:
-      intl-format-cache "^2.0.5"
-      intl-messageformat "^2.1.0"
-      intl-relativeformat "^2.0.0"
-      invariant "^2.1.1"
-  
-  react-medium-editor@^1.8.1:
-    version "1.8.1"
-    resolved "https://registry.yarnpkg.com/react-medium-editor/-/react-medium-editor-1.8.1.tgz#016ffc3bb82f9364af15f7e43be75d6882555f5a"
-    dependencies:
-      blacklist "^1.1.2"
-      medium-editor "^5.10.0"
-      object-assign "^4.0.1"
-  
   react-modal@^3.1.10:
     version "3.3.1"
     resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.3.1.tgz#7355db196482da0c7fa1cbecccf2bdd9bc366b14"
@@ -5365,6 +5379,18 @@ Lockfile:
       performance-now "^0.2.0"
       prop-types "^15.5.8"
       raf "^3.1.0"
+  
+  react-quill@^1.2.6:
+    version "1.2.6"
+    resolved "https://registry.yarnpkg.com/react-quill/-/react-quill-1.2.6.tgz#4192b3fc8a446363605d2c48f7fb6a1d32a00eb4"
+    dependencies:
+      "@types/quill" "*"
+      "@types/react" "*"
+      create-react-class "^15.6.0"
+      lodash "^4.17.4"
+      prop-types "^15.5.10"
+      quill "^1.2.6"
+      react-dom-factories "^1.0.0"
   
   react-redux@^5.0.6:
     version "5.0.7"
@@ -5531,6 +5557,10 @@ Lockfile:
   regenerate@^1.2.1:
     version "1.3.3"
     resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.3.tgz#0c336d3980553d755c39b586ae3b20aa49c82b7f"
+  
+  regenerator-runtime@^0.10.5:
+    version "0.10.5"
+    resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
   
   regenerator-runtime@^0.11.0:
     version "0.11.1"
@@ -6796,16 +6826,14 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: Command failed.
-  Exit code: 2
-  Command: sh
-  Arguments: -c webpack
-  Directory: /Users/aaron/Projects/commonfare-rails/storybuilder-react
-  Output:
-  
-      at ProcessTermError.MessageError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:186:110)
-      at new ProcessTermError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:226:113)
-      at ChildProcess.<anonymous> (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:30281:17)
-      at ChildProcess.emit (events.js:127:13)
-      at maybeClose (internal/child_process.js:936:16)
-      at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)
+  Error: Command "deprecate" not found.
+      at new MessageError (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:186:110)
+      at /usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:87307:17
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:98:30)
+      at /usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:23451:28)
+      at /usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:95:12
+      at runCommand (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:87312:22)
+      at Object.<anonymous> (/usr/local/Cellar/yarn/1.5.1/libexec/lib/cli.js:87412:14)

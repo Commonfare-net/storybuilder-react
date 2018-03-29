@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
-import MediumEditorAutofocus from 'medium-editor-autofocus';
+import { string, func, bool } from 'prop-types';
+import ReactQuill from 'react-quill';
+import sanitizeHtml from 'sanitize-html';
 
 import StoryItem from './StoryItem';
 
@@ -9,11 +9,11 @@ import './LargeTextStoryItem.css';
 
 export default class LargeTextStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
@@ -28,39 +28,26 @@ export default class LargeTextStoryItem extends Component {
     }
   }
 
-  // autoFocus = () => {
-  //   const { medium } = this.editor;
-  //   const { origElements: { childNodes } } = medium;
-  //
-  //   medium.selectAllContents();
-  //
-  //   // clear the selection and put the cursor at the end
-  //   MediumEditor.selection.clearSelection(document);
-  // }
-
-  handleChange = (text, medium) => {
-    const { onChange } = this.props;
-
+  handleChange = (text) => {
     this.setState({ content: text });
   }
 
+  autoFocusEditor = () => this.reactQuillRef.getEditor().focus()
+
+  save = () => {
+    const { onSave } = this.props;
+    const { content } = this.state;
+
+    onSave(sanitizeHtml(content, { allowedTags: [] }));
+  }
+
   render() {
-    const { onSave, onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled } = this.props;
     const { content } = this.state;
 
     const editorOptions = {
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      toolbar: false,
-      placeholder: {
-        text: 'Highlight something...',
-        hideOnClick: false
-      },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
-      }
+      theme: null,
+      placeholder: 'Write something that stands out...'
     }
 
     return (
@@ -70,15 +57,14 @@ export default class LargeTextStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={this.state.content}
-        onSave={() => onSave(this.state.content)}
+        onOpen={this.autoFocusEditor}
+        onSave={this.save}
         onRemove={onRemove}>
-        <Editor
-          tag="h2"
-          ref={editor => this.editor = editor}
-          text={this.state.content}
-          options={editorOptions}
+        <ReactQuill
+          ref={(el) => this.reactQuillRef = el}
+          value={content}
           onChange={this.handleChange}
-        />
+          {...editorOptions} />
       </StoryItem>
     )
   }

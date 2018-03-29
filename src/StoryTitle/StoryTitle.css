@@ -7,11 +7,8 @@
   padding: 15px;
 }
 
-.story-builder__title.medium-editor-element:focus {
-  outline: none;
-}
-
-.story-builder__title.medium-editor-element::after {
-  width: 100%;
-  padding: 15px 0;
+.story-builder__title .ql-editor {
+  font-size: 3rem;
+  text-align: center;
+  padding: 0;
 }

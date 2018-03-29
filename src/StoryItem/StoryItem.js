@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, bool, func, element, oneOfType, arrayOf } from 'prop-types';
 
-import FontAwesome from 'react-fontawesome';
-import Dotdotdot from 'react-dotdotdot';
-
-import './StoryItem.css';
+import CollapsedStoryItem from './CollapsedStoryItem';
+import StoryItemEditor from './StoryItemEditor';
 
 export default class StoryItem extends Component {
   static propTypes = {
-    icon: PropTypes.string.isRequired,
-    disabled: PropTypes.bool,
-    editing: PropTypes.bool,
-    content: PropTypes.string.isRequired,
-    onOpen: PropTypes.func,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    children: PropTypes.oneOfType([
-      PropTypes.element,
-      PropTypes.arrayOf(PropTypes.element),
+    icon: string.isRequired,
+    disabled: bool,
+    editing: bool,
+    content: string.isRequired,
+    onOpen: func,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    children: oneOfType([
+      element,
+      arrayOf(element),
     ]),
-    className: PropTypes.string
+    className: string
   }
 
   static defaultProps = {
@@ -30,15 +28,17 @@ export default class StoryItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editing: props.editing,
-      // content: props.content
+      editing: props.editing
     }
   }
 
   // Trigger onOpen if the item is added with editing set to true
   componentDidMount() {
-    if (this.state.editing && this.props.onOpen) {
-      this.props.onOpen();
+    const { onOpen } = this.props;
+    const { editing } = this.state;
+
+    if (editing && onOpen) {
+      onOpen();
     }
   }
 
@@ -53,41 +53,53 @@ export default class StoryItem extends Component {
     this.setState((prevState) => ({ editing: !prevState.editing }))
   }
 
-  startEditing = () => this.setState({ editing: true }, () => { if (this.props.onOpen) this.props.onOpen() });
-  doneEditing = () => this.setState({ editing: false }, this.props.onSave);
-  remove = () => { if (confirm("Are you sure? This cannot be undone")) this.props.onRemove(this.props.content) };
-
-  render() {
-    const { icon, content, children, className, disabled } = this.props;
+  startEditing = () => {
+    const { disabled, onOpen } = this.props;
     const { editing } = this.state;
 
-    return (
-      <div
-        className={`story-item ${editing ? 'story-item--editing' : ''} ${className}`}
-        onClick={() => (!disabled && !editing) ? this.startEditing() : null}>
-        <div className="story-item__icon">
-          <FontAwesome name={icon} size="3x" className="fa-fw"/>
-        </div>
-        <div className="story-item__content">
-          <Dotdotdot clamp={3}>{content}</Dotdotdot>
-        </div>
-        <div className="story-item__editor">
+    if (!disabled && !editing) {
+      this.setState({
+        editing: true
+      }, () => { if (onOpen) this.props.onOpen() })
+    }
+  }
+
+  doneEditing = () => {
+    const { onSave } = this.props;
+
+    this.setState({ editing: false }, onSave)
+  }
+
+  remove = () => {
+    const { content, onRemove } = this.props;
+
+    if (confirm("Are you sure? This cannot be undone")) {
+      onRemove(content)
+    }
+  }
+
+  render() {
+    const { icon, content, children, className } = this.props;
+    const { editing } = this.state;
+
+    if (editing) {
+      return (
+        <StoryItemEditor
+          onSave={this.doneEditing}
+          onRemove={this.remove}
+          className={className}>
           {children}
-          {!disabled &&
-            <div className="story-item__buttons">
-              <button className="story-item__remove-button"
-                onClick={this.remove}>
-                Remove
-              </button>
-              <button
-                className="story-item__done-button"
-                onClick={this.doneEditing}>
-                Done
-              </button>
-            </div>
-          }
-        </div>
-      </div>
-    )
+        </StoryItemEditor>
+      )
+    } else {
+      return (
+        <CollapsedStoryItem
+          icon={icon}
+          content={content}
+          onClick={this.startEditing}
+          className={className}
+        />
+      );
+    }
   }
 }

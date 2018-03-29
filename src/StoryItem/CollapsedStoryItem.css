@@ -1,0 +1,31 @@
+.story-item {
+  --cf-primary-color: #E7472E;
+  --cf-story-item-text-color: #fff;
+
+  display: flex;
+  flex-direction: row;
+  min-width: 300px;
+  min-height: 60px;
+  padding: 10px;
+  background-color: var(--cf-primary-color, #E7472E);
+  color: var(--cf-story-item-text-color, #fff);
+  font-size: 16px;
+
+  transition: all 250ms ease-in;
+}
+
+.story-item__icon {
+  min-height: 80px;
+  padding-right: 10px;
+  width: 60px;
+  order: 1;
+  border-right: 1px solid var(--cf-story-item-text-color, #fff);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.story-item__content {
+  order: 2;
+  padding: 15px 10px;
+}

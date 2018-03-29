@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
-const MediumEditor = require('medium-editor');
-import MediumEditorAutofocus from 'medium-editor-autofocus';
+import { string, func, bool } from 'prop-types';
+import ReactQuill, { Quill } from 'react-quill';
+import AutoLinks from 'quill-auto-links';
 
 import StoryItem from './StoryItem';
-
 import './TextStoryItem.css';
+
+Quill.register('modules/autoLinks', AutoLinks);
 
 export default class TextStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
@@ -29,39 +29,22 @@ export default class TextStoryItem extends Component {
     }
   }
 
-  // autoFocus = () => {
-  //   const { medium } = this.editor;
-  //   const { origElements: { childNodes } } = medium;
-  //
-  //   // select the last paragraph
-  //   const lastElement = childNodes[childNodes.length - 1];
-  //   medium.selectElement(lastElement);
-  //
-  //   // clear the selection and put the cursor at the end
-  //   MediumEditor.selection.clearSelection(document);
-  //   medium.getExtensionByName('toolbar').hideToolbar();
-  // }
-
-  handleChange = (text, medium) => {
-    const { onChange } = this.props;
-
+  handleChange = (text) => {
     this.setState({ content: text });
   }
 
+  autoFocusEditor = () => this.reactQuillRef.getEditor().focus()
+  save = () => this.props.onSave(this.state.content)
+
   render() {
-    const { onSave, onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled } = this.props;
 
     const editorOptions = {
-      placeholder: {
-        text: 'Write something...',
-        hideOnClick: false
-      },
-      toolbar: {
-        buttons: ['bold', 'italic', 'underline', 'quote']
-      },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
+      theme: "bubble",
+      placeholder: "Write something...",
+      modules: {
+        autoLinks: true,
+        toolbar: ['bold', 'italic', 'underline', 'link', 'blockquote']
       }
     }
 
@@ -71,14 +54,15 @@ export default class TextStoryItem extends Component {
         icon="font"
         editing={editing}
         disabled={disabled}
-        content={this.state.content.replace(/(<[^>]+>)|(&nbsp;)/g, ' ')}
-        onSave={() => onSave(this.state.content)}
+        content={this.state.content}
+        onOpen={this.autoFocusEditor}
+        onSave={this.save}
         onRemove={onRemove}>
-        <Editor
-          ref={editor => this.editor = editor}
-          text={this.state.content}
-          options={editorOptions}
+        <ReactQuill
+          ref={(el) => this.reactQuillRef = el}
+          value={this.state.content}
           onChange={this.handleChange}
+          {...editorOptions}
         />
       </StoryItem>
     )

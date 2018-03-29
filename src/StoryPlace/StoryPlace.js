@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
+import ReactQuill from 'react-quill';
+import sanitizeHtml from 'sanitize-html';
 
 import './StoryPlace.css';
 
@@ -13,26 +14,12 @@ export default class StoryPlace extends Component {
   render() {
     const { place, onChange } = this.props;
 
-    const editorOptions = {
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      placeholder: {
-        text: 'Place',
-        hideOnClick: true
-      },
-      toolbar: false,
-      extensions: {
-        imageDragging: {}
-      }
-    }
-
     return (
-      <Editor
-        tag="h2"
-        text={place}
-        options={editorOptions}
-        onChange={onChange}
+      <ReactQuill
+        theme={null}
+        defaultValue={place}
+        placeholder="Place"
+        onChange={text => onChange(sanitizeHtml(text, { allowedTags: [] }))}
         className="story-builder__place" />
     )
   }

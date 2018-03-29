@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, number, arrayOf, oneOf, func, shape } from 'prop-types';
 import { IntlProvider } from 'react-intl';
 
 import Title from '../StoryTitle/StoryTitle';
@@ -12,8 +12,6 @@ import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-import 'medium-editor/dist/css/medium-editor.css';
-import 'medium-editor/dist/css/themes/default.css';
 import './StoryBuilder.css';
 
 const translations = {
@@ -22,26 +20,26 @@ const translations = {
 
 class StoryBuilder extends Component {
   static propTypes = {
-    locale: PropTypes.string,
-    title: PropTypes.string,
-    place: PropTypes.string,
-    availableTags: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired
+    locale: string,
+    title: string,
+    place: string,
+    availableTags: arrayOf(shape({
+      id: number.isRequired,
+      name: string.isRequired
     })),
-    tags: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired
+    tags: arrayOf(shape({
+      id: number.isRequired,
+      name: string.isRequired
     })),
-    content_json: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']).isRequired,
-      content: PropTypes.string.isRequired,
-      caption: PropTypes.string
+    content_json: arrayOf(shape({
+      id: string.isRequired,
+      type: oneOf(['text', 'largeText', 'image', 'video']).isRequired,
+      content: string.isRequired,
+      caption: string
     })).isRequired,
-    imageUploadHandler: PropTypes.func.isRequired,
-    imageDeleteHandler: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired
+    imageUploadHandler: func.isRequired,
+    imageDeleteHandler: func.isRequired,
+    onSave: func.isRequired
   }
 
   static defaultProps = {

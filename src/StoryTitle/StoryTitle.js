@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Editor from 'react-medium-editor';
+import ReactQuill from 'react-quill';
+import sanitizeHtml from 'sanitize-html';
 
 import './StoryTitle.css';
 
@@ -13,26 +14,12 @@ export default class StoryTitle extends Component {
   render() {
     const { title, onChange } = this.props;
 
-    const editorOptions = {
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      placeholder: {
-        text: 'Title',
-        hideOnClick: true
-      },
-      toolbar: false,
-      extensions: {
-        imageDragging: {}
-      }
-    }
-
     return (
-      <Editor
-        tag="h1"
-        text={title}
-        options={editorOptions}
-        onChange={onChange}
+      <ReactQuill
+        theme={null}
+        defaultValue={title}
+        placeholder="Title"
+        onChange={(text) => onChange(sanitizeHtml(text, { allowedTags: [] }))}
         className="story-builder__title" />
     )
   }

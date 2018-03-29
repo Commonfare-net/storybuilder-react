@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import FontAwesome from 'react-fontawesome';
-import Editor from 'react-medium-editor';
-import MediumEditorAutofocus from 'medium-editor-autofocus';
+import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
+import sanitizeHtml from 'sanitize-html';
 
 import StoryItem from './StoryItem';
 
@@ -11,17 +11,18 @@ import './ImageStoryItem.css';
 
 export default class ImageStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string,
-    caption: PropTypes.string,
-    imageUploadHandler: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string,
+    caption: string,
+    imageUploadHandler: func.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
-    content: "",
+    content: '',
+    caption: '',
     editing: false,
     disabled: false
   }
@@ -37,10 +38,8 @@ export default class ImageStoryItem extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { content, caption } = this.state;
-    // content changed
-    if (!this.state.uploading && (this.contentChanged(prevState) || this.captionChanged(prevState))) {
-      this.props.onSave({ content, caption });
+    if (this.contentChanged(prevState) || this.captionChanged(prevState)) {
+      this.save()
     }
   }
 
@@ -84,23 +83,31 @@ export default class ImageStoryItem extends Component {
     });
   }
 
+  handleChange = (caption) => this.setState({ caption })
+
+  handleOpen = () => isEmpty(this.state.content) && this.openFileChooser()
+
+  save = () => {
+    const { uploading, content, caption } = this.state;
+    const { onSave } = this.props;
+
+    if (!uploading) {
+      onSave({
+        content,
+        caption: sanitizeHtml(caption, { allowedTags: [] })
+      })
+    }
+  }
+
   render() {
-    const { disabled, editing, onSave, onRemove } = this.props;
-    const { content: url, caption, uploading, uploadProgress, preview } = this.state;
+    const { disabled, editing, onRemove } = this.props;
+    const { content, caption, uploading, uploadProgress, preview } = this.state;
 
     const editorOptions = {
-      disableEditing: disabled || uploading,
-      disableReturn: true,
-      disableDoubleReturn: true,
-      disableExtraSpaces: true,
-      toolbar: false,
-      placeholder: {
-        text: 'Write a caption',
-        hideOnClick: false
-      },
-      extensions: {
-        imageDragging: {},
-        autofocus: new MediumEditorAutofocus()
+      theme: null,
+      placeholder: 'Write a caption...',
+      modules: {
+        toolbar: false
       }
     }
 
@@ -108,16 +115,16 @@ export default class ImageStoryItem extends Component {
       <StoryItem
         className="image-story-item"
         icon="image"
-        content={caption || url}
+        content={caption || content}
         disabled={disabled}
         editing={editing}
-        onOpen={() => isEmpty(url) && this.openFileChooser()}
-        onSave={() => !uploading && onSave({ url, caption })}
+        onOpen={this.handleOpen}
+        onSave={this.save}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">
             <input ref={fileInput => this.fileInput = fileInput} type="file" onChange={this.fileSelectedHandler} style={{ display: 'none' }}/>
-            <img src={uploading ? preview : url} style={{ opacity: `${uploadProgress / 100}` }}/>
+            <img src={uploading ? preview : content} style={{ opacity: `${uploadProgress / 100}` }}/>
             {!uploading &&
               <button className="image-story-item__upload-button" onClick={this.openFileChooser}>
                 <FontAwesome name='upload' size='2x' />
@@ -128,11 +135,16 @@ export default class ImageStoryItem extends Component {
             }
           </div>
         </div>
-        <Editor
+        <ReactQuill
+          {...editorOptions}
+          value={caption}
+          onChange={this.handleChange}
+        />
+        {/* <Editor
           text={caption}
           options={editorOptions}
           onChange={(caption) => this.setState({ caption })}
-        />
+        /> */}
       </StoryItem>
     )
   }
