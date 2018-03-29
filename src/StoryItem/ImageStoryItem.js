@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
@@ -11,17 +11,18 @@ import './ImageStoryItem.css';
 
 export default class ImageStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string,
-    caption: PropTypes.string,
-    imageUploadHandler: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string,
+    caption: string,
+    imageUploadHandler: func.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
-    content: "",
+    content: '',
+    caption: '',
     editing: false,
     disabled: false
   }
@@ -38,7 +39,7 @@ export default class ImageStoryItem extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.contentChanged(prevState) || this.captionChanged(prevState)) {
-      this.saveItem()
+      this.save()
     }
   }
 
@@ -84,7 +85,9 @@ export default class ImageStoryItem extends Component {
 
   handleChange = (caption) => this.setState({ caption })
 
-  saveItem = () => {
+  handleOpen = () => isEmpty(this.state.content) && this.openFileChooser()
+
+  save = () => {
     const { uploading, content, caption } = this.state;
     const { onSave } = this.props;
 
@@ -115,8 +118,8 @@ export default class ImageStoryItem extends Component {
         content={caption || content}
         disabled={disabled}
         editing={editing}
-        onOpen={() => isEmpty(content) && this.openFileChooser()}
-        onSave={this.saveItem}
+        onOpen={this.handleOpen}
+        onSave={this.save}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">
           <div className="image-story-item__image-wrapper">

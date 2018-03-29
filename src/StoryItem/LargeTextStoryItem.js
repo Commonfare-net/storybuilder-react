@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import ReactQuill from 'react-quill';
 import sanitizeHtml from 'sanitize-html';
 
@@ -9,11 +9,11 @@ import './LargeTextStoryItem.css';
 
 export default class LargeTextStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
@@ -32,8 +32,17 @@ export default class LargeTextStoryItem extends Component {
     this.setState({ content: text });
   }
 
+  autoFocusEditor = () => this.reactQuillRef.getEditor().focus()
+
+  save = () => {
+    const { onSave } = this.props;
+    const { content } = this.state;
+
+    onSave(sanitizeHtml(content, { allowedTags: [] }));
+  }
+
   render() {
-    const { onSave, onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled } = this.props;
     const { content } = this.state;
 
     const editorOptions = {
@@ -48,8 +57,8 @@ export default class LargeTextStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={this.state.content}
-        onOpen={() => this.reactQuillRef.getEditor().focus()}
-        onSave={() => onSave(sanitizeHtml(this.state.content, { allowedTags: [] }))}
+        onOpen={this.autoFocusEditor}
+        onSave={this.save}
         onRemove={onRemove}>
         <ReactQuill
           ref={(el) => this.reactQuillRef = el}

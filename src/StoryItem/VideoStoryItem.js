@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import ReactQuill from 'react-quill';
 import isEmpty from 'lodash/isEmpty';
 import sanitizeHtml from 'sanitize-html';
@@ -9,12 +9,12 @@ import StoryItem from './StoryItem';
 
 export default class VideoStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string.isRequired,
+    url: string.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
@@ -64,18 +64,23 @@ export default class VideoStoryItem extends Component {
     }
   }
 
-  // finds the provider to show the proper icon (if you want)
-  videoUrl = () => {
+  autoFocusEditor = () => {
     const { content } = this.state;
-    if (content.match(/src="([^"]+)"/)) {
-      return content.match(/src="([^"]+)"/)[1];
-    } else {
-      return "";
+
+    if (isEmpty(content)) {
+      this.reactQuillRef.getEditor().focus()
     }
   }
 
+  save = () => {
+    const { onSave } = this.props;
+    const { url, content } = this.state;
+
+    onSave({ url, content })
+  }
+
   render() {
-    const { onSave, onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled } = this.props;
     const { url, content, unsupported } = this.state;
 
     const editorOptions = {
@@ -90,7 +95,8 @@ export default class VideoStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={url}
-        onSave={() => onSave({ url, content })}
+        onOpen={this.autoFocusEditor}
+        onSave={this.save}
         onRemove={onRemove}>
         <div>
           {unsupported &&
@@ -100,6 +106,7 @@ export default class VideoStoryItem extends Component {
           }
           {isEmpty(content) &&
             <ReactQuill
+              ref={(el) => this.reactQuillRef = el}
               onChange={this.handleChange}
               {...editorOptions}
             />

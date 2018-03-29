@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import ReactQuill, { Quill } from 'react-quill';
 import AutoLinks from 'quill-auto-links';
 
@@ -10,11 +10,11 @@ Quill.register('modules/autoLinks', AutoLinks);
 
 export default class TextStoryItem extends Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    editing: PropTypes.bool,
-    disabled: PropTypes.bool
+    content: string.isRequired,
+    onSave: func.isRequired,
+    onRemove: func.isRequired,
+    editing: bool,
+    disabled: bool
   }
 
   static defaultProps = {
@@ -33,8 +33,11 @@ export default class TextStoryItem extends Component {
     this.setState({ content: text });
   }
 
+  autoFocusEditor = () => this.reactQuillRef.getEditor().focus()
+  save = () => this.props.onSave(this.state.content)
+
   render() {
-    const { onSave, onRemove, editing, disabled } = this.props;
+    const { onRemove, editing, disabled } = this.props;
 
     const editorOptions = {
       theme: "bubble",
@@ -52,8 +55,8 @@ export default class TextStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={this.state.content}
-        onOpen={() => this.reactQuillRef.getEditor().focus()}
-        onSave={() => onSave(this.state.content)}
+        onOpen={this.autoFocusEditor}
+        onSave={this.save}
         onRemove={onRemove}>
         <ReactQuill
           ref={(el) => this.reactQuillRef = el}
