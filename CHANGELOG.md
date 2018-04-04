@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.0
+
+* Added localization. Story Builder fully translated in Croatian, Dutch, English and Italian.
+
 ## 1.1.3
 
 * Fixed another bug. Now video story items display the video URL properly
