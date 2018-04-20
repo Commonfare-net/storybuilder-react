@@ -47,7 +47,11 @@ class LargeTextStoryItem extends Component {
     const { onSave } = this.props;
     const { content } = this.state;
 
-    onSave(sanitizeHtml(content, { allowedTags: [] }));
+    onSave(sanitizeHtml(content, {
+      allowedTags: [],
+      textFilter: text => text.replace(/&quot;/g, '"')
+      // https://github.com/punkave/sanitize-html/issues/96
+    }));
   }
 
   render() {
