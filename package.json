@@ -46,7 +46,7 @@
     "react-dotdotdot": "^1.2.2",
     "react-fontawesome": "^1.6.1",
     "react-intl": "^2.4.0",
-    "react-quill": "^1.2.6",
+    "react-quill": "^1.2.7",
     "react-tagsinput": "^3.19.0",
     "sanitize-html": "^1.18.2"
   }
