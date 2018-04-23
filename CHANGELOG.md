@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.1
+
+* Fixed quotes escaping in `LargeTextStoryItem`s
+
 ## 1.2.0
 
 * Added localization. Story Builder fully translated in Croatian, Dutch, English and Italian.
