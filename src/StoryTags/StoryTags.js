@@ -30,11 +30,6 @@ class StoryTags extends Component {
     availableTags: []
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { tags: props.tags };
-  }
-
   autosuggestRenderInput = ({ addTag, ...props }) => {
     const handleOnChange = (e, { newValue, method }) => {
       if (method === 'enter') {
@@ -69,13 +64,8 @@ class StoryTags extends Component {
     )
   }
 
-  handleChange = (tags) => {
-    this.setState({ tags }, () => this.props.onChange(this.state.tags));
-  }
-
   render() {
-    const { intl } = this.props;
-    const { tags } = this.state;
+    const { intl, tags, onChange } = this.props;
 
     return (
       <div className="story-builder__tags-wrapper">
@@ -90,7 +80,7 @@ class StoryTags extends Component {
             placeholder: intl.formatMessage({ id: 'story.add_tag' })
           }}
           tagDisplayProp="name"
-          onChange={this.handleChange} />
+          onChange={onChange} />
       </div>
     )
   }

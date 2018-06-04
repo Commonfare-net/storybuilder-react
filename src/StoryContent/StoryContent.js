@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 // Code for drag and drop behavior adapted from https://codesandbox.io/s/k260nyxq9v
+import { connect } from 'react-redux';
+import { deleteItem, updateItem, reorderItems } from '../actions';
 
 import TextStoryItem from '../StoryItem/TextStoryItem';
 import LargeTextStoryItem from '../StoryItem/LargeTextStoryItem';
@@ -10,16 +12,7 @@ import VideoStoryItem from '../StoryItem/VideoStoryItem';
 
 import './StoryContent.css';
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-export default class StoryContent extends Component {
+class StoryContent extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -28,34 +21,27 @@ export default class StoryContent extends Component {
       caption: PropTypes.string
     })).isRequired,
     disabled: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
+    deleteItem: PropTypes.func.isRequired,
+    updateItem: PropTypes.func.isRequired,
+    reorderItems: PropTypes.func.isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
     imageDeleteHandler: PropTypes.func.isRequired
   }
 
   static defaultProps = {
-    disabled: false
-  }
-
-  updateItem = (newContent, index) => {
-    const { items, onChange } = this.props;
-
-    onChange([
-      ...items.slice(0, index),
-      { ...items[index], ...newContent, editing: undefined }, // undefined so that it doesn't get passed to the API
-      ...items.slice(index + 1)
-    ])
+    disabled: false,
+    imageUploadHandler: function() {},
+    imageDeleteHandler: function() {}
   }
 
   removeItem = (item, index, callback) => {
-    const { items, onChange } = this.props;
-
-    Promise.resolve(onChange(items.filter((item, idx) => idx !== index)))
-    .then(() => { if (callback) callback(item) });
+    const { deleteItem } = this.props;
+    deleteItem(item, index).then(() => { if (callback) callback(item) });
+    // see https://stackoverflow.com/questions/39524855/how-to-trigger-off-callback-after-updating-state-in-redux
   }
 
   reorderItems = (result) => {
-    const { items, onChange } = this.props;
+    const { items, reorderItems } = this.props;
     const { source: { index: sourceIndex }, destination: { index: destinationIndex }} = result;
 
     // dropped outside the list
@@ -63,13 +49,11 @@ export default class StoryContent extends Component {
       return;
     }
 
-    const reorderedItems = reorder(
+    reorderItems(
       items,
       sourceIndex,
       destinationIndex
     )
-
-    onChange(reorderedItems);
   }
 
   draggableStoryItem = (item, index) => (provided, snapshot) => (
@@ -87,6 +71,7 @@ export default class StoryContent extends Component {
   )
 
   renderStoryItem = (item, index) => {
+    const { updateItem } = this.props;
     const { type, editing, content } = item;
     const props = {
       key: index,
@@ -99,13 +84,13 @@ export default class StoryContent extends Component {
       case 'text':
         return <TextStoryItem
           {...props}
-          onSave={(content) => this.updateItem({ content: content }, index)}
+          onSave={(content) => updateItem({ content: content }, index)}
           onRemove={() => this.removeItem(item, index)}
         />;
       case 'largeText':
         return <LargeTextStoryItem
           {...props}
-          onSave={(content) => this.updateItem({ content: content }, index)}
+          onSave={(content) => updateItem({ content: content }, index)}
           onRemove={() => this.removeItem(item, index)}
         />;
       case 'image':
@@ -113,14 +98,14 @@ export default class StoryContent extends Component {
           {...props}
           caption={item.caption}
           imageUploadHandler={this.props.imageUploadHandler}
-          onSave={({ content, caption }) => this.updateItem({ content, caption }, index)}
+          onSave={({ content, caption }) => updateItem({ content, caption }, index)}
           onRemove={() => this.removeItem(item, index, this.props.imageDeleteHandler)}
         />;
       case 'video':
         return <VideoStoryItem
           {...props}
           url={item.url}
-          onSave={({ content, url }) => this.updateItem({ content, url }, index)}
+          onSave={({ content, url }) => updateItem({ content, url }, index)}
           onRemove={() => this.removeItem(item, index)}
         />;
       default:
@@ -150,3 +135,15 @@ export default class StoryContent extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  items: state.content_json
+});
+
+const mapDispatchToProps = {
+  deleteItem,
+  updateItem,
+  reorderItems
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryContent);
