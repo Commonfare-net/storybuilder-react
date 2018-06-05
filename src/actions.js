@@ -1,5 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
-
 export const SET_TITLE = 'SET_TITLE';
 export const SET_PLACE = 'SET_PLACE';
 export const SET_TAGS = 'SET_TAGS';
@@ -7,13 +5,14 @@ export const ADD_ITEM = 'ADD_ITEM';
 export const UPDATE_ITEM = 'UPDATE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const REORDER_ITEMS = 'REORDER_ITEMS';
-export const SAVE = 'SAVE';
 
 const dispatchAndSave = (action) => (dispatch, getState, api) => {
+  const prevState = getState()
+
   dispatch(action);
 
   const state = getState();
-  if (!isEmpty(state.title) && !isEmpty(state.place)) api.save(getState());
+  if (state.canSave) api.save(state);
   return Promise.resolve();
 }
 

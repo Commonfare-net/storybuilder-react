@@ -32,7 +32,8 @@
     "react-intl-translations-manager": "^5.0.1",
     "redux-devtools": "^3.4.1",
     "storybook-addon-intl": "^2.3.0",
-    "uglifyjs-webpack-plugin": "^1.2.3"
+    "uglifyjs-webpack-plugin": "^1.2.3",
+    "webpack": "3"
   },
   "dependencies": {
     "babel-plugin-react-intl": "^2.4.0",

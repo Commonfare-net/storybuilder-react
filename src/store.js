@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import * as storyBuilderActions from './actions';
 import difference from 'lodash/difference';
+import isEmpty from 'lodash/isEmpty';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -12,17 +13,21 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-function storyBuilderReducer(state = { locale: 'en', title: undefined, place: undefined, availableTags: [], tags: [], content_json: [] }, action) {
+const canSave = (title, place) => !isEmpty(title) && !isEmpty(place);
+
+function storyBuilderReducer(state = { locale: 'en', title: undefined, place: undefined, canSave: false, availableTags: [], tags: [], content_json: [] }, action) {
   switch (action.type) {
     case storyBuilderActions.SET_TITLE:
       return {
         ...state,
-        title: action.title
+        title: action.title,
+        canSave: canSave(action.title, state.place)
       };
     case storyBuilderActions.SET_PLACE:
       return {
         ...state,
-        place: action.place
+        place: action.place,
+        canSave: canSave(state.title, action.place)
       };
     case storyBuilderActions.SET_TAGS:
       return {

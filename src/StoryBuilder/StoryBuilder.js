@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { string, number, func, shape, arrayOf } from 'prop-types';
+import { string, number, bool, func, shape, arrayOf } from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { setTitle, setPlace, setTags, addItem, save } from '../actions';
@@ -23,6 +23,7 @@ class StoryBuilder extends Component {
     locale: string,
     title: string,
     place: string,
+    canSave: bool,
     availableTags: arrayOf(shape({
       id: number.isRequired,
       name: string.isRequired
@@ -54,46 +55,36 @@ class StoryBuilder extends Component {
     };
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.saving === false && this.state.saving) {
-  //     this.props.onSave(this.state)
-  //     .finally(() => {
-  //       this.setState({ saving: false })
-  //     })
-  //   }
-  //
-  //   if (!isEqual(prevProps.title, this.props.title) ||
-  //       !isEqual(prevProps.place, this.props.place) ||
-  //       !isEqual(prevProps.tags, this.props.tags)) {
-  //     this.save()
-  //   }
-  // }
-
-  canSave = () => !isEmpty(this.props.title) && !isEmpty(this.props.place)
-
-  // save = debounce(() => {
-  //   if (this.canSave() && !this.state.saving) {
-  //     this.props.save()
-  //   }
-  // }, 1000)
-
   render() {
-    const { locale, imageUploadHandler, imageDeleteHandler, title, onTitleChange, place, onPlaceChange, availableTags, tags, onTagsChange, addItem } = this.props;
+    const {
+      locale,
+      imageUploadHandler,
+      imageDeleteHandler,
+      title,
+      onTitleChange,
+      place,
+      onPlaceChange,
+      availableTags,
+      tags,
+      onTagsChange,
+      addItem,
+      canSave
+    } = this.props;
 
     return (
       <IntlProvider locale={locale} messages={translations[locale]}>
         <div className="story-builder">
           <Title title={title} onChange={onTitleChange} />
           <Place place={place} onChange={onPlaceChange} />
-          {this.canSave() &&
+          {canSave &&
             <Tags availableTags={availableTags} tags={tags} onChange={onTagsChange} />
           }
           <StoryContent
-            disabled={!this.canSave()}
+            disabled={!canSave}
             imageUploadHandler={imageUploadHandler}
             imageDeleteHandler={imageDeleteHandler}
           />
-          {this.canSave() &&
+          {canSave &&
             <AddButton onAdd={addItem} />
           }
         </div>
@@ -103,11 +94,12 @@ class StoryBuilder extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { locale, title, place, availableTags, tags } = state;
+  const { locale, title, place, canSave, availableTags, tags } = state;
   return {
     locale,
     title,
     place,
+    canSave,
     availableTags,
     tags
   }
