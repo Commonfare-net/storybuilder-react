@@ -12,3 +12,16 @@
   text-align: center;
   padding: 0;
 }
+
+.story-builder__title .ql-editor.ql-blank::before {
+  width: 100%;
+  left: 0;
+}
+
+.story-builder__title .ql-editor.ql-blank:focus::before {
+  visibility: hidden;
+}
+
+/* .ql-editor.ql-blank:focus::before {
+  visibility: hidden;
+} */

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from './store';
 
 // import external styles
-import 'react-quill/dist/quill.bubble.css';
+// import 'react-quill/dist/quill.bubble.css';
 
 import StoryBuilder from './StoryBuilder/StoryBuilder';
 

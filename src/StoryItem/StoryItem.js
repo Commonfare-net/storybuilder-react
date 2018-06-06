@@ -43,23 +43,6 @@ class StoryItem extends Component {
     }
   }
 
-  // startEditing = () => {
-  //   const { disabled, onOpen } = this.props;
-  //   const { editing } = this.state;
-  //
-  //   if (!disabled && !editing) {
-  //     this.setState({
-  //       editing: true
-  //     }, () => { if (onOpen) this.props.onOpen() })
-  //   }
-  // }
-
-  // doneEditing = () => {
-  //   const { onSave } = this.props;
-  //
-  //   this.setState({ editing: false }, onSave)
-  // }
-
   remove = () => {
     const { content, onRemove, intl: { formatMessage } } = this.props;
 
