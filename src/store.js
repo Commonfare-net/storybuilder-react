@@ -77,9 +77,10 @@ function storyBuilderReducer(state = { locale: 'en', title: undefined, place: un
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = (initialState, api) => createStore(
-  storyBuilderReducer,
-  initialState,
-  composeEnhancers(applyMiddleware(thunk.withExtraArgument(api))),
-);
-export default store;
+export default function configureStore(api, initialState) {
+  return createStore(
+    storyBuilderReducer,
+    initialState,
+    composeEnhancers(applyMiddleware(thunk.withExtraArgument(api)))
+  )
+}

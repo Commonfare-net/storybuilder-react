@@ -11,7 +11,7 @@ import StoryContent from '../StoryContent/StoryContent';
 import AddButton from '../AddButton/AddButton';
 
 // import debounce from 'lodash/debounce';
-import isEmpty from 'lodash/isEmpty';
+// import isEmpty from 'lodash/isEmpty';
 // import isEqual from 'lodash/isEqual';
 
 import './StoryBuilder.css';
@@ -34,7 +34,6 @@ class StoryBuilder extends Component {
     })),
     imageUploadHandler: func.isRequired,
     imageDeleteHandler: func.isRequired,
-    onSave: func.isRequired,
     onTitleChange: func.isRequired,
     onPlaceChange: func.isRequired,
     onTagsChange: func.isRequired,
@@ -45,7 +44,6 @@ class StoryBuilder extends Component {
     locale: 'en',
     imageUploadHandler: function() {},
     imageDeleteHandler: function() {},
-    onSave: function() {}
   }
 
   constructor(props) {

@@ -7,8 +7,6 @@ export const DELETE_ITEM = 'DELETE_ITEM';
 export const REORDER_ITEMS = 'REORDER_ITEMS';
 
 const dispatchAndSave = (action) => (dispatch, getState, api) => {
-  const prevState = getState()
-
   dispatch(action);
 
   const state = getState();
