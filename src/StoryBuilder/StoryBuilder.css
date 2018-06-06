@@ -7,3 +7,14 @@
   max-width: 800px;
   margin: auto;
 }
+
+// puts the title and place placeholders in
+// the actual center of the view
+.ql-editor.ql-blank::before {
+  width: 100%;
+  left: 0;
+}
+
+/* .ql-editor.ql-blank:focus::before {
+  visibility: hidden;
+} */

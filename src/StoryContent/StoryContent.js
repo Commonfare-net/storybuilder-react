@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 // Code for drag and drop behavior adapted from https://codesandbox.io/s/k260nyxq9v
 import { connect } from 'react-redux';
-import { deleteItem, updateItem, reorderItems } from '../actions';
+import { deleteItem, editItem, updateItem, reorderItems } from '../actions';
 
 import TextStoryItem from '../StoryItem/TextStoryItem';
 import LargeTextStoryItem from '../StoryItem/LargeTextStoryItem';
@@ -20,8 +20,9 @@ class StoryContent extends Component {
       content: PropTypes.string.isRequired,
       caption: PropTypes.string
     })).isRequired,
-    disabled: PropTypes.bool,
+    canSave: PropTypes.bool,
     deleteItem: PropTypes.func.isRequired,
+    editItem: PropTypes.func.isRequired,
     updateItem: PropTypes.func.isRequired,
     reorderItems: PropTypes.func.isRequired,
     imageUploadHandler: PropTypes.func.isRequired,
@@ -29,7 +30,6 @@ class StoryContent extends Component {
   }
 
   static defaultProps = {
-    disabled: false,
     imageUploadHandler: function() {},
     imageDeleteHandler: function() {}
   }
@@ -71,12 +71,13 @@ class StoryContent extends Component {
   )
 
   renderStoryItem = (item, index) => {
-    const { updateItem } = this.props;
+    const { editItem, updateItem, canSave } = this.props;
     const { type, editing, content } = item;
     const props = {
       key: index,
-      disabled: this.props.disabled,
-      editing: editing && !this.props.disabled,
+      disabled: !canSave,
+      editing: editing && canSave,
+      editItem: () => editItem(index),
       content
     };
 
@@ -137,11 +138,13 @@ class StoryContent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  items: state.content_json
+  items: state.content_json,
+  canSave: state.canSave
 });
 
 const mapDispatchToProps = {
   deleteItem,
+  editItem,
   updateItem,
   reorderItems
 }

@@ -24,6 +24,7 @@ class ImageStoryItem extends Component {
     imageUploadHandler: func.isRequired,
     onSave: func.isRequired,
     onRemove: func.isRequired,
+    editItem: func.isRequired,
     editing: bool,
     disabled: bool,
     intl: intlShape.isRequired
@@ -109,7 +110,7 @@ class ImageStoryItem extends Component {
   }
 
   render() {
-    const { disabled, editing, onRemove, intl } = this.props;
+    const { disabled, editing, editItem, onRemove, intl } = this.props;
     const { content, caption, uploading, uploadProgress, preview } = this.state;
 
     const editorOptions = {
@@ -129,7 +130,7 @@ class ImageStoryItem extends Component {
         content={caption || content}
         disabled={disabled}
         editing={editing}
-        onOpen={this.handleOpen}
+        onOpen={() => editItem().then(this.handleOpen)}
         onSave={this.save}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">

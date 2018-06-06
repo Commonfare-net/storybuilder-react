@@ -34,50 +34,31 @@ class StoryItem extends Component {
     editing: false
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      editing: props.editing
-    }
-  }
-
   // Trigger onOpen if the item is added with editing set to true
   componentDidMount() {
-    const { onOpen } = this.props;
-    const { editing } = this.state;
+    const { onOpen, editing } = this.props;
 
     if (editing && onOpen) {
       onOpen();
     }
   }
 
-  // Close the item if it is being edited and it becomes disabled for any reason
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.disabled && this.state.editing) {
-      this.setState({ editing: false });
-    }
-  }
+  // startEditing = () => {
+  //   const { disabled, onOpen } = this.props;
+  //   const { editing } = this.state;
+  //
+  //   if (!disabled && !editing) {
+  //     this.setState({
+  //       editing: true
+  //     }, () => { if (onOpen) this.props.onOpen() })
+  //   }
+  // }
 
-  toggleEditor = () => {
-    this.setState((prevState) => ({ editing: !prevState.editing }))
-  }
-
-  startEditing = () => {
-    const { disabled, onOpen } = this.props;
-    const { editing } = this.state;
-
-    if (!disabled && !editing) {
-      this.setState({
-        editing: true
-      }, () => { if (onOpen) this.props.onOpen() })
-    }
-  }
-
-  doneEditing = () => {
-    const { onSave } = this.props;
-
-    this.setState({ editing: false }, onSave)
-  }
+  // doneEditing = () => {
+  //   const { onSave } = this.props;
+  //
+  //   this.setState({ editing: false }, onSave)
+  // }
 
   remove = () => {
     const { content, onRemove, intl: { formatMessage } } = this.props;
@@ -88,13 +69,12 @@ class StoryItem extends Component {
   }
 
   render() {
-    const { icon, content, children, className } = this.props;
-    const { editing } = this.state;
+    const { editing, icon, content, children, className, onOpen, onSave } = this.props;
 
     if (editing) {
       return (
         <StoryItemEditor
-          onSave={this.doneEditing}
+          onSave={onSave}
           onRemove={this.remove}
           className={className}>
           {children}
@@ -105,7 +85,7 @@ class StoryItem extends Component {
         <CollapsedStoryItem
           icon={icon}
           content={content}
-          onClick={this.startEditing}
+          onClick={onOpen}
           className={className}
         />
       );

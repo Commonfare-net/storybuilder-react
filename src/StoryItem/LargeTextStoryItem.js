@@ -18,6 +18,7 @@ defineMessages({
 class LargeTextStoryItem extends Component {
   static propTypes = {
     content: string.isRequired,
+    editItem: func.isRequired,
     onSave: func.isRequired,
     onRemove: func.isRequired,
     editing: bool,
@@ -55,7 +56,7 @@ class LargeTextStoryItem extends Component {
   }
 
   render() {
-    const { onRemove, editing, disabled, intl } = this.props;
+    const { editItem, onRemove, editing, disabled, intl } = this.props;
     const { content } = this.state;
 
     const editorOptions = {
@@ -72,7 +73,7 @@ class LargeTextStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={this.state.content}
-        onOpen={this.autoFocusEditor}
+        onOpen={() => editItem().then(this.autoFocusEditor)}
         onSave={this.save}
         onRemove={onRemove}>
         <ReactQuill

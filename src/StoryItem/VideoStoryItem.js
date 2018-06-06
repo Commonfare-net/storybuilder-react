@@ -19,6 +19,7 @@ class VideoStoryItem extends Component {
   static propTypes = {
     content: string.isRequired,
     url: string.isRequired,
+    editItem: func.isRequired,
     onSave: func.isRequired,
     onRemove: func.isRequired,
     editing: bool,
@@ -89,7 +90,7 @@ class VideoStoryItem extends Component {
   }
 
   render() {
-    const { onRemove, editing, disabled, intl } = this.props;
+    const { editItem, onRemove, editing, disabled, intl } = this.props;
     const { url, content, unsupported } = this.state;
 
     const editorOptions = {
@@ -106,7 +107,7 @@ class VideoStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={url}
-        onOpen={this.autoFocusEditor}
+        onOpen={() => editItem().then(this.autoFocusEditor)}
         onSave={this.save}
         onRemove={onRemove}>
         <div>

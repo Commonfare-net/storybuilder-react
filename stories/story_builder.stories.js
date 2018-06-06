@@ -18,26 +18,26 @@ const demoStory = [
 ];
 
 const template = [
-
+  { id: 'text-1', type: 'text', content: '<p>Tell me about your life</p>' },
+  { id: 'image-1', type: 'image', content: '', caption: 'Add a picture of your house' },
+  { id: 'text-2', type: 'text', content: '<p>Say something about politics in Italy</p>' },
+  { id: 'largeText-1', type: 'largeText', content: 'What is the takeaway of this story?' },
 ]
 
 const api = {
-  save: (story) => action('story saved')(story)
+  save: (story) => action('story saved')(story),
+  imageUploadHandler: fakeUploader
 }
 
 const StoryBuilderWrapper = injectIntl(({ intl, ...storyBuilderProps }) => (
-  <StoryBuilder locale={intl.locale} api={api} {...storyBuilderProps} />
+  <StoryBuilder locale={intl.locale} api={api} initialState={storyBuilderProps} />
 ))
 
 storiesOf('StoryBuilder')
   .add('empty', () => (
     <StoryBuilderWrapper
       content_json={[]}
-      imageUploadHandler={fakeUploader}
-      onSave={(state) => {
-        action('story saved')(state);
-        return Promise.resolve();
-      }}
+      template={[]}
     />
   ))
   .add('with some elements', () => (
@@ -45,23 +45,12 @@ storiesOf('StoryBuilder')
       title="Rome: the community based gym hires 15 trainers"
       place="Rome"
       content_json={demoStory}
-      imageUploadHandler={fakeUploader}
-      onSave={(state) => {
-        action('story saved')(state);
-        return Promise.resolve();
-      }}
+      template={[]}
     />
   ))
   .add('with a template', () => (
     <StoryBuilderWrapper
-      title="Story with a template"
-      place="Rome"
       template={template}
       content_json={[]}
-      imageUploadHandler={fakeUploader}
-      onSave={(state) => {
-        action('story saved')(state);
-        return Promise.resolve();
-      }}
     />
   ))

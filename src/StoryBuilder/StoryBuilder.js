@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { string, number, bool, func, shape, arrayOf } from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
-import { setTitle, setPlace, setTags, addItem, save } from '../actions';
+import { setTitle, setPlace, setTags, save } from '../actions';
 
 import Title from '../StoryTitle/StoryTitle';
 import Place from '../StoryPlace/StoryPlace';
@@ -36,21 +36,13 @@ class StoryBuilder extends Component {
     imageDeleteHandler: func.isRequired,
     onTitleChange: func.isRequired,
     onPlaceChange: func.isRequired,
-    onTagsChange: func.isRequired,
-    addItem: func.isRequired
+    onTagsChange: func.isRequired
   }
 
   static defaultProps = {
     locale: 'en',
     imageUploadHandler: function() {},
     imageDeleteHandler: function() {},
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      saving: false
-    };
   }
 
   render() {
@@ -65,7 +57,6 @@ class StoryBuilder extends Component {
       availableTags,
       tags,
       onTagsChange,
-      addItem,
       canSave
     } = this.props;
 
@@ -78,12 +69,11 @@ class StoryBuilder extends Component {
             <Tags availableTags={availableTags} tags={tags} onChange={onTagsChange} />
           }
           <StoryContent
-            disabled={!canSave}
             imageUploadHandler={imageUploadHandler}
             imageDeleteHandler={imageDeleteHandler}
           />
           {canSave &&
-            <AddButton onAdd={addItem} />
+            <AddButton />
           }
         </div>
       </IntlProvider>
@@ -107,7 +97,6 @@ const mapDispatchToProps = {
   onTitleChange: setTitle,
   onPlaceChange: setPlace,
   onTagsChange: setTags,
-  addItem: addItem,
   save: save
 }
 

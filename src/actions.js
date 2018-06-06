@@ -1,7 +1,9 @@
 export const SET_TITLE = 'SET_TITLE';
 export const SET_PLACE = 'SET_PLACE';
 export const SET_TAGS = 'SET_TAGS';
-export const ADD_ITEM = 'ADD_ITEM';
+export const NEW_ITEM = 'NEW_ITEM';
+export const NEXT_TEMPLATE_ITEM = 'NEXT_TEMPLATE_ITEM';
+export const EDIT_ITEM = 'EDIT_ITEM';
 export const UPDATE_ITEM = 'UPDATE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const REORDER_ITEMS = 'REORDER_ITEMS';
@@ -35,11 +37,27 @@ export function setTags(tags) {
   })
 }
 
-export function addItem(item) {
+export function newItem(item) {
   return dispatchAndSave({
-    type: ADD_ITEM,
+    type: NEW_ITEM,
     item
   })
+}
+
+export function nextTemplateItem() {
+  return dispatchAndSave({
+    type: NEXT_TEMPLATE_ITEM
+  })
+}
+
+export function editItem(itemIndex) {
+  return dispatch => {
+    dispatch({
+      type: EDIT_ITEM,
+      itemIndex
+    })
+    return Promise.resolve();
+  }
 }
 
 export function updateItem(item, itemIndex) {

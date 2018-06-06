@@ -19,6 +19,7 @@ Quill.register('modules/autoLinks', AutoLinks);
 class TextStoryItem extends Component {
   static propTypes = {
     content: string.isRequired,
+    editItem: func.isRequired,
     onSave: func.isRequired,
     onRemove: func.isRequired,
     editing: bool,
@@ -46,7 +47,7 @@ class TextStoryItem extends Component {
   save = () => this.props.onSave(this.state.content)
 
   render() {
-    const { onRemove, editing, disabled, intl } = this.props;
+    const { editItem, onRemove, editing, disabled, intl } = this.props;
 
     const editorOptions = {
       theme: "bubble",
@@ -66,7 +67,7 @@ class TextStoryItem extends Component {
         editing={editing}
         disabled={disabled}
         content={this.state.content}
-        onOpen={this.autoFocusEditor}
+        onOpen={() => editItem().then(this.autoFocusEditor)}
         onSave={this.save}
         onRemove={onRemove}>
         <ReactQuill
