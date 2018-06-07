@@ -48,16 +48,16 @@ class ImageStoryItem extends Component {
   }
 
   componentDidMount() {
-    if (isEmpty(this.state.content)) {
+    if (isEmpty(this.state.content) && this.props.editing) {
       this.openFileChooser()
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (this.props.editing && !prevProps.editing && isEmpty(this.state.content)) {
       this.openFileChooser()
     }
-    // 
+    //
     // if (this.contentChanged(prevState) || this.captionChanged(prevState)) {
     //   this.save()
     // }
