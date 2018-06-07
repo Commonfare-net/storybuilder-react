@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.3.0
+
+* Added support for templates
+* `api.save` only called when there is a title, a place and at least a `StoryItem`
+
 ## 1.2.1
 
 * Fixed quotes escaping in `LargeTextStoryItem`s
