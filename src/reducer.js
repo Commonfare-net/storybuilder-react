@@ -11,21 +11,17 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const canSave = (title, place) => !isEmpty(title) && !isEmpty(place);
-
-export default function storyBuilderReducer(state = { locale: 'en', title: undefined, place: undefined, canSave: false, availableTags: [], tags: [], content_json: [], template: [] }, action) {
+export default function storyBuilderReducer(state = { locale: 'en', title: undefined, place: undefined, availableTags: [], tags: [], content_json: [], template_json: [] }, action) {
   switch (action.type) {
     case storyBuilderActions.SET_TITLE:
       return {
         ...state,
-        title: action.title,
-        canSave: canSave(action.title, state.place)
+        title: action.title
       };
     case storyBuilderActions.SET_PLACE:
       return {
         ...state,
-        place: action.place,
-        canSave: canSave(state.title, action.place)
+        place: action.place
       };
     case storyBuilderActions.SET_TAGS:
       return {
@@ -51,11 +47,11 @@ export default function storyBuilderReducer(state = { locale: 'en', title: undef
         content_json: [
           ...state.content_json,
           {
-            ...state.template[0],
+            ...state.template_json[0],
             editing: false
           }
         ],
-        template: state.template.slice(1)
+        template_json: state.template_json.slice(1)
       }
     case storyBuilderActions.DELETE_ITEM:
       return {

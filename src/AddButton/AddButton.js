@@ -84,7 +84,7 @@ class AddButton extends Component {
 
 export default connect(
   state => ({
-    itemsLeftInTemplate: state.template.length
+    itemsLeftInTemplate: (state.template_json || []).length
   }),
   {
     newItem,

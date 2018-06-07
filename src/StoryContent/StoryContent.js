@@ -17,10 +17,10 @@ class StoryContent extends Component {
     items: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
       type: PropTypes.oneOf(['text', 'largeText', 'image', 'video']).isRequired,
-      content: PropTypes.string.isRequired,
+      content: PropTypes.string,
       caption: PropTypes.string
     })).isRequired,
-    canSave: PropTypes.bool,
+    disabled: PropTypes.bool,
     deleteItem: PropTypes.func.isRequired,
     editItem: PropTypes.func.isRequired,
     updateItem: PropTypes.func.isRequired,
@@ -71,12 +71,12 @@ class StoryContent extends Component {
   )
 
   renderStoryItem = (item, index) => {
-    const { editItem, updateItem, canSave } = this.props;
+    const { editItem, updateItem, disabled } = this.props;
     const { type, editing, content } = item;
     const props = {
       key: index,
-      disabled: !canSave,
-      editing: editing && canSave,
+      disabled: disabled,
+      editing: editing && !disabled,
       editItem: () => editItem(index),
       content
     };
@@ -139,7 +139,7 @@ class StoryContent extends Component {
 
 const mapStateToProps = (state) => ({
   items: state.content_json,
-  canSave: state.canSave
+  disabled: state.disabled
 });
 
 const mapDispatchToProps = {

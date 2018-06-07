@@ -47,10 +47,20 @@ class ImageStoryItem extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.contentChanged(prevState) || this.captionChanged(prevState)) {
-      this.save()
+  componentDidMount() {
+    if (isEmpty(this.state.content)) {
+      this.openFileChooser()
     }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.editing && !prevProps.editing && isEmpty(this.state.content)) {
+      this.openFileChooser()
+    }
+    // 
+    // if (this.contentChanged(prevState) || this.captionChanged(prevState)) {
+    //   this.save()
+    // }
   }
 
   contentChanged = (prevState) => prevState.content !== this.state.content
@@ -95,7 +105,7 @@ class ImageStoryItem extends Component {
 
   handleChange = (caption) => this.setState({ caption })
 
-  handleOpen = () => isEmpty(this.state.content) && this.openFileChooser()
+  // handleOpen = () => isEmpty(this.state.content) && this.openFileChooser()
 
   save = () => {
     const { uploading, content, caption } = this.state;
@@ -130,7 +140,7 @@ class ImageStoryItem extends Component {
         content={caption || content}
         disabled={disabled}
         editing={editing}
-        onOpen={() => editItem().then(this.handleOpen)}
+        onOpen={editItem}
         onSave={this.save}
         onRemove={onRemove}>
         <div className="image-story-item__uploader">

@@ -1,3 +1,5 @@
+import isEmpty from 'lodash/isEmpty';
+
 export const SET_TITLE = 'SET_TITLE';
 export const SET_PLACE = 'SET_PLACE';
 export const SET_TAGS = 'SET_TAGS';
@@ -8,11 +10,15 @@ export const UPDATE_ITEM = 'UPDATE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const REORDER_ITEMS = 'REORDER_ITEMS';
 
+const canSave = (state) => {
+  return !isEmpty(state.title) && !isEmpty(state.place) && !isEmpty(state.content_json)
+}
+
 const dispatchAndSave = (action) => (dispatch, getState, api) => {
   dispatch(action);
 
   const state = getState();
-  if (state.canSave) api.save(state);
+  if (canSave(state)) api.save(state);
   return Promise.resolve();
 }
 
