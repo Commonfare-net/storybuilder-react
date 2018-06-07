@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.1
+
+* Fixed a bug with `ImageStoryItem`s beging added from a template and not finding the file chooser.
+
 ## 1.3.0
 
 * Added support for templates
