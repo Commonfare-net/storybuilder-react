@@ -23,9 +23,24 @@ class StoryPlace extends Component {
   render() {
     const { place, onChange, intl } = this.props;
 
+    const modules = {
+      keyboard: {
+        bindings: {
+          tab: false,
+          handleEnter: {
+            key: 13,
+            handler: function() {
+              // Do nothing
+            }
+          }
+        }
+      }
+    }
+
     return (
       <ReactQuill
         theme={null}
+        modules={modules}
         defaultValue={place}
         placeholder={intl.formatMessage({ id: 'story.place' })}
         onChange={text => onChange(sanitizeHtml(text, { allowedTags: [] }))}

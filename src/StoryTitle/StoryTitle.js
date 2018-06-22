@@ -23,9 +23,24 @@ class StoryTitle extends Component {
   render() {
     const { title, onChange, intl } = this.props;
 
+    const modules = {
+      keyboard: {
+        bindings: {
+          tab: false,
+          handleEnter: {
+            key: 13,
+            handler: function() {
+              // Do nothing
+            }
+          }
+        }
+      }
+    }
+
     return (
       <ReactQuill
         theme={null}
+        modules={modules}
         defaultValue={title}
         placeholder={intl.formatMessage({ id: 'story.title' })}
         onChange={(text) => onChange(sanitizeHtml(text, { allowedTags: [] }))}

@@ -66,15 +66,15 @@ class StoryBuilder extends Component {
         <div className="story-builder">
           <Title title={title} onChange={onTitleChange} />
           <Place place={place} onChange={onPlaceChange} />
-          {hasTitleAndPlace &&
-            <Tags availableTags={availableTags} tags={tags} onChange={onTagsChange} />
-          }
           <StoryContent
             imageUploadHandler={imageUploadHandler}
             imageDeleteHandler={imageDeleteHandler}
           />
           {hasTitleAndPlace &&
             <AddButton />
+          }
+          {hasTitleAndPlace &&
+            <Tags availableTags={availableTags} tags={tags} onChange={onTagsChange} />
           }
         </div>
       </IntlProvider>

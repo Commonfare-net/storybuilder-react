@@ -7,10 +7,10 @@
   "largeText_story_item.placeholder": "Write something that stands out...",
   "story.add_tag": "Add a tag",
   "story.place": "Place",
-  "story.title": "Title",
+  "story.title": "Write your title here",
   "story_item.confirm_remove": "Are you sure? This cannot be undone",
   "story_item.done": "Done",
   "story_item.remove": "Remove",
-  "text_story_item.placeholder": "Write something...",
+  "text_story_item.placeholder": "Tell your story",
   "video_story_item.placeholder": "Paste the URL of a video from YouTube, Vimeo or DailyMotion"
 }

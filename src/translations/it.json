@@ -1,4 +1,5 @@
 {
+  "add.help_text": "Aggiungi una sezione alla tua storia",
   "add.image_story_item": "Immagine",
   "add.largeText_story_item": "Testo in evidenza",
   "add.text_story_item": "Testo",
@@ -7,10 +8,10 @@
   "largeText_story_item.placeholder": "Scrivi qualcosa che vuoi far risaltare...",
   "story.add_tag": "Aggiungi un tag",
   "story.place": "Luogo",
-  "story.title": "Titolo",
+  "story.title": "Scrivi qui il titolo",
   "story_item.confirm_remove": "Sei sicuro? Questa operazione è irreversibile",
   "story_item.done": "Fatto",
   "story_item.remove": "Rimuovi",
-  "text_story_item.placeholder": "Scrivi qualcosa...",
+  "text_story_item.placeholder": "Racconta la tua storia",
   "video_story_item.placeholder": "Incolla l'URL di un video da YouTube, Vimeo o DailyMotion"
 }

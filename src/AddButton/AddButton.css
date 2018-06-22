@@ -19,7 +19,8 @@
   width: 60px;
   border-radius: 30px;
   border: none;
-  background-color: lightgray;
+  background-color: var(--cf-primary-color, #E7472E);
+  /* background-color: lightgray; */
   color: var(--cf-story-item-text-color, #fff);
 }
 
@@ -32,7 +33,12 @@
 }
 
 .story-builder-add--active .story-builder-add__button {
-  background-color: var(--cf-primary-color, #E7472E);
+  /* background-color: var(--cf-primary-color, #E7472E); */
+  background-color: lightgray;
+}
+
+.story-builder-add--active .story-builder-add__help-text {
+  color: lightgray;
 }
 
 .story-builder-add--active .story-builder-add__type {

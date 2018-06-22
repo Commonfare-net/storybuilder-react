@@ -39,6 +39,12 @@ class AddButton extends Component {
             className="fa-fw"
             style={{ lineHeight: '60px' }} />
         </button>
+        <FormattedMessage
+          id="add.help_text"
+          defaultMessage="Add a section to your story"
+          tagName="p"
+          className="story-builder-add__help-text"
+        />
         <div className="story-builder-add__type">
           <button
             className="story-builder-add__type-select"
