@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.3.2
+
+* Changed some placeholders to improve usability
+* Added helper text under the (+) button
+* Inverted the color of the (+) button (now it becomes gray when active)
+* Moved tags field to the bottom
+* Disabled ENTER and TAB in title and place
+
 ## 1.3.1
 
 * Fixed a bug with `ImageStoryItem`s beging added from a template and not finding the file chooser.
