@@ -26,13 +26,7 @@ class StoryTitle extends Component {
     const modules = {
       keyboard: {
         bindings: {
-          tab: false,
-          handleEnter: {
-            key: 13,
-            handler: function() {
-              // Do nothing
-            }
-          }
+          tab: false
         }
       }
     }
@@ -43,6 +37,7 @@ class StoryTitle extends Component {
         modules={modules}
         defaultValue={title}
         placeholder={intl.formatMessage({ id: 'story.title' })}
+        onKeyUp={this.handleKeyUp}
         onChange={(text) => onChange(sanitizeHtml(text, { allowedTags: [] }))}
         className="story-builder__title" />
     )

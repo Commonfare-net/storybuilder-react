@@ -26,13 +26,7 @@ class StoryPlace extends Component {
     const modules = {
       keyboard: {
         bindings: {
-          tab: false,
-          handleEnter: {
-            key: 13,
-            handler: function() {
-              // Do nothing
-            }
-          }
+          tab: false
         }
       }
     }
