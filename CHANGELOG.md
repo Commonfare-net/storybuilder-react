@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.3
+
+* Removed handleEnter handler that was making the StoryBuilder unusable
+
 ## 1.3.2
 
 * Changed some placeholders to improve usability

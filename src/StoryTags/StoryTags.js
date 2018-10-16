@@ -64,8 +64,23 @@ class StoryTags extends Component {
     )
   }
 
+  handleChange = (tags) => {
+    const { onChange, availableTags } = this.props;
+    const lastTag = tags[tags.length - 1]
+
+    // check if the user entered an available tag without autocompleting
+    if (!lastTag.hasOwnProperty('id')) {
+      const tagToUse = availableTags.find((item) => item.name === lastTag.name);
+      if (tagToUse) {
+        tags.splice(tags.length - 1, 1, tagToUse)
+      }
+    }
+
+    onChange(tags);
+  }
+
   render() {
-    const { intl, tags, onChange } = this.props;
+    const { intl, tags } = this.props;
 
     return (
       <div className="story-builder__tags-wrapper">
@@ -80,7 +95,7 @@ class StoryTags extends Component {
             placeholder: intl.formatMessage({ id: 'story.add_tag' })
           }}
           tagDisplayProp="name"
-          onChange={onChange} />
+          onChange={this.handleChange} />
       </div>
     )
   }

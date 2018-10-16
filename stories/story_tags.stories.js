@@ -10,12 +10,12 @@ storiesOf('StoryTags')
   .add('pre-initialized', () => (
     <StoryTags
       tags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]}
-      onSave={action('tags saved')}
+      onChange={action('tags saved')}
     />
   ))
   .add('with autocomplete', () => (
     <StoryTags
       availableTags={[{ id: 1, name: 'pregnancy'}, { id: 2, name: 'welfare provisions' }]}
-      onSave={action('tags saved')}
+      onChange={action('tags saved')}
     />
   ))
