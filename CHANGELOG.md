@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.4
+
+* Fixed a problem occurring when the user types a tag that already exists without selecting the suggestion from the autocomplete dropdown
+
 ## 1.3.3
 
 * Removed handleEnter handler that was making the StoryBuilder unusable
